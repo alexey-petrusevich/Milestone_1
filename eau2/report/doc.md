@@ -1,9 +1,9 @@
-#Introduction#
+# Introduction
   This project represents a distrubuted key-value store - the storage of information between various network nodes. This architechture
 allows storing large amount of information that may exceed RAM or permanents storage capacity of a single node.
 
 
-#Architecture#
+# Architecture
   From the description of the project we are able to identify major components that will play a critical role in our desing.
 The components are the following:
 * Map
@@ -47,16 +47,16 @@ or distribute it to other nodes. The method by which it determines could be the 
 * Combine previous approach with allowing chankifying the data - the data could be stored locally and remotely at the same time
 
 
-#Implementation#
+# Implementation
 
 
-#Use cases#
+# Use cases
 
 
-#Open questions#
+# Open questions
 * Connection between DataFrame and key-value store (represented by Map)
 
-#Status#
+# Status
 At the moment, it is required by us to take care of our technical debt. The following components (with estimated fix time) are to be fixed:
 * Sorer (8-10 hours)
 * DataFrame (5-10 hours)
