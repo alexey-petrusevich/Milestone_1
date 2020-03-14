@@ -1,6 +1,6 @@
 # Introduction
   This project represents a distrubuted key-value store - the storage of information between various network nodes. This architechture
-allows storing large amount of information that may exceed RAM or permanents storage capacity of a single node.
+allows storing large amount of information that may exceed RAM or permanents storage capacity of a single node. These KV pairs can be erased as needed and overwritten by using version numbers.
 
 
 # Architecture
@@ -48,7 +48,7 @@ or distribute it to other nodes. The method by which it determines could be the 
 
 
 # Implementation
-
+Our implementation is not focused on speed, but rather being able to pass in 10GB of data reasonably quickly.
 
 # Use cases
 
