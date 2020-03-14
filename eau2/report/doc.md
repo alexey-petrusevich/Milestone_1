@@ -50,6 +50,7 @@ or distribute it to other nodes. The method by which it determines could be the 
 # Implementation
 Our implementation is not focused on speed, but rather being able to pass in 10GB of data reasonably quickly.
 The program begins by running file named **demo**. The program begins with creating an instance of Application, and then calling its **run** method. First, the method creates a fixed number of network nodes that will store the data. Then, it opens the .sor file containing the data. The file reader reads a fixed amount of rows at a time into the buffer and then serializes it. The data is then stored locally or remotely. The Array of Keys has the information about the (String) keys associated with node ids. 
+
 <img src="milestone_1_array.png">
 
 Each node also has a Map of node ids as keys and sockaddr_in as values.
@@ -62,11 +63,11 @@ For Array and Map, we are using the Array and Map classes from our previous assi
 Application also has **stop()** method that terminates all network nodes, and terminates the program.
 
 The actual storage of serialized data is represented by KVStore class, which has the following methods:
-* **put(k, v)**
+* **put(k, v)** :
   _Takes in two values - key and value - and stores them locally or remotely._
-* **get(k)**
+* **get(k)** :
   _Queries the KV store and reassembles the DataFrame from the given key (non-blocking)_
-* **waitAndGet(k)**
+* **waitAndGet(k)** :
   _Queries the KV store and reassembles the DataFrame from the given key (blocking)_
 
 Application
