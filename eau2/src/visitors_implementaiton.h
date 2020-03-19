@@ -31,9 +31,9 @@ public:
 	}
 
 
-	virtual void visitFloatColumn(FloatColumn* floatColumn) {
-		assert(floatColumn != nullptr);
-		floatColumn->set(colIndex, row->get_float(colIndex));
+	virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
+		assert(doubleColumn != nullptr);
+		doubleColumn->set(colIndex, row->get_double(colIndex));
 		colIndex++;
 	}
 
@@ -81,9 +81,9 @@ public:
 	}
 
 
-	virtual void visitFloatColumn(FloatColumn* floatColumn) {
-		assert(floatColumn != nullptr);
-		floatColumn->push_back(row->get_float(colIndex));
+	virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
+		assert(doubleColumn != nullptr);
+		doubleColumn->push_back(row->get_double(colIndex));
 		colIndex++;
 	}
 

@@ -16,5 +16,5 @@
  * Enumerator that represents types of columns.
  */
 enum ColType {
-	INTEGER = 'I', FLOAT = 'F', BOOLEAN = 'B', STRING = 'S'
+	INTEGER = 'I', DOUBLE = 'D', BOOLEAN = 'B', STRING = 'S', UNKNOWN = 'U'
 };

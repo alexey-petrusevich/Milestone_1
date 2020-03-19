@@ -55,12 +55,12 @@ public:
 
 
     /**
-     * Accepts a float value and performs an action defined by
+     * Accepts a double value and performs an action defined by
      * the specific implementation of the class extended from this Fielder.
      *
-     * @param f float being used for the action
+     * @param d double being used for the action
      */
-    virtual void accept(float f) {
+    virtual void accept(double d) {
         assert(false);
     }
 
@@ -120,8 +120,8 @@ public:
     }
 
 
-    void accept(float f) {
-        printf("%f\n", f);
+    void accept(double d) {
+        printf("%f\n", d);
     }
 
 

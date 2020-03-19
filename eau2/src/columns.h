@@ -19,7 +19,7 @@
 
 
 class IntColumn;
-class FloatColumn;
+class DoubleColumn;
 class BoolColumn;
 class StringColumn;
 
@@ -41,11 +41,11 @@ public:
 
 
 	/**
-	 * Visits the FloatColumn.
+	 * Visits the DoubleColumn.
 	 *
-	 * @param floatColumn the given FloatColumn
+	 * @param doubleColumn the given DoubleColumn
 	 */
-	virtual void visitFloatColumn(FloatColumn* floatColumn) {
+	virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
 		assert(false);
 	}
 
@@ -115,11 +115,11 @@ public:
 
 
 	/**
-	 * Returns this column as FloatColumn.
+	 * Returns this column as DoubleColumn.
 	 *
-	 * @return this column as FloatColumn
+	 * @return this column as DoubleColumn
 	 */
-	virtual FloatColumn* as_float() {
+	virtual DoubleColumn* as_double() {
 		return nullptr;
 	}
 
@@ -157,11 +157,11 @@ public:
 
 
 	/**
-	 * Pushes the given float value to the bottom of this column.
+	 * Pushes the given double value to the bottom of this column.
 	 *
-	 * @param val the float value being pushed to the bottom of this column
+	 * @param val the double value being pushed to the bottom of this column
 	 */
-	virtual void push_back(float val) {
+	virtual void push_back(double val) {
 		assert(false);
 	}
 
@@ -312,18 +312,18 @@ public:
 
 
 /**
- * Represents a column of float type.
+ * Represents a column of double type.
  */
-class FloatColumn : public Column {
+class DoubleColumn : public Column {
 public:
-	FloatArray* array;
+	DoubleArray* array;
 
 
 	/**
-	 * Default constructor of this FloatColumn.
+	 * Default constructor of this DoubleColumn.
 	 */
-	FloatColumn() : Column(FLOAT) {
-		this->array = new FloatArray();
+	DoubleColumn() : Column(DOUBLE) {
+		this->array = new DoubleArray();
 	}
 
 
@@ -334,12 +334,12 @@ public:
 	 * @param n the number of parameters
 	 * @param ... the list of elements to be stored in this column
 	 */
-	FloatColumn(int n, ...) : Column(FLOAT) {
-		this->array = new FloatArray(n);
+	DoubleColumn(int n, ...) : Column(DOUBLE) {
+		this->array = new DoubleArray(n);
 		va_list list;
 		va_start(list, n);
 		for (int i = 0; i < n; i++) {
-			float val = va_arg(list, double);
+			double val = va_arg(list, double);
 			this->array->append(val);
 		}
 	}
@@ -351,13 +351,13 @@ public:
 	 * @param idx the index of the element being returned
 	 * @return the value of the element at the given index
 	 */
-	float get(size_t idx) {
+	double get(size_t idx) {
 		assert(idx < this->numElements);
 		return this->array->get(idx);
 	}
 
 
-	FloatColumn* as_float() {
+	DoubleColumn* as_double() {
 		return this;
 	}
 
@@ -368,13 +368,13 @@ public:
 	 * @param idx the index of the value being set
 	 * @param val the new value of the element at the given index
 	 */
-	void set(size_t idx, float val) {
+	void set(size_t idx, double val) {
 		assert(idx < this->numElements);
 		this->array->set(idx, val);
 	}
 
 
-	void push_back(float val) {
+	void push_back(double val) {
 		this->array->append(val);
 		this->numElements++;
 	}
@@ -382,7 +382,7 @@ public:
 
 	void acceptVisitor(IVisitor* visitor) {
 		assert(visitor != nullptr);
-		visitor->visitFloatColumn(this);
+		visitor->visitDoubleColumn(this);
 	}
 
 
@@ -395,7 +395,7 @@ public:
 	/**
 	 * Destructor of this column.
 	 */
-	~FloatColumn() {
+	~DoubleColumn() {
 		delete[] this->array;
 	}
 };

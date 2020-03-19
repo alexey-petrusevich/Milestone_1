@@ -14,6 +14,7 @@
 #include "schema.h"
 #include "rower.h"
 #include "thread.h"
+#include "application.h"
 
 
 /****************************************************************************
@@ -53,6 +54,55 @@ public:
 	}
 
 
+	static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {
+		// TODO create dataframe from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, double* vals) {
+		// TODO create dataframe from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, bool* vals) {
+		// TODO create dataframe from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, String* vals) {
+		// TODO create dataframe from the given values
+		return nullptr;
+	}
+
+	
+	static DataFrame* fromScalar(Key* key, KVStore* kv, double value)  {
+		// TODO create a DataFrame from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromScalar(Key* key, KVStore* kv, int value)  {
+		// TODO create a DataFrame from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromScalar(Key* key, KVStore* kv, bool value)  {
+		// TODO create a DataFrame from the given values
+		return nullptr;
+	}
+
+
+	static DataFrame* fromScalar(Key* key, KVStore* kv, String* value)  {
+		// TODO create a DataFrame from the given values
+		return nullptr;
+	}
+
+
+
 	void initColumns() {
 		this->columns = new ColumnArray(this->schema->numCols);
 		for (size_t colIndex = 0; colIndex < this->schema->numCols; colIndex++) {
@@ -60,8 +110,8 @@ public:
 			case INTEGER:
 				this->columns->append(new IntColumn());
 				break;
-			case FLOAT:
-				this->columns->append(new FloatColumn());
+			case DOUBLE:
+				this->columns->append(new DoubleColumn());
 				break;
 			case BOOLEAN:
 				this->columns->append(new BoolColumn());
@@ -136,18 +186,18 @@ public:
 
 
 	/**
-	 * Returns the float value of the given column and row index.
+	 * Returns the double value of the given column and row index.
 	 *
 	 * @param col the column index of the requested element
 	 * @param row the row index of the requested element
-	 * @return the float value of the requested element
+	 * @return the double value of the requested element
 	 */
-	float get_float(size_t col, size_t row) {
+	double get_double(size_t col, size_t row) {
 		assert(col < this->schema->numCols);
 		assert(row < this->schema->numRows);
-		assert(this->schema->col_type(col) == FLOAT);
-		FloatColumn* floatColumn = this->columns->get(col)->as_float();
-		return floatColumn->get(row);
+		assert(this->schema->col_type(col) == DOUBLE);
+		DoubleColumn* doubleColumn = this->columns->get(col)->as_double();
+		return doubleColumn->get(row);
 	}
 
 
@@ -226,18 +276,18 @@ public:
 
 	/**
 	 * Sets the value of the element at the given column and row index
-	 * with the given float.
+	 * with the given double.
 	 *
 	 * @param col the column index of the element
 	 * @param row the row index of the element
-	 * @param val the float value of the element
+	 * @param val the double value of the element
 	 */
-	void set(size_t col, size_t row, float val) {
+	void set(size_t col, size_t row, double val) {
 		assert(col < this->schema->numCols);
 		assert(row < this->schema->numRows);
-		assert(this->schema->col_type(col) == FLOAT);
-		FloatColumn* floatColumn = this->columns->get(col)->as_float();
-		floatColumn->set(row, val);
+		assert(this->schema->col_type(col) == DOUBLE);
+		DoubleColumn* doubleColumn = this->columns->get(col)->as_double();
+		doubleColumn->set(row, val);
 	}
 
 

@@ -41,8 +41,8 @@ public:
                 this->columnArray->append(new IntColumn(1));
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
-            case FLOAT:
-                this->columnArray->append(new FloatColumn(1));
+            case DOUBLE:
+                this->columnArray->append(new DoubleColumn(1));
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
             case BOOLEAN:
@@ -92,16 +92,16 @@ public:
 
 
     /**
-     * Sets the value of the given column with a given float.
+     * Sets the value of the given column with a given double.
      *
      * @param col the column index of the entry being set
-     * @param val the float value of the new entry
+     * @param val the double value of the new entry
      */
-    void set(size_t col, float val) {
+    void set(size_t col, double val) {
         assert(col < this->schema->numCols);
         assert(this->columnArray != nullptr);
-        FloatColumn *floatColumn = this->columnArray->get(col)->as_float();
-        floatColumn->set(0, val);
+        DoubleColumn *doubleColumn = this->columnArray->get(col)->as_double();
+        doubleColumn->set(0, val);
     }
 
 
@@ -187,15 +187,15 @@ public:
 
 
     /**
-     * Returns the float value of the given column.
+     * Returns the double value of the given column.
      *
      * @param col the index of the column which value is being requested
      * @return the value of the column at the given index
      */
-    float get_float(size_t col) {
+    double get_double(size_t col) {
         assert(col < this->schema->numCols);
-        FloatColumn *floatColumn = this->columnArray->get(col)->as_float();
-        return floatColumn->get(0);
+        DoubleColumn *doubleColumn = this->columnArray->get(col)->as_double();
+        return doubleColumn->get(0);
     }
 
 

@@ -366,11 +366,11 @@ public:
 
 
 /**
- * Represents an array of floats. Does not allow null pointers.
+ * Represents an array of doubles. Does not allow null pointers.
  */
-class FloatArray : public Object {
+class DoubleArray : public Object {
 public:
-	float* array;
+	double* array;
 	int elementsInserted;
 	int capacity;
 	int currentPosition;
@@ -379,8 +379,8 @@ public:
 	/**
 	 * Default constructor for the array.
 	 */
-	FloatArray() : Object() {
-		this->array = new float [DEFAULT_SIZE];
+	DoubleArray() : Object() {
+		this->array = new double [DEFAULT_SIZE];
 		this->capacity = DEFAULT_SIZE;
 		this->elementsInserted = 0;
 		this->currentPosition = 0;
@@ -392,9 +392,9 @@ public:
 	 *
 	 * @param size the capacity of the array
 	 */
-	FloatArray(int size) : Object() {
+	DoubleArray(int size) : Object() {
 		assert(size > 0);
-		this->array = new float [size];
+		this->array = new double [size];
 		this->capacity = size;
 		this->elementsInserted = 0;
 		this->currentPosition = 0;
@@ -404,9 +404,9 @@ public:
 	/**
 	 * Appends the given element to the end of this array.
 	 *
-	 * @param input the element being appended to the end of this FloatArray.
+	 * @param input the element being appended to the end of this DoubleArray.
 	 */
-	void append(float input) {
+	void append(double input) {
 		this->_ensure_size(this->elementsInserted + 1);
 		this->array[currentPosition] = input;
 		this->currentPosition++;
@@ -417,19 +417,19 @@ public:
 	/**
 	 * Returns the element at the given index.
 	 *
-	 * @param index the index of the element in this FloatArray.
+	 * @param index the index of the element in this DoubleArray.
 	 * @return the element at the given index
 	 */
-	float get(int index) {
+	double get(int index) {
 		assert(index < this->elementsInserted);
 		return this->array[index];
 	}
 
 
 	/**
-	 * Returns the size of this FloatArray.
+	 * Returns the size of this DoubleArray.
 	 *
-	 * @return the size of this FloatArray
+	 * @return the size of this DoubleArray
 	 */
 	int size() {
 		return this->elementsInserted;
@@ -441,9 +441,9 @@ public:
 	 * -1 if value is not found.
 	 *
 	 * @param input the value of the element being searched for
-	 * @return the index of the element in this FloatArray
+	 * @return the index of the element in this DoubleArray
 	 */
-	int index(float input) {
+	int index(double input) {
 		for (int index = 0; index < this->elementsInserted; index++) {
 			if (std::abs(this->array[index] - input) < 1E-14) {
 				return index;
@@ -461,16 +461,16 @@ public:
 	 * @param input new element being inserted at the given position
 	 * @return the element displaced by the given element
 	 */
-	float set(int index, float input) {
+	double set(int index, double input) {
 		assert(index < this->elementsInserted);
-		float current = this->array[index];
+		double current = this->array[index];
 		this->array[index] = input;
 		return current;
 	}
 
 
 	bool equals(Object* o) {
-		FloatArray* otherArray = dynamic_cast<FloatArray*>(o);
+		DoubleArray* otherArray = dynamic_cast<DoubleArray*>(o);
 		if (otherArray == nullptr) {
 			return false;
 		}
@@ -499,7 +499,7 @@ public:
 
 	/**
 	 * Checks whether the given capacity is larger than the capacity
-	 * of this FloatArray. Increases the size if required capacity is larger
+	 * of this DoubleArray. Increases the size if required capacity is larger
 	 * then the existing capacity.
 	 *
 	 * @param required the required capacity
@@ -508,8 +508,8 @@ public:
 		assert(required > 0);
 		if (required > this->capacity) {
 			int newCapacity = required * 2;
-			float* newArray = new float [newCapacity];
-			float* oldArray = this->array;
+			double* newArray = new double [newCapacity];
+			double* oldArray = this->array;
 			// copy array
 			for (int index = 0; index < this->capacity; index++) {
 				newArray[index] = oldArray[index];
@@ -523,9 +523,9 @@ public:
 
 
 	/**
-	* The destructor of this FloatArray.
+	* The destructor of this DoubleArray.
 	*/
-	~FloatArray() {
+	~DoubleArray() {
 		delete[] this->array;
 	}
 };
@@ -756,8 +756,8 @@ public:
 		case INTEGER:
 			this->append(INTEGER);
 			break;
-		case FLOAT:
-			this->append(FLOAT);
+		case DOUBLE:
+			this->append(DOUBLE);
 			break;
 		case BOOLEAN:
 			this->append(BOOLEAN);
@@ -822,8 +822,8 @@ public:
 		switch (input) {
 		case INTEGER:
 			return this->index(INTEGER);
-		case FLOAT:
-			return this->index(FLOAT);
+		case DOUBLE:
+			return this->index(DOUBLE);
 		case BOOLEAN:
 			return this->index(BOOLEAN);
 		case STRING:
