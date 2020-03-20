@@ -273,6 +273,14 @@ class IntColumn : public Column {
         }
     }
 
+
+    IntColumn(int* array, size_t size) : Column(INTEGER)  {
+        this->array = new IntArray();
+        for (size_t i = 0; i < size; i++) {
+            this->array->append(array[i]);
+        }
+    }
+
     void set_int(size_t index, int val) {
         assert(index < this->numElements);
         this->array->set(index, val);
@@ -362,6 +370,15 @@ class DoubleColumn : public Column {
         }
     }
 
+
+    DoubleColumn(double* array, size_t size) : Column(DOUBLE)  {
+        this->array = new DoubleArray();
+        for (size_t i = 0; i < size; i++) {
+            this->array->append(array[i]);
+        }
+    }
+
+
     void set_double(size_t idx, double val) {
         assert(idx < this->numElements);
         this->array->set(idx, val);
@@ -450,6 +467,16 @@ class BoolColumn : public Column {
             this->array->append(val);
         }
     }
+
+
+    
+    BoolColumn(bool* array, size_t size) : Column(BOOLEAN) {
+        this->array = new BoolArray();
+        for (size_t i = 0; i < size; i++) {
+            this->array->append(array[i]);
+        }
+    }
+
 
     void set_bool(size_t idx, bool val) {
         assert(idx < this->numElements);
@@ -546,6 +573,15 @@ class StringColumn : public Column {
             this->array->append(va_arg(list, String*));
         }
     }
+
+
+    StringColumn(String** array, size_t size) : Column(STRING) {
+        this->array = new Array();
+        for (size_t i = 0; i < size; i++) {
+            this->array->append(array[i]);
+        }
+    }
+
 
     void set_string(size_t idx, String* val) {
         assert(idx < this->numElements);

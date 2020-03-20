@@ -8,10 +8,12 @@
 #include "array.h"
 #include "coltypes.h"
 #include "columns.h"
+#include "deserializer.h"
 #include "fielder.h"
 #include "object.h"
 #include "rower.h"
 #include "schema.h"
+#include "serializer.h"
 #include "string.h"
 #include "thread.h"
 #include "visitors.h"
@@ -51,13 +53,11 @@ class DataFrame : public Object {
         this->initColumns();
     }
 
-
     DataFrame(Schema* schema) {
         this->schema = schema;
         this->schema->numRows = 0;
         this->initColumns();
     }
-
 
     static DataFrame* fromColumns(ColumnArray* columnArray) {
         Schema* schema = columnArray->getSchema();
@@ -71,46 +71,110 @@ class DataFrame : public Object {
 
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {
-        // TODO create dataframe from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_int_array(vals, size);
+        kv->put(key, serialized);
+        IntColumn* col = new IntColumn(vals, size);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
+
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 double* vals) {
-        // TODO create dataframe from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_double_array(vals, size);
+        kv->put(key, serialized);
+        DoubleColumn* col = new DoubleColumn(vals, size);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 bool* vals) {
-        // TODO create dataframe from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_bool_array(vals, size);
+        kv->put(key, serialized);
+        BoolColumn* col = new BoolColumn(vals, size);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
-                                String* vals) {
-        // TODO create dataframe from the given values
-        return nullptr;
+                                String** vals) {
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_string_array(vals, size);
+        kv->put(key, serialized);
+        StringColumn* col = new StringColumn(vals, size);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
-    static DataFrame* fromScalar(Key* key, KVStore* kv, double value) {
-        // TODO create a DataFrame from the given values
-        return nullptr;
-    }
 
     static DataFrame* fromScalar(Key* key, KVStore* kv, int value) {
-        // TODO create a DataFrame from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_int(value);
+        kv->put(key, serialized);
+        IntColumn* col = new IntColumn();
+        col->push_back(value);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
+
+    static DataFrame* fromScalar(Key* key, KVStore* kv, double value) {
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_double(value);
+        kv->put(key, serialized);
+        DoubleColumn* col = new DoubleColumn();
+        col->push_back(value);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
+    }
+
+
     static DataFrame* fromScalar(Key* key, KVStore* kv, bool value) {
-        // TODO create a DataFrame from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_bool(value);
+        kv->put(key, serialized);
+        BoolColumn* col = new BoolColumn();
+        col->push_back(value);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
     static DataFrame* fromScalar(Key* key, KVStore* kv, String* value) {
-        // TODO create a DataFrame from the given values
-        return nullptr;
+        Serializer* serializer = new Serializer();
+        byte* serialized = serializer->serialize_string(value);
+        kv->put(key, serialized);
+        StringColumn* col = new StringColumn();
+        col->push_back(value);
+        ColumnArray* columnArray = new ColumnArray();
+        columnArray->append(col);
+        DataFrame* df = DataFrame::fromColumns(columnArray);
+        delete serializer;
+        return df;
     }
 
     void initColumns() {
