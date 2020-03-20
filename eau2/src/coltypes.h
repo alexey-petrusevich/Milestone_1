@@ -1,6 +1,5 @@
-//lang::CwC
+// lang::CwC
 #pragma once
-
 
 /**
  * @brief This file represent implementation of ColType enumerator
@@ -11,10 +10,13 @@
  * @date February 15, 2020
  */
 
-
 /**
  * Enumerator that represents types of columns.
  */
 enum ColType {
-	INTEGER = 'I', DOUBLE = 'D', BOOLEAN = 'B', STRING = 'S', UNKNOWN = 'U'
+    INTEGER = 'I',
+    DOUBLE = 'D',
+    BOOLEAN = 'B',
+    STRING = 'S',
+    UNKNOWN = 'U'
 };

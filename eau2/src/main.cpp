@@ -79,16 +79,16 @@ int main(int argc, char** argv) {
 
     if (a_type) {
         switch (reader->get_col_type(col_arg1)) {
-            case type_string:
+            case ColType::STRING:
                 printf("STRING\n");
                 break;
-            case type_float:
-                printf("FLOAT\n");
+            case ColType::DOUBLE:
+                printf("DOUBLE\n");
                 break;
-            case type_int:
+            case ColType::INTEGER:
                 printf("INT\n");
                 break;
-            case type_bool:
+            case ColType::BOOLEAN:
                 printf("BOOL\n");
                 break;
             default:

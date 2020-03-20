@@ -8,6 +8,9 @@
 #include "sorer.h"
 #include "helpers.h"
 
+#include "coltypes.h"
+
+/*
 enum ColumnType {
     type_unknown = -1,
     type_bool = 0,
@@ -15,29 +18,31 @@ enum ColumnType {
     type_float = 2,
     type_string = 3,
 };
+*/
 
 // returns the inferred typing of the char*
-ColumnType infer_type(char *c) {
+ColType infer_type(char *c) {
     // missing values
     if (c == nullptr) {
-        return type_bool;
+        return ColType::BOOLEAN;
     }
     // check boolean
     if (strlen(c) == 1) {
         if ((*c == '0') || (*c == '1')) {
-            return type_bool;
+            return ColType::BOOLEAN;
         }
     }
     // check int
     if (is_int(c)) {
-        return type_int;
+        return ColType::INTEGER;
     }
     // check float
     if (is_float(c)) {
-        return type_float;
+        return ColType::DOUBLE;
     }
-    return type_string;
+    return ColType::STRING;
 }
+
 
 // represents a column on the SoR
 // the elements in a Column should be of the same type
@@ -83,8 +88,8 @@ class Column {
 
         /** Gets the type of this column
          */ 
-        virtual ColumnType get_type() {
-            return type_unknown;
+        virtual ColType get_type() {
+            return ColType::UNKNOWN;
         }
 };
 
@@ -105,8 +110,8 @@ class ColumnString : public Column {
             delete[] values_;
         }
 
-        ColumnType get_type() {
-            return type_string;
+        ColType get_type() {
+            return ColType::STRING;
         }
 
         // checks if the underlying array needs to be reallocated
@@ -255,8 +260,8 @@ class ColumnInt : public Column {
             delete[] values_;
         }
 
-        ColumnType get_type() {
-            return type_int;
+        ColType get_type() {
+            return ColType::INTEGER;
         }
 
         // checks if the underlying array needs to be reallocated

@@ -1,2 +1,3 @@
 - in DataFrame implement DataFrame::fromArray() and DataFrame::fromScalar()
 - in KVStore implement put(), get(), wait_and_get()
+- Fix IntArray, DoubleArray, etc. to allow nullptrs and store values as pointers **

@@ -1,13 +1,11 @@
-#include "object.h"
-#include "string.h"
 #include "dataframe.h"
 #include "map.h"
-
-typedef unsigned char byte;
+#include "object.h"
+#include "string.h"
 
 // represents a key class
 class Key : public Object {
-public:
+   public:
     const char* key;
     size_t nodeId;
 
@@ -18,16 +16,13 @@ public:
 };
 
 class Value : public Object {
-public:
+   public:
     byte* bytes;
-    Value(byte* bytes) {
-        this->bytes = bytes;
-    }
+    Value(byte* bytes) { this->bytes = bytes; }
 };
 
-
 class KVStore : public Object {
-public:
+   public:
     Map map;
 
     void put(Key* key, byte* value) {
@@ -35,12 +30,10 @@ public:
         map.set(key, v);
     }
 
-
     DataFrame* get(Key key) {
         // TODO implement
         return nullptr;
     }
-
 
     DataFrame* wait_and_get(Key key) {
         // TODO implement

@@ -9,6 +9,7 @@
 #include "schema.h"
 #include "visitors.h"
 
+
 /**
  * @brief This file represent implementation of Column class and its derivatives.
  * @file columns.h
@@ -69,6 +70,29 @@ public:
 };
 
 
+// returns the inferred typing of the char*
+ColType infer_type(char *c) {
+    // missing values
+    if (c == nullptr) {
+        return ColType::BOOLEAN;
+    }
+    // check boolean
+    if (strlen(c) == 1) {
+        if ((*c == '0') || (*c == '1')) {
+            return ColType::BOOLEAN;
+        }
+    }
+    // check int
+    if (is_int(c)) {
+        return ColType::INTEGER;
+    }
+    // check float
+    if (is_float(c)) {
+        return ColType::DOUBLE;
+    }
+    return ColType::STRING;
+}
+
 
 /**************************************************************************
  * Column ::
@@ -105,21 +129,21 @@ public:
 
 
 	/**
-	 * Returns this column as BoolColumn.
-	 *
-	 * @return this column as BoolColumn
-	 */
-	virtual BoolColumn* as_bool() {
-		return nullptr;
-	}
-
-
-	/**
 	 * Returns this column as DoubleColumn.
 	 *
 	 * @return this column as DoubleColumn
 	 */
 	virtual DoubleColumn* as_double() {
+		return nullptr;
+	}
+
+
+	/**
+	 * Returns this column as BoolColumn.
+	 *
+	 * @return this column as BoolColumn
+	 */
+	virtual BoolColumn* as_bool() {
 		return nullptr;
 	}
 
@@ -147,21 +171,21 @@ public:
 
 
 	/**
-	 * Pushes the given boolean value to the bottom of this column.
-	 *
-	 * @param val the boolean value being pushed to the bottom of this column
-	 */
-	virtual void push_back(bool val) {
-		assert(false);
-	}
-
-
-	/**
 	 * Pushes the given double value to the bottom of this column.
 	 *
 	 * @param val the double value being pushed to the bottom of this column
 	 */
 	virtual void push_back(double val) {
+		assert(false);
+	}
+
+
+	/**
+	 * Pushes the given boolean value to the bottom of this column.
+	 *
+	 * @param val the boolean value being pushed to the bottom of this column
+	 */
+	virtual void push_back(bool val) {
 		assert(false);
 	}
 
@@ -176,6 +200,18 @@ public:
 	}
 
 
+	// pushes a character
+	virtual void push_back(char* val) {
+		assert(false);
+	}
+
+
+	// pushes null to the end of this column
+	virtual void push_nullptr() {
+		assert(false);
+	}
+
+
 	/** Returns the number of elements in the column.
 	 * @return the number of elements in this column
 	 */
@@ -184,14 +220,82 @@ public:
 	}
 
 
+	virtual void set_int(size_t index, int value) {
+		assert(false);
+	}
+
+
+	virtual void set_double(size_t index, double value) {
+		assert(false);
+	}
+
+
+	virtual void set_bool(size_t index, bool value) {
+		assert(false);
+	}
+
+
+	virtual void set_string(size_t index, String* value) {
+		assert(false);
+	}
+
+
+	virtual int get_int() {
+		assert(false);
+	}
+
+
+	virtual double get_double() {
+		assert(false);
+	}
+
+
+	virtual double get_bool() {
+		assert(false);
+	}
+
+
+	virtual String* get_string() {
+		assert(false);
+	}
+
+
+	// checks if the value represented by the char* can be added to this column
+    virtual bool can_add(char *c) {
+        if (c == nullptr || *c == '\0') {
+            return true;
+        }
+        return infer_type(c) <= get_type();
+    }
+
+
+	// returns a pointer to the object at the ith index
+    virtual void* get(size_t i) {
+        return nullptr;
+    }
+
+
+	// returns the string representation of the object at the ith index
+    virtual char* get_char(size_t i) {
+        return nullptr;
+    }
+
+
 	/**
 	 * Return the type of this column as a char: 'S', 'B', 'I' and 'F'.
 	 *
 	 * @return the type of this column
 	 */
-	char get_type() {
+	char get_type_char() {
 		return this->colType;
 	}
+
+
+	// returns type of the column as Enum
+	ColType get_type() {
+		return this->colType;
+	}
+
 
 	/**
 	 * Accepts a visitor and call the corresponding accept
@@ -211,6 +315,12 @@ public:
 	virtual void accept(Fielder* f) = 0;
 
 
+	// returns the string representation of the object at the ith index
+    virtual char* get_char(size_t i) {
+        return nullptr;
+    }
+
+
 	/**
 	 * Destructor of this column.
 	 */
@@ -227,7 +337,7 @@ public:
 class IntColumn : public Column {
 public:
 	IntArray* array;
-
+	int null_int = 0;
 
 	/**
 	 * Default constructor for this IntColumn.
@@ -254,33 +364,16 @@ public:
 		}
 	}
 
+	
+	void set_int(size_t index, int val) {
+		assert(index < this->numElements);
+		this->array->set(index, val);
+	}
 
-	/**
-	 * Returns the element at the given index.
-	 *
-	 * @param idx the index of the element in the IntArray
-	 * @return the value of the element at the given index
-	 */
-	int get(size_t idx) {
+
+	int get_int(size_t idx) {
 		assert(idx < this->numElements);
 		return this->array->get(idx);
-	}
-
-
-	IntColumn* as_int() {
-		return this;
-	}
-
-
-	/**
-	 * Sets the value of the element at the given element with the new value.
-	 *
-	 * @param idx the index of the element being set with the new value
-	 * @param val the value of the new element
-	 */
-	void set(size_t idx, int val) {
-		assert(idx < this->numElements);
-		this->array->set(idx, val);
 	}
 
 
@@ -288,6 +381,38 @@ public:
 		this->array->append(val);
 		this->numElements++;
 	}
+
+
+	void push_nullptr() {
+		this->array->append(null_int);
+	}
+	
+
+	void push_back(char* c) {
+		if (c == nullptr) {
+            this->push_nullptr();
+        }
+        this->push_back(atoi(c));
+	}
+
+
+	void* get(size_t index) {
+		if (index >= this->numElements) {
+			return nullptr;
+		}
+		int v = this->array->get(index);
+		return &v;
+	}
+
+
+	char* get_char(size_t index) {
+        if (index >= this->numElements) {
+            return "0";
+        }
+        char* ret = new char[512];
+        sprintf(ret, "%d", this->array->get(index));
+        return ret;
+    }
 
 
 	void acceptVisitor(IVisitor* visitor) {
@@ -299,6 +424,11 @@ public:
 	void accept(Fielder* f) {
 		assert(f != nullptr);
 		f->accept(this->array->get(f->rowIndex));
+	}
+
+
+	IntColumn* as_int() {
+		return this;
 	}
 
 
@@ -317,7 +447,7 @@ public:
 class DoubleColumn : public Column {
 public:
 	DoubleArray* array;
-
+	double null_double = 0.0;
 
 	/**
 	 * Default constructor of this DoubleColumn.
@@ -345,32 +475,15 @@ public:
 	}
 
 
-	/**
-	 * Returns the element at the given index.
-	 *
-	 * @param idx the index of the element being returned
-	 * @return the value of the element at the given index
-	 */
-	double get(size_t idx) {
-		assert(idx < this->numElements);
-		return this->array->get(idx);
-	}
-
-
-	DoubleColumn* as_double() {
-		return this;
-	}
-
-
-	/**
-	 * Sets the element at the given index with the new value.
-	 *
-	 * @param idx the index of the value being set
-	 * @param val the new value of the element at the given index
-	 */
-	void set(size_t idx, double val) {
+	void set_double(size_t idx, double val) {
 		assert(idx < this->numElements);
 		this->array->set(idx, val);
+	}
+
+
+	double get_double(size_t idx) {
+		assert(idx < this->numElements);
+		return this->array->get(idx);
 	}
 
 
@@ -378,6 +491,38 @@ public:
 		this->array->append(val);
 		this->numElements++;
 	}
+
+
+	void push_nullptr() {
+		this->array->append(null_double);
+	}
+	
+
+	void push_back(char* c) {
+		if (c == nullptr) {
+            this->push_nullptr();
+        }
+        this->push_back(atof(c));
+	}
+
+
+	void* get(size_t index) {
+		if (index >= this->numElements) {
+			return nullptr;
+		}
+		double v = this->array->get(index);
+		return &v;
+	}
+
+
+	char* get_char(size_t index) {
+        if (index >= this->numElements) {
+            return "0";
+        }
+        char* ret = new char[512];
+        sprintf(ret, "%f", this->array->get(index));
+        return ret;
+    }
 
 
 	void acceptVisitor(IVisitor* visitor) {
@@ -389,6 +534,11 @@ public:
 	void accept(Fielder* f) {
 		assert(f != nullptr);
 		f->accept(this->array->get(f->rowIndex));
+	}
+
+
+	DoubleColumn* as_double() {
+		return this;
 	}
 
 
@@ -407,7 +557,7 @@ public:
 class BoolColumn : public Column {
 public:
 	BoolArray* array;
-
+	bool null_bool = false;
 
 	/**
 	 * Default constructor of this BoolColumn.
@@ -435,32 +585,15 @@ public:
 	}
 
 
-	/**
-	 * Returns the element at the given index.
-	 *
-	 * @param idx the index of the element being returned
-	 * @return the value of the element at the given index
-	 */
-	bool get(size_t idx) {
-		assert(idx < this->numElements);
-		return this->array->get(idx);
-	}
-
-
-	BoolColumn* as_bool() {
-		return this;
-	}
-
-
-	/**
-	 * Sets the element at the given index with the new value.
-	 *
-	 * @param idx the index of the value being set
-	 * @param val the new value of the element at the given index
-	 */
-	void set(size_t idx, bool val) {
+	void set_bool(size_t idx, bool val) {
 		assert(idx < this->numElements);
 		this->array->set(idx, val);
+	}
+
+	
+	bool get_bool(size_t idx) {
+		assert(idx < this->numElements);
+		return this->array->get(idx);
 	}
 
 
@@ -468,6 +601,44 @@ public:
 		this->array->append(val);
 		this->numElements++;
 	}
+	
+
+	void push_nullptr() {
+		this->array->append(null_bool);
+	}
+	
+
+	void push_back(char* c) {
+		if (c == nullptr) {
+            this->push_nullptr();
+        }
+        bool b;
+        if (*c == '0') {
+            b = false;
+        } else {
+            b = true;
+        }
+        this->push_back(b);
+	}
+
+
+	void* get(size_t index) {
+		if (index >= this->numElements) {
+			return nullptr;
+		}
+		bool v = this->array->get(index);
+		return &v;
+	}
+
+
+	char* get_char(size_t index) {
+        if (index >= this->numElements) {
+            return "0";
+        }
+        char* ret = new char[512];
+        sprintf(ret, "%d", this->array->get(index));
+        return ret;
+    }
 
 
 	void acceptVisitor(IVisitor* visitor) {
@@ -479,6 +650,11 @@ public:
 	void accept(Fielder* f) {
 		assert(f != nullptr);
 		f->accept(this->array->get(f->rowIndex));
+	}
+
+
+	BoolColumn* as_bool() {
+		return this;
 	}
 
 
@@ -526,34 +702,16 @@ public:
 		}
 	}
 
-
-	/**
-	 * Returns the element at the given index.
-	 *
-	 * @param idx the index of the element to be returned
-	 * @return the value of the element at the given index
-	 */
-	String* get(size_t idx) {
-		assert(idx < this->numElements);
-		return dynamic_cast<String*>(this->array->get(idx));
-	}
-
-
-	StringColumn* as_string() {
-		return this;
-	}
-
-
-	/**
-	 * Sets the value of the element at the given index with the new value.
-	 * Acquires ownership of the given String.
-	 *
-	 * @param idx the index of the element being set
-	 * @param val the new value of the element at the given index
-	 */
-	void set(size_t idx, String* val) {
+	
+	void set_string(size_t idx, String* val) {
 		assert(idx < this->numElements);
 		this->array->set(idx, val);
+	}
+
+
+	String* get_string(size_t idx) {
+		assert(idx < this->numElements);
+		return dynamic_cast<String*>(this->array->get(idx));
 	}
 
 
@@ -561,6 +719,44 @@ public:
 		this->array->append(val);
 		this->numElements++;
 	}
+
+
+	void push_nullptr() {
+		this->array->append(nullptr);
+	}
+	
+
+	void push_back(char* c) {
+		if (c == nullptr) {
+            this->push_nullptr();
+        }
+		this->push_back(new String(c));
+	}
+
+
+	void* get(size_t index) {
+		if (index >= this->numElements) {
+			return nullptr;
+		}
+		return this->array->get(index);
+	}
+
+
+	char* get_char(size_t index) {
+        if (index >= this->numElements || this->array->get(index) == nullptr) {
+            return nullptr;
+        }
+		String* str = dynamic_cast<String*>(this->array->get(index));
+		size_t str_len = str->size();
+        char* ret = new char[str_len + 3];
+        ret[0] = '"';
+        for (size_t j = 0; j < str_len; j++) {
+            ret[j + 1] = str->cstr_[j];
+        }
+        ret[str_len + 1] = '"';
+        ret[str_len + 2] = '\0';
+        return ret;
+    }
 
 
 	void acceptVisitor(IVisitor* visitor) {
@@ -572,6 +768,11 @@ public:
 	void accept(Fielder* f) {
 		assert(f != nullptr);
 		f->accept(this->array->get(f->rowIndex));
+	}
+
+
+	StringColumn* as_string() {
+		return this;
 	}
 
 

@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #include "object.h"
-#include "column.h"
+#include "columns.h"
 #include "helpers.h"
 
 
@@ -49,7 +49,7 @@ class SOR : public Object {
         // if the index is too big a -1 is returned
         ColType get_col_type(size_t index) {
             if (index >= len_) {
-                return type_unknown;
+                return ColType::UNKNOWN;
             }
             return cols_[index]->get_type();
         }
@@ -119,24 +119,24 @@ class SOR : public Object {
                 for (size_t i = 0; i < num_fields; i++) {
                     check_reallocate_();
                     if (i >= len_) {
-                        cols_[i] = new ColumnBool();
+                        cols_[i] = new BoolColumn();
                         len_++;
                     }
                     ColType inferred_type = infer_type(row[i]);
                     if (inferred_type > cols_[i]->get_type()) {
                         delete cols_[i];
                         switch(inferred_type) {
-                            case type_bool:
-                                cols_[i] = new ColumnBool();
+                            case ColType::BOOLEAN:
+                                cols_[i] = new BoolColumn();
                                 break;
-                            case type_int:
-                                cols_[i] = new ColumnInt();
+                            case ColType::INTEGER:
+                                cols_[i] = new IntColumn();
                                 break;                            
-                            case type_float:
-                                cols_[i] = new ColumnFloat();
+                            case ColType::DOUBLE:
+                                cols_[i] = new DoubleColumn();
                                 break;                               
                             default:
-                                cols_[i] = new ColumnString();
+                                cols_[i] = new StringColumn();
                                 break;
                         }
                     }
