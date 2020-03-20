@@ -51,6 +51,25 @@ class DataFrame : public Object {
         this->initColumns();
     }
 
+
+    DataFrame(Schema* schema) {
+        this->schema = schema;
+        this->schema->numRows = 0;
+        this->initColumns();
+    }
+
+
+    static DataFrame* fromColumns(ColumnArray* columnArray) {
+        Schema* schema = columnArray->getSchema();
+        DataFrame* df = new DataFrame(schema);
+        for (size_t i = 0; i < columnArray->size(); i++) {
+            df->add_column(columnArray->get(i), nullptr);
+        }
+        delete schema;
+        return df;
+    }
+
+
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {
         // TODO create dataframe from the given values
         return nullptr;

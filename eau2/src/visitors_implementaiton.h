@@ -26,28 +26,28 @@ public:
 
 	virtual void visitIntColumn(IntColumn* intColumn) {
 		assert(intColumn != nullptr);
-		intColumn->set(colIndex, row->get_int(colIndex));
+		intColumn->set_int(colIndex, row->get_int(colIndex));
 		colIndex++;
 	}
 
 
 	virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
 		assert(doubleColumn != nullptr);
-		doubleColumn->set(colIndex, row->get_double(colIndex));
+		doubleColumn->set_double(colIndex, row->get_double(colIndex));
 		colIndex++;
 	}
 
 
 	virtual void visitBoolColumn(BoolColumn* booleanColumn) {
 		assert(booleanColumn != nullptr);
-		booleanColumn->set(colIndex, row->get_bool(colIndex));
+		booleanColumn->set_bool(colIndex, row->get_bool(colIndex));
 		colIndex++;
 	}
 
 
 	virtual void visitStringColumn(StringColumn* stringColumn) {
 		assert(stringColumn != nullptr);
-		stringColumn->set(colIndex, row->get_string(colIndex));
+		stringColumn->set_string(colIndex, row->get_string(colIndex));
 		colIndex++;
 	}
 };

@@ -2,13 +2,14 @@
 
 #pragma once
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "coltypes.h"
 
-void affirm(bool test, const char* msg) {
-    if (!(test)){ 
-        fprintf(stderr, "%s\n", msg); 
-        abort(); 
+void affirm(bool test, const char *msg) {
+    if (!(test)) {
+        fprintf(stderr, "%s\n", msg);
+        abort();
     }
 }
 
@@ -52,4 +53,27 @@ bool is_float(char *c) {
         }
     }
     return true;
+}
+
+// returns the inferred typing of the char*
+ColType infer_type(char* c) {
+    // missing values
+    if (c == nullptr) {
+        return ColType::BOOLEAN;
+    }
+    // check boolean
+    if (strlen(c) == 1) {
+        if ((*c == '0') || (*c == '1')) {
+            return ColType::BOOLEAN;
+        }
+    }
+    // check int
+    if (is_int(c)) {
+        return ColType::INTEGER;
+    }
+    // check float
+    if (is_float(c)) {
+        return ColType::DOUBLE;
+    }
+    return ColType::STRING;
 }
