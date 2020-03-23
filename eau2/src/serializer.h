@@ -21,7 +21,7 @@ public:
         Headers header = Headers::DOUBLE;
         byte* data = new byte[num_bytes];
         memcpy(data, &header, sizeof(Headers));
-        memcpy(data + sizeof(Headers), &value, sizeof(int));
+        memcpy(data + sizeof(Headers), &value, sizeof(double));
         return data;
     }
 
@@ -30,7 +30,7 @@ public:
         Headers header = Headers::BOOL;
         byte* data = new byte[num_bytes];
         memcpy(data, &header, sizeof(Headers));
-        memcpy(data + sizeof(Headers), &value, sizeof(int));
+        memcpy(data + sizeof(Headers), &value, sizeof(bool));
         return data;
     }
 
@@ -51,7 +51,7 @@ public:
 
     // serialize values
     static byte* serialize_int_array(int* array, size_t size) {
-        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size;
+        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size * sizeof(int);
         Headers header = Headers::INT_ARRAY;
         byte* data = new byte[num_bytes];
         size_t displacement = 0;
@@ -64,7 +64,7 @@ public:
     }
 
     static byte* serialize_double_array(double* array, size_t size) {
-        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size;
+        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size * sizeof(double);
         Headers header = Headers::DOUBLE_ARRAY;
         byte* data = new byte[num_bytes];
         size_t displacement = 0;
@@ -77,7 +77,7 @@ public:
     }
 
     static byte* serialize_bool_array(bool* array, size_t size) {
-        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size;
+        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size * sizeof(bool);
         Headers header = Headers::BOOL_ARRAY;
         byte* data = new byte[num_bytes];
         size_t displacement = 0;
@@ -90,8 +90,12 @@ public:
     }
 
     static byte* serialize_string_array(String** array, size_t size) {
-        size_t num_bytes = sizeof(Headers) + sizeof(size_t) + size;
-        Headers header = Headers::STRING;
+        size_t num_bytes = sizeof(Headers) + sizeof(size_t);
+        for (size_t i = 0; i < size; i++) {
+            num_bytes += sizeof(size_t);
+            num_bytes += array[i]->size() * sizeof(char);
+        }
+        Headers header = Headers::STRING_ARRAY;
         byte* data = new byte[num_bytes];
         size_t displacement = 0;
         memcpy(data + displacement, &header, sizeof(Headers));
@@ -100,7 +104,7 @@ public:
         displacement += sizeof(size_t);
         for (size_t i = 0; i < size; i++) {
             size_t length = array[i]->size();
-            memcpy(data + displacement, &length, size * sizeof(size_t));
+            memcpy(data + displacement, &length, sizeof(size_t));
             displacement += sizeof(size_t);
             memcpy(data + displacement, array[i]->cstr_, length);
             displacement += length;

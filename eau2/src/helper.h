@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#pragma warning(disable : 4996)
+//#pragma warning(disable : 4996)
 
 typedef unsigned char byte;
 

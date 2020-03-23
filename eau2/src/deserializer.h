@@ -3,6 +3,7 @@
 #include "string.h"
 
 class Deserializer : public Object {
+   public:
     static int deserialize_int(byte* bytes) {
         Headers header;
         memcpy(&header, bytes, sizeof(Headers));
@@ -26,23 +27,25 @@ class Deserializer : public Object {
         memcpy(&header, bytes, sizeof(Headers));
         assert(header == Headers::BOOL);
         bool value;
-        memcpy(&value, bytes + sizeof(Headers), sizeof(double));
+        memcpy(&value, bytes + sizeof(Headers), sizeof(bool));
         return value;
     }
 
     static String* deserialize_string(byte* bytes) {
         Headers header;
         size_t displacement = 0;
-        memcpy(&header, bytes, sizeof(Headers));
+        memcpy(&header, bytes + displacement, sizeof(Headers));
         displacement += sizeof(Headers);
         assert(header == Headers::STRING);
         size_t length;
         memcpy(&length, bytes + displacement, sizeof(size_t));
         displacement += sizeof(size_t);
         char* cstr = new char[length + 1];
-        memcpy(&cstr, bytes + sizeof(Headers), length);
+        memcpy(cstr, bytes + displacement, length);
         cstr[length] = '\0';
-        return new String(cstr);
+        String* value = new String(cstr);
+        delete[] cstr;
+        return value;
     }
 
     static int* deserialize_int_array(byte* bytes) {
@@ -55,7 +58,7 @@ class Deserializer : public Object {
         memcpy(&size, bytes + displacement, sizeof(size_t));
         displacement += sizeof(size_t);
         int* array = new int[size];
-        memcpy(&array, bytes + displacement, size * sizeof(int));
+        memcpy(array, bytes + displacement, size * sizeof(int));
         return array;
     }
 
@@ -69,7 +72,7 @@ class Deserializer : public Object {
         memcpy(&size, bytes + displacement, sizeof(size_t));
         displacement += sizeof(size_t);
         double* array = new double[size];
-        memcpy(&array, bytes + displacement, size * sizeof(double));
+        memcpy(array, bytes + displacement, size * sizeof(double));
         return array;
     }
 
@@ -83,14 +86,14 @@ class Deserializer : public Object {
         memcpy(&size, bytes + displacement, sizeof(size_t));
         displacement += sizeof(size_t);
         bool* array = new bool[size];
-        memcpy(&array, bytes + displacement, size * sizeof(bool));
+        memcpy(array, bytes + displacement, size * sizeof(bool));
         return array;
     }
 
     static String** deserialize_string_array(byte* bytes) {
         Headers header;
         size_t displacement = 0;
-        memcpy(&header,bytes,  sizeof(Headers));
+        memcpy(&header, bytes, sizeof(Headers));
         displacement += sizeof(Headers);
         assert(header == Headers::STRING_ARRAY);
         size_t size;
@@ -106,6 +109,7 @@ class Deserializer : public Object {
             displacement += length;
             cstr[length] = '\0';
             array[i] = new String(cstr);
+            delete[] cstr;
         }
         return array;
     }
