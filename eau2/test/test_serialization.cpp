@@ -180,14 +180,49 @@ void testSerializeStringArray(size_t size) {
     OK("serialize/deserialize string array");
 }
 
+
+void testArraySize(size_t size) {
+    int* int_array = new int[size];
+    double* double_array = new double[size];
+    bool* bool_array = new bool[size];
+    String** string_array = new String*[size];
+    char buff[16];
+    for (size_t i = 0; i < size; i++) {
+        int_array[i] = static_cast<int>(i);
+        double_array[i] = i;
+        bool_array[i] = i % 2;
+        sprintf(buff, "%zu", i);
+        string_array[i] = new String(buff);
+    }
+    byte* bytes_int_array = Serializer::serialize_int_array(int_array, size);
+    byte* bytes_double_array = Serializer::serialize_double_array(double_array, size);
+    byte* bytes_bool_array = Serializer::serialize_bool_array(bool_array, size);
+    byte* bytes_string_array = Serializer::serialize_string_array(string_array, size);
+    
+    assert(size == Deserializer::array_size(bytes_int_array));
+    assert(size == Deserializer::array_size(bytes_double_array));
+    assert(size == Deserializer::array_size(bytes_bool_array));
+    assert(size == Deserializer::array_size(bytes_string_array));
+    delete[] int_array;
+    delete[] double_array;
+    delete[] bool_array;
+    for (size_t i = 0; i < size; i++) {
+        delete string_array[i];
+    }
+    delete[] string_array;
+    OK("array size");
+}
+
 int main() {
+    const size_t array_size = 100;
     testSerializeInt();
     testSerializeDouble();
     testSerializeBool();
     testSerializeString();
-    testSerializeIntArray(100);
-    testSerializeDoubleArray(100);
-    testSerializeBoolArray(100);
-    testSerializeStringArray(1);
+    testSerializeIntArray(array_size);
+    testSerializeDoubleArray(array_size);
+    testSerializeBoolArray(array_size);
+    testSerializeStringArray(array_size);
+    testArraySize(array_size);
     return EXIT_SUCCESS;
 }

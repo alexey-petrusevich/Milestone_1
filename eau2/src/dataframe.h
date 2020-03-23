@@ -69,112 +69,193 @@ class DataFrame : public Object {
         return df;
     }
 
-
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_int_array(vals, size);
+        byte* serialized = Serializer::serialize_int_array(vals, size);
         kv->put(key, serialized);
         IntColumn* col = new IntColumn(vals, size);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
-
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 double* vals) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_double_array(vals, size);
+        byte* serialized = Serializer::serialize_double_array(vals, size);
         kv->put(key, serialized);
         DoubleColumn* col = new DoubleColumn(vals, size);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 bool* vals) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_bool_array(vals, size);
+        byte* serialized = Serializer::serialize_bool_array(vals, size);
         kv->put(key, serialized);
         BoolColumn* col = new BoolColumn(vals, size);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 String** vals) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_string_array(vals, size);
+        byte* serialized = Serializer::serialize_string_array(vals, size);
         kv->put(key, serialized);
         StringColumn* col = new StringColumn(vals, size);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
-
     static DataFrame* fromScalar(Key* key, KVStore* kv, int value) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_int(value);
+        byte* serialized = Serializer::serialize_int(value);
         kv->put(key, serialized);
         IntColumn* col = new IntColumn();
         col->push_back(value);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
-
     static DataFrame* fromScalar(Key* key, KVStore* kv, double value) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_double(value);
+        byte* serialized = Serializer::serialize_double(value);
         kv->put(key, serialized);
         DoubleColumn* col = new DoubleColumn();
         col->push_back(value);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
-
     static DataFrame* fromScalar(Key* key, KVStore* kv, bool value) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_bool(value);
+        byte* serialized = Serializer::serialize_bool(value);
         kv->put(key, serialized);
         BoolColumn* col = new BoolColumn();
         col->push_back(value);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
     }
 
     static DataFrame* fromScalar(Key* key, KVStore* kv, String* value) {
-        Serializer* serializer = new Serializer();
-        byte* serialized = serializer->serialize_string(value);
+        byte* serialized = Serializer::serialize_string(value);
         kv->put(key, serialized);
         StringColumn* col = new StringColumn();
         col->push_back(value);
         ColumnArray* columnArray = new ColumnArray();
         columnArray->append(col);
         DataFrame* df = DataFrame::fromColumns(columnArray);
-        delete serializer;
         return df;
+    }
+
+    static DataFrame* from_single_int(int value) {
+        IntColumn* column = new IntColumn();
+        column->push_back(value);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_single_double(double value) {
+        DoubleColumn* column = new DoubleColumn();
+        column->push_back(value);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_single_bool(bool value) {
+        BoolColumn* column = new BoolColumn();
+        column->push_back(value);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_single_string(String* value) {
+        StringColumn* column = new StringColumn();
+        column->push_back(value);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_int_array(int* array, size_t size) {
+        IntColumn* column = new IntColumn(array, size);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_double_array(double* array, size_t size) {
+        DoubleColumn* column = new DoubleColumn(array, size);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_bool_array(bool* array, size_t size) {
+        BoolColumn* column = new BoolColumn(array, size);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* from_string_array(String** array, size_t size) {
+        StringColumn* column = new StringColumn(array, size);
+        ColumnArray* colArray = new ColumnArray();
+        colArray->append(column);
+        return DataFrame::fromColumns(colArray);
+    }
+
+    static DataFrame* fromBytes(byte* bytes) {
+        Headers header;
+        size_t size;
+        memcpy(&header, bytes, sizeof(Headers));
+        switch (header) {
+            case Headers::INT:
+                int int_val = Deserializer::deserialize_int(bytes);
+                return DataFrame::from_single_int(int_val);
+            case Headers::DOUBLE:
+                double double_val = Deserializer::deserialize_double(bytes);
+                return DataFrame::from_single_double(double_val);
+            case Headers::BOOL:
+                bool bool_val = Deserializer::deserialize_bool(bytes);
+                return DataFrame::from_single_bool(bool_val);
+            case Headers::STRING:
+                String* str_val = Deserializer::deserialize_string(bytes);
+                return DataFrame::from_single_string(str_val);
+            case Headers::INT_ARRAY:
+                int* int_array = Deserializer::deserialize_int_array(bytes);
+                size = Deserializer::array_size(bytes);
+                return DataFrame::from_int_array(int_array, size);
+            case Headers::DOUBLE_ARRAY:
+                double* double_array =
+                    Deserializer::deserialize_double_array(bytes);
+                size = Deserializer::array_size(bytes);
+                return DataFrame::from_double_array(double_array, size);
+            case Headers::BOOL_ARRAY:
+                bool* bool_array = Deserializer::deserialize_bool_array(bytes);
+                size = Deserializer::array_size(bytes);
+                return DataFrame::from_bool_array(bool_array, size);
+                break;
+            case Headers::STRING_ARRAY:
+                String** str_array =
+                    Deserializer::deserialize_string_array(bytes);
+                size = Deserializer::array_size(bytes);
+                return DataFrame::from_string_array(str_array, size);
+                break;
+            default:  // unknown header
+                return nullptr;
+        }
     }
 
     void initColumns() {

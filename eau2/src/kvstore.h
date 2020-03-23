@@ -3,7 +3,9 @@
 #include "object.h"
 #include "string.h"
 
-// represents a key class
+/**
+ * Represents Key class to be used in KV-store.
+ */
 class Key : public Object {
    public:
     const char* key;
@@ -15,32 +17,36 @@ class Key : public Object {
     }
 };
 
-
 class Value : public Object {
    public:
     byte* bytes;
 
-    
     Value(byte* bytes) { this->bytes = bytes; }
 };
 
-
 class KVStore : public Object {
    public:
-    Map map;
+    Map* map;
+
+    KVStore() { this->map = map; }
 
     void put(Key* key, byte* value) {
         Value* v = new Value(value);
-        map.set(key, v);
+        this->map->set(key, v);
     }
 
     DataFrame* get(Key key) {
-        // TODO implement
-        return nullptr;
+        Value* value = dynamic_cast<Value*>(this->map->get(&key));
+        DataFrame* df = DataFrame::fromBytes(value->bytes);
+        return df;
     }
 
-    DataFrame* wait_and_get(Key key) {
-        // TODO implement
-        return nullptr;
+    // TODO: add network layer
+    DataFrame* wait_and_get(Key key) {  // same as get for now
+        Value* value = dynamic_cast<Value*>(this->map->get(&key));
+        DataFrame* df = DataFrame::fromBytes(value->bytes);
+        return df;
     }
+
+    ~KVStore() { delete this->map; }
 };

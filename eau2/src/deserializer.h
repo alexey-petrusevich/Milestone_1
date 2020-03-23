@@ -113,4 +113,10 @@ class Deserializer : public Object {
         }
         return array;
     }
+
+    static size_t array_size(byte* bytes) {
+        size_t size;
+        memcpy(&size, bytes + sizeof(Headers), sizeof(size_t));
+        return size;
+    }
 };

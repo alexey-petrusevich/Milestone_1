@@ -254,7 +254,7 @@ class IntColumn : public Column {
     /**
      * Default constructor for this IntColumn.
      */
-    IntColumn() : Column(INTEGER) { this->array = new IntArray(); }
+    IntColumn() : Column(ColType::INTEGER) { this->array = new IntArray(); }
 
     /**
      * Constructor that accepts the number of parameters, a list of values,
@@ -263,7 +263,7 @@ class IntColumn : public Column {
      * @param n the number of values in the list
      * @param ... the list of values to be stored in this IntColumn
      */
-    IntColumn(int n, ...) : Column(INTEGER) {
+    IntColumn(int n, ...) : Column(ColType::INTEGER) {
         this->array = new IntArray(n);
         va_list list;
         va_start(list, n);
@@ -273,8 +273,7 @@ class IntColumn : public Column {
         }
     }
 
-
-    IntColumn(int* array, size_t size) : Column(INTEGER)  {
+    IntColumn(int* array, size_t size) : Column(ColType::INTEGER) {
         this->array = new IntArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
@@ -351,7 +350,7 @@ class DoubleColumn : public Column {
     /**
      * Default constructor of this DoubleColumn.
      */
-    DoubleColumn() : Column(DOUBLE) { this->array = new DoubleArray(); }
+    DoubleColumn() : Column(ColType::DOUBLE) { this->array = new DoubleArray(); }
 
     /**
      * Constructor that accepts the number of elements and the list of elements
@@ -360,7 +359,7 @@ class DoubleColumn : public Column {
      * @param n the number of parameters
      * @param ... the list of elements to be stored in this column
      */
-    DoubleColumn(int n, ...) : Column(DOUBLE) {
+    DoubleColumn(int n, ...) : Column(ColType::DOUBLE) {
         this->array = new DoubleArray(n);
         va_list list;
         va_start(list, n);
@@ -370,14 +369,12 @@ class DoubleColumn : public Column {
         }
     }
 
-
-    DoubleColumn(double* array, size_t size) : Column(DOUBLE)  {
+    DoubleColumn(double* array, size_t size) : Column(ColType::DOUBLE) {
         this->array = new DoubleArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
     }
-
 
     void set_double(size_t idx, double val) {
         assert(idx < this->numElements);
@@ -449,7 +446,7 @@ class BoolColumn : public Column {
     /**
      * Default constructor of this BoolColumn.
      */
-    BoolColumn() : Column(BOOLEAN) { this->array = new BoolArray(); }
+    BoolColumn() : Column(ColType::BOOLEAN) { this->array = new BoolArray(); }
 
     /**
      * Constructor that accepts the number of elements and the list of elements
@@ -458,7 +455,7 @@ class BoolColumn : public Column {
      * @param n the number of parameters
      * @param ... the list of elements to be stored in this column
      */
-    BoolColumn(int n, ...) : Column(BOOLEAN) {
+    BoolColumn(int n, ...) : Column(ColType::BOOLEAN) {
         this->array = new BoolArray(n);
         va_list list;
         va_start(list, n);
@@ -468,15 +465,12 @@ class BoolColumn : public Column {
         }
     }
 
-
-    
-    BoolColumn(bool* array, size_t size) : Column(BOOLEAN) {
+    BoolColumn(bool* array, size_t size) : Column(ColType::BOOLEAN) {
         this->array = new BoolArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
     }
-
 
     void set_bool(size_t idx, bool val) {
         assert(idx < this->numElements);
@@ -556,7 +550,7 @@ class StringColumn : public Column {
      * Default constructor of this column that uses DEFAULT_COL_SIZE
      * as default size of the array.
      */
-    StringColumn() : Column(STRING) { this->array = new Array(); }
+    StringColumn() : Column(ColType::STRING) { this->array = new Array(); }
 
     /**
      * Constructor that accepts the number of values, a list of values,
@@ -565,7 +559,7 @@ class StringColumn : public Column {
      * @param n number of elements to be inserted
      * @param ... the list of values to be inserted
      */
-    StringColumn(int n, ...) : Column(STRING) {
+    StringColumn(int n, ...) : Column(ColType::STRING) {
         this->array = new Array(n);
         va_list list;
         va_start(list, n);
@@ -574,14 +568,12 @@ class StringColumn : public Column {
         }
     }
 
-
-    StringColumn(String** array, size_t size) : Column(STRING) {
+    StringColumn(String** array, size_t size) : Column(ColType::STRING) {
         this->array = new Array();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
     }
-
 
     void set_string(size_t idx, String* val) {
         assert(idx < this->numElements);

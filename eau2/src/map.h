@@ -10,8 +10,8 @@
 #include "keyvalue.h"
 #include "object.h"
 
-const static double LOAD_FACTOR = 0.75;
-const static size_t DEFAULT_SIZE = 100;
+#define LOAD_FACTOR 0.75
+#define DEFAULT_MAP_SIZE 100
 
 /**
  * @brief Represents a map with keys and values.
@@ -300,9 +300,11 @@ class Map : public Object {
      * entries set to nullptr.
      */
     void createMap() {
-        this->map = new KeyValue*[DEFAULT_SIZE];
-        this->tableSize = DEFAULT_SIZE;
+        this->map = new KeyValue*[DEFAULT_MAP_SIZE];
+        this->tableSize = DEFAULT_MAP_SIZE;
         this->initMap(this->map, this->tableSize);
         this->elementsInserted = 0;
     }
 };
+
+

@@ -1,46 +1,39 @@
-//lang::CwC
+// lang::CwC
 #pragma once
 
 #include "object.h"
 #include "string.h"
 
-
-
 /**
- * @brief This file represent implementation of Fielder class and its derivatives.
+ * @brief This file represent implementation of Fielder class and its
+ * derivatives.
  * @file fielder.h
  * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
  * @author Megha Rao <rao.m@husky.neu.edu>
  * @date February 15, 2020
  */
 
-
 /*****************************************************************************
  * Fielder::
  * A field visitor invoked by Row.
  */
 class Fielder : public Object {
-public:
+   public:
     size_t rowIndex;
-
 
     /**
      * Default constructor of this Fielder.
      */
-    Fielder() : Object() {
-    }
+    Fielder() : Object() {}
 
-
-    /** Called before visiting a row, the argument is the row offset in the data frame. */
+    /** Called before visiting a row, the argument is the row offset in the data
+     * frame. */
     /**
      * Sets the start index of the row being iterated through.
      *
      * @param r the index of the row being iterated through
      */
-    virtual void start(size_t r) {
-        this->rowIndex = r;
-    }
-
+    virtual void start(size_t r) { this->rowIndex = r; }
 
     /** Called for fields of the argument's type with the value of the field. */
     /**
@@ -49,10 +42,7 @@ public:
      *
      * @param b boolean being used for the action
      */
-    virtual void accept(bool b) {
-        assert(false);
-    }
-
+    virtual void accept(bool b) { assert(false); }
 
     /**
      * Accepts a double value and performs an action defined by
@@ -60,10 +50,7 @@ public:
      *
      * @param d double being used for the action
      */
-    virtual void accept(double d) {
-        assert(false);
-    }
-
+    virtual void accept(double d) { assert(false); }
 
     /**
      * Accepts an integer value and performs an action defined by
@@ -71,10 +58,7 @@ public:
      *
      * @param i integer being used for the action
      */
-    virtual void accept(int i) {
-        assert(false);
-    }
-
+    virtual void accept(int i) { assert(false); }
 
     /**
      * Accepts a String value and performs an action defined by
@@ -82,48 +66,32 @@ public:
      *
      * @param b String being used for the action
      */
-    virtual void accept(String *s) {
-        assert(false);
-    }
-
+    virtual void accept(String *s) { assert(false); }
 
     /** Called when all fields have been seen.
-       * Every class extending the rower must define its specific behavior.
-       * */
+     * Every class extending the rower must define its specific behavior.
+     * */
     virtual void done() = 0;
-
 
     /**
      * Destructor of this Fielder.
      */
-    virtual ~Fielder() {
-    }
+    virtual ~Fielder() {}
 };
-
 
 /**
  * A Fielder that prints every value of the given row.
  */
 class PrintFielder : public Fielder {
-public:
-
-
+   public:
     /**
      * Default constructor of this PrintFielder.
      */
-    PrintFielder() : Fielder() {
-    }
+    PrintFielder() : Fielder() {}
 
+    void accept(int i) { printf("%d\n", i); }
 
-    void accept(int i) {
-        printf("%d\n", i);
-    }
-
-
-    void accept(double d) {
-        printf("%f\n", d);
-    }
-
+    void accept(double d) { printf("%f\n", d); }
 
     void accept(bool b) {
         if (!b) {
@@ -133,7 +101,6 @@ public:
         }
     }
 
-
     void accept(String *s) {
         if (s == nullptr) {
             printf("null\n");
@@ -142,8 +109,5 @@ public:
         }
     }
 
-
-    void done() {
-        printf("End of row\n");
-    }
+    void done() { printf("End of row\n"); }
 };
