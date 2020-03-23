@@ -15,11 +15,15 @@ class Key : public Object {
     }
 };
 
+
 class Value : public Object {
    public:
     byte* bytes;
+
+    
     Value(byte* bytes) { this->bytes = bytes; }
 };
+
 
 class KVStore : public Object {
    public:

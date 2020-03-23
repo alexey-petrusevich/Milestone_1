@@ -4,7 +4,7 @@ typedef unsigned char byte;
 
 
 enum Headers{
-    INT, SIZ, DBL, STR, SOCK, D_ARRAY, S_ARRAY
+    INT, DOUBLE, BOOL, STRING, INT_ARRAY, DOUBLE_ARRAY, BOOL_ARRAY, STRING_ARRAY, SIZ, SOCK
 };
 
 
