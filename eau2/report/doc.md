@@ -8,7 +8,7 @@ allows storing large amount of information that may exceed RAM or permanents sto
 The components are the following:
 * Map
 * Array
-* Dataframe (with corresponding classes)
+* Dataframe (with corresponding classes) 
 * Serialization
 * Networking interface
 * Sorer (.sor file reader)
