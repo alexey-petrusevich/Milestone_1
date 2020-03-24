@@ -80,6 +80,8 @@ Application
 
 # Open questions
 * Connection between DataFrame and key-value store (represented by Map)
+* Remove Value and instead make a map that works directly with Key and byte types
+* Update doc to make more sense. Cleaner, well documented code.
 
 # Status
 At the moment, it is required by us to take care of our technical debt. The following components (with estimated fix time) are to be fixed:
