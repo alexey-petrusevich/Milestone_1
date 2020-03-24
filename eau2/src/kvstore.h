@@ -44,11 +44,27 @@ class Key : public Object {
 class KVStore : public Object {
    public:
     ByteMap* map;
+    const size_t num_nodes = 4;
+    Array* fake_nodes;
+    //Array* network_nodes;
 
     /**
      * Constructor of this KVStore.
      */
-    KVStore() { this->map = map; }
+    KVStore() {
+        this->map = map;
+        // init network here; or fake KVStores
+        
+        this->fake_nodes = new Array();
+        //this->network_nodes = new Array();
+
+        
+        for (size_t i = 0; i < this->num_nodes; i++) {
+            FakeNode* newNode = new FakeNode(i + 1);
+            this->fake_nodes->append(newNode);
+            newNode->start();
+        }
+    }
 
     /**
      * Puts a new serialized object into this KVStore.
@@ -78,9 +94,36 @@ class KVStore : public Object {
      * @param key the key associated with serialized value
      */
     DataFrame* wait_and_get(Key key) {  // same as get for now
-        byte* bytes = this->map->get(&key);
-        return DataFrame::fromBytes(bytes);
+        byte* local_bytes = this->map->get(&key);
+        byte** remote_bytes = new byte*[num_nodes];
+        // 1. check every node for serialized objects with the given key
+        for (size_t i = 0; i < this->num_nodes; i++) {
+            remote_bytes[i] = dynamic_cast<FakeNode*>(this->fake_nodes->get(i))->request_data(&key);
+        }
+        // 1.1 wait for all nodes to reply
+        
+        // 2. merge all objects in one DataFrame and return
+        return DataFrame::merge(local_bytes, remote_bytes);
     }
 
     ~KVStore() { delete this->map; }
+};
+
+// represents a fake netowork node
+class FakeNode : public Thread {
+public:
+    ByteMap* store;
+    size_t nodeId;
+
+    FakeNode(size_t nodeId) {
+        this->nodeId = nodeId;
+    }
+
+    void run() {
+        // listen for information on the channel
+    }
+
+    byte* request_data(Key* key) {
+        return this->store->get(key);
+    }
 };

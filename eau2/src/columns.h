@@ -654,8 +654,8 @@ class ColumnArray : public Object {
      * Default constructor for the array.
      */
     ColumnArray() : Object() {
-        this->array = new Column*[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new Column*[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }

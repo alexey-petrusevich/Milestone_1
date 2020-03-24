@@ -7,7 +7,7 @@
 #include "object.h"
 #include "string.h"
 
-#define DEFAULT_SIZE 100
+#define DEFAULT_ARRAY_SIZE 100
 
 /**
  * @brief This file implements Array and its derivatives as ArrayLists.
@@ -31,8 +31,8 @@ class Array : public Object {
      * Default constructor for the array.
      */
     Array() : Object() {
-        this->array = new Object*[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new Object*[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }
@@ -197,8 +197,8 @@ class IntArray : public Object {
      * Default constructor for the array.
      */
     IntArray() : Object() {
-        this->array = new int[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new int[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }
@@ -345,8 +345,8 @@ class DoubleArray : public Object {
      * Default constructor for the array.
      */
     DoubleArray() : Object() {
-        this->array = new double[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new double[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }
@@ -495,8 +495,8 @@ class BoolArray : public Object {
      * Default constructor for the array.
      */
     BoolArray() : Object() {
-        this->array = new bool[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new bool[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }
@@ -644,8 +644,8 @@ class ColTypeArray : public Object {
      * Default constructor for the array.
      */
     ColTypeArray() : Object() {
-        this->array = new ColType[DEFAULT_SIZE];
-        this->capacity = DEFAULT_SIZE;
+        this->array = new ColType[DEFAULT_ARRAY_SIZE];
+        this->capacity = DEFAULT_ARRAY_SIZE;
         this->elementsInserted = 0;
         this->currentPosition = 0;
     }

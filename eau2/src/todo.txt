@@ -1,0 +1,5 @@
+- test sorer.h (Megha)
+- complete implementation of KVStore with FakeNodes (Alex)
+- get rid of memory leaks in dataframe (Alex)
+- test code in the DataFrame and relevant classe (Alex)
+- update documentaion (Megha)
