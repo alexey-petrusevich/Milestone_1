@@ -7,27 +7,47 @@
 #include "object.h"
 
 /**
- * Represents a key value pair for a map.
+ * @brief Represents a key-value pair for a Map. Both Key and Value have to
+ * extend from the Object class.
+ * @file keyvalue.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 23, 2020
  */
 class KeyValue : public Object {
    public:
     Object *key;
     Object *value;
 
-    KeyValue(Object *k, Object *v) : Object() {
-        // Constructor for KeyValue pair
-        this->key = k;
-        this->value = v;
+    /**
+     * Constructor for KeyValue pair.
+     * 
+     * @param key the key component for this KeyValue pair
+     * @param value the value component for this KeyValue pair
+     */
+    KeyValue(Object *key, Object *value) : Object() {
+        
+        this->key = key;
+        this->value = value;
     }
 
-    ~KeyValue() {
-        // Destructor for KeyValue pair
-    }
+    /**
+     * Destructor for KeyValue pair.
+     */
+    ~KeyValue() {}
 
-    // Gets the key of the pair
+    /**
+     * Returns the key of this KeyValue pair.
+     * 
+     * @return the key of this KeyValue pair
+     */
     Object *getKey() { return this->key; }
 
-    // Gets the value of the pair
+    /**
+     * Returns the value of this KeyValue pair.
+     * 
+     * @return the value of this KeyValue pair
+     */
     Object *getValue() { return this->value; }
 
     bool equals(Object *o) {
@@ -43,21 +63,48 @@ class KeyValue : public Object {
     size_t hash() { return this->key->hash() + this->value->hash(); }
 };
 
-// represents a map that stores
+/**
+ * @brief Represents a key-value pair for a ByteMap. The key should be of Key class
+ * whereas value is represented as a serialized object of byte (unsigned char) type.
+ * @file keyvalue.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 23, 2020
+ */
 class KeyValueBytes : public Object {
    public:
     Key *key;
     byte *value;
 
+    /**
+     * Constructor for KeyValueBytes pair.
+     * 
+     * @param key the key component for this KeyValue pair
+     * @param value the value component for this KeyValue pair
+     */
     KeyValueBytes(Key *key, byte *value) : Object() {
         this->key = key;
         this->value = value;
     }
 
+    /**
+     * Destructor of this KeyValueBytes pair.
+     */
     ~KeyValueBytes() {}
 
+
+    /**
+     * Returns the key component of this KeyValueBytes pair.
+     * 
+     * @return the key component of this KeyValueBytes pair
+     */
     Key *getKey() { return this->key; }
 
+    /**
+     * Returs the value (serialized object) component of this KeyValueBytes pair.
+     * 
+     * @return the value (serialized object) component of this KeyValueBytes pair
+     */
     byte *getValue() { return this->value; }
 
     bool equals(Object *o) {
@@ -67,8 +114,13 @@ class KeyValueBytes : public Object {
             return false;
         }
         return this->key->equals(otherKV->getKey()) &&
-               memcmp(this->value, otherKV->getValue(), sizeof(value));
+               Deserializer::num_bytes(this->value) ==
+                   Deserializer::num_bytes(otherKV->value) &&
+               memcmp(this->value, otherKV->getValue(),
+                      Deserializer::num_bytes(this->value)) == 0;
     }
 
-    size_t hash() { return this->key->hash() + reinterpret_cast<size_t>(this->value); }
+    size_t hash() {
+        return this->key->hash() + reinterpret_cast<size_t>(this->value);
+    }
 };
