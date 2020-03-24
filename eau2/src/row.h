@@ -37,21 +37,22 @@ public:
         this->columnArray = new ColumnArray(this->schema->numCols);
         for (size_t colIndex = 0; colIndex < this->schema->numCols; colIndex++) {
             switch (this->schema->col_type(colIndex)) {
-            case INTEGER:
+            case ColType::INTEGER:
                 this->columnArray->append(new IntColumn(1));
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
-            case DOUBLE:
+            case ColType::DOUBLE:
                 this->columnArray->append(new DoubleColumn(1));
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
-            case BOOLEAN:
+            case ColType::BOOLEAN:
                 this->columnArray->append(new BoolColumn(1));
                 this->columnArray->get(colIndex)->push_back(false);
                 break;
-            case STRING:
+            case ColType::STRING:
                 this->columnArray->append(new StringColumn(1));
-                this->columnArray->get(colIndex)->push_back(nullptr);
+                String* str = nullptr;
+                this->columnArray->get(colIndex)->push_back(str);
                 break;
             default:
                 assert(false);
@@ -87,7 +88,7 @@ public:
         assert(col < this->schema->numCols);
         assert(this->columnArray != nullptr);
         IntColumn *intColumn = this->columnArray->get(col)->as_int();
-        intColumn->set(0, val);
+        intColumn->set_int(0, val);
     }
 
 
@@ -101,7 +102,7 @@ public:
         assert(col < this->schema->numCols);
         assert(this->columnArray != nullptr);
         DoubleColumn *doubleColumn = this->columnArray->get(col)->as_double();
-        doubleColumn->set(0, val);
+        doubleColumn->set_double(0, val);
     }
 
 
@@ -115,7 +116,7 @@ public:
         assert(col < this->schema->numCols);
         assert(this->columnArray != nullptr);
         BoolColumn *boolColumn = this->columnArray->get(col)->as_bool();
-        boolColumn->set(0, val);
+        boolColumn->set_bool(0, val);
     }
 
 
@@ -130,7 +131,7 @@ public:
         assert(col < this->schema->numCols);
         assert(this->columnArray != nullptr);
         StringColumn *stringColumn = this->columnArray->get(col)->as_string();
-        stringColumn->set(0, val);
+        stringColumn->set_string(0, val);
     }
 
 
@@ -169,7 +170,7 @@ public:
     int get_int(size_t col) {
         assert(col < this->schema->numCols);
         IntColumn *intColumn = this->columnArray->get(col)->as_int();
-        return intColumn->get(0);
+        return intColumn->get_int(0);
     }
 
 
@@ -182,7 +183,7 @@ public:
     bool get_bool(size_t col) {
         assert(col < this->schema->numCols);
         BoolColumn *boolColumn = this->columnArray->get(col)->as_bool();
-        return boolColumn->get(0);
+        return boolColumn->get_bool(0);
     }
 
 
@@ -195,7 +196,7 @@ public:
     double get_double(size_t col) {
         assert(col < this->schema->numCols);
         DoubleColumn *doubleColumn = this->columnArray->get(col)->as_double();
-        return doubleColumn->get(0);
+        return doubleColumn->get_double(0);
     }
 
 
@@ -208,7 +209,7 @@ public:
     String *get_string(size_t col) {
         assert(col < this->schema->numCols);
         StringColumn *stringColumn = this->columnArray->get(col)->as_string();
-        return stringColumn->get(0);
+        return stringColumn->get_string(0);
     }
 
 

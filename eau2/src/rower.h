@@ -74,7 +74,7 @@ public:
     virtual bool accept(Row &r) {
         assert(this->colIndex < r.width());
         size_t val = static_cast<size_t>(
-            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get(r.rowIndex));
+            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex));
         sum += val;
         return false;
     }
@@ -104,7 +104,7 @@ public:
     virtual bool accept(Row &r) {
         assert(this->colIndex < r.width());
         size_t val = static_cast<size_t>(
-            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get(r.rowIndex));
+            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex));
         product *= val;
         return false;
     }
@@ -135,7 +135,7 @@ public:
 
     virtual bool accept(Row &r) {
         size_t val = static_cast<size_t>(
-            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get(r.rowIndex));
+            dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex));
         product *= val;
         return false;
     }
@@ -183,7 +183,7 @@ public:
 
 
     virtual bool accept(Row &r) {
-        int val = dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get(r.rowIndex);
+        int val = dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex);
         sum += val;
         return false;
     }
