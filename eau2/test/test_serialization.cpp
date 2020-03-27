@@ -214,6 +214,10 @@ void testArraySize(size_t size) {
         delete string_array[i];
     }
     delete[] string_array;
+    delete[] bytes_int_array;
+    delete[] bytes_double_array;
+    delete[] bytes_bool_array;
+    delete[] bytes_string_array;
     OK("array size");
 }
 
@@ -280,6 +284,14 @@ void testNumBytes(size_t size) {
         delete string_array[i];
     }
     delete[] string_array;
+    delete[] serialized_int;
+    delete[] serialized_double;
+    delete[] serialized_bool;
+    delete[] serialized_string;
+    delete[] bytes_int_array;
+    delete[] bytes_double_array;
+    delete[] bytes_bool_array;
+    delete[] bytes_string_array;
     OK("number of bytes");
 }
 

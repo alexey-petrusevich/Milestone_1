@@ -299,7 +299,8 @@ class Map : public Object {
 
     /**
      * Creates this map with the default capacity and all empty
-     * entries set to nullptr.
+     * entries set to nullptr. Utility method - shall not be used explicitly by
+     * the user.
      */
     void createMap() {
         this->map = new KeyValue*[DEFAULT_MAP_SIZE];
