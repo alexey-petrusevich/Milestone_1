@@ -258,6 +258,12 @@ class DataFrame : public Object {
         }
     }
 
+    static DataFrame* merge(byte* local, byte** remote) {
+        // TODO implement
+        return nullptr;
+    }
+
+
     void initColumns() {
         this->columns = new ColumnArray(this->schema->numCols);
         for (size_t colIndex = 0; colIndex < this->schema->numCols;

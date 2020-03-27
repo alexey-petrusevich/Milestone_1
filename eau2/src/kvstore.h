@@ -45,8 +45,9 @@ class KVStore : public Object {
    public:
     ByteMap* map;
     const size_t num_nodes = 4;
-    Array* fake_nodes;
+    FakeNode** fake_nodes;
     //Array* network_nodes;
+    Lock** locks; // for simulating network behavior
 
     /**
      * Constructor of this KVStore.
@@ -55,13 +56,15 @@ class KVStore : public Object {
         this->map = map;
         // init network here; or fake KVStores
         
-        this->fake_nodes = new Array();
+        this->fake_nodes = new FakeNode*[this->num_nodes];
         //this->network_nodes = new Array();
 
-        
+        this->locks = new Lock*[this->num_nodes];
         for (size_t i = 0; i < this->num_nodes; i++) {
-            FakeNode* newNode = new FakeNode(i + 1);
-            this->fake_nodes->append(newNode);
+            this->locks[i] = new Lock();
+            FakeNode* newNode = new FakeNode(i + 1, locks[i]);
+            this->fake_nodes[i] = newNode;
+            //this->fake_nodes->append(newNode);
             newNode->start();
         }
     }
@@ -98,9 +101,13 @@ class KVStore : public Object {
         byte** remote_bytes = new byte*[num_nodes];
         // 1. check every node for serialized objects with the given key
         for (size_t i = 0; i < this->num_nodes; i++) {
-            remote_bytes[i] = dynamic_cast<FakeNode*>(this->fake_nodes->get(i))->request_data(&key);
+            remote_bytes[i] = this->fake_nodes[i]->request_data(&key);
+            this->locks[i]->wait();
         }
         // 1.1 wait for all nodes to reply
+        for (int i = 0; i < this->num_nodes; i++) {
+            
+        }
         
         // 2. merge all objects in one DataFrame and return
         return DataFrame::merge(local_bytes, remote_bytes);
@@ -109,21 +116,27 @@ class KVStore : public Object {
     ~KVStore() { delete this->map; }
 };
 
+
 // represents a fake netowork node
 class FakeNode : public Thread {
 public:
     ByteMap* store;
     size_t nodeId;
+    Lock* lock;
 
-    FakeNode(size_t nodeId) {
+    FakeNode(size_t nodeId, Lock* lock) {
         this->nodeId = nodeId;
+        this->lock = lock;
     }
 
     void run() {
         // listen for information on the channel
+        
     }
 
     byte* request_data(Key* key) {
-        return this->store->get(key);
+        byte* data = this->store->get(key);
+        this->lock->notify_all(); // notify the node waiting for this data that data has been retrieved
+        return data;
     }
 };

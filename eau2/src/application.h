@@ -14,7 +14,6 @@ class Application : public Object {
     // constructor of the application
     Application(size_t nodeId) : Object() {
         this->nodeId = nodeId;
-        this->kv = KVStore();
     }
 
     // starts the application
