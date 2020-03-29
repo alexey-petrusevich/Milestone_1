@@ -1,4 +1,5 @@
 //lang::CwC
+#pragma once
 #include "visitors.h"
 #include "row.h"
 

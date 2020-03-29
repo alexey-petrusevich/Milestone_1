@@ -5,6 +5,7 @@
 
 #include "array.h"
 #include "fielder.h"
+#include "helpers.h"
 #include "object.h"
 #include "schema.h"
 #include "string.h"
@@ -204,15 +205,12 @@ class Column : public Object {
     // returns a pointer to the object at the ith index
     virtual void* get(size_t i) { return nullptr; }
 
-    // returns the string representation of the object at the ith index
-    virtual char* get_char(size_t i) { return nullptr; }
-
     /**
      * Return the type of this column as a char: 'S', 'B', 'I' and 'F'.
      *
      * @return the type of this column
      */
-    char get_type_char() { return this->colType; }
+    char get_type_char() { return static_cast<char>(this->colType); }
 
     // returns type of the column as Enum
     ColType get_type() { return this->colType; }
@@ -256,23 +254,6 @@ class IntColumn : public Column {
      */
     IntColumn() : Column(ColType::INTEGER) { this->array = new IntArray(); }
 
-    /**
-     * Constructor that accepts the number of parameters, a list of values,
-     * and stores this list of values in this IntColumn.
-     *
-     * @param n the number of values in the list
-     * @param ... the list of values to be stored in this IntColumn
-     */
-    IntColumn(int n, ...) : Column(ColType::INTEGER) {
-        this->array = new IntArray(n);
-        va_list list;
-        va_start(list, n);
-        for (int i = 0; i < n; i++) {
-            int val = va_arg(list, int);
-            this->array->append(val);
-        }
-    }
-
     IntColumn(int* array, size_t size) : Column(ColType::INTEGER) {
         this->array = new IntArray();
         for (size_t i = 0; i < size; i++) {
@@ -304,17 +285,9 @@ class IntColumn : public Column {
         this->push_back(atoi(c));
     }
 
-    void* get(size_t index) {
-        if (index >= this->numElements) {
-            return nullptr;
-        }
-        int v = this->array->get(index);
-        return &v;
-    }
-
     char* get_char(size_t index) {
         if (index >= this->numElements) {
-            return "0";
+            return const_cast<char*>("0");
         }
         char* ret = new char[512];
         sprintf(ret, "%d", this->array->get(index));
@@ -350,7 +323,9 @@ class DoubleColumn : public Column {
     /**
      * Default constructor of this DoubleColumn.
      */
-    DoubleColumn() : Column(ColType::DOUBLE) { this->array = new DoubleArray(); }
+    DoubleColumn() : Column(ColType::DOUBLE) {
+        this->array = new DoubleArray();
+    }
 
     /**
      * Constructor that accepts the number of elements and the list of elements
@@ -400,17 +375,10 @@ class DoubleColumn : public Column {
         this->push_back(atof(c));
     }
 
-    void* get(size_t index) {
-        if (index >= this->numElements) {
-            return nullptr;
-        }
-        double v = this->array->get(index);
-        return &v;
-    }
 
     char* get_char(size_t index) {
         if (index >= this->numElements) {
-            return "0";
+            return const_cast<char*>("0");
         }
         char* ret = new char[512];
         sprintf(ret, "%f", this->array->get(index));
@@ -502,17 +470,9 @@ class BoolColumn : public Column {
         this->push_back(b);
     }
 
-    void* get(size_t index) {
-        if (index >= this->numElements) {
-            return nullptr;
-        }
-        bool v = this->array->get(index);
-        return &v;
-    }
-
     char* get_char(size_t index) {
         if (index >= this->numElements) {
-            return "0";
+            return const_cast<char*>("0");
         }
         char* ret = new char[512];
         sprintf(ret, "%d", this->array->get(index));
@@ -597,13 +557,6 @@ class StringColumn : public Column {
             this->push_nullptr();
         }
         this->push_back(new String(c));
-    }
-
-    void* get(size_t index) {
-        if (index >= this->numElements) {
-            return nullptr;
-        }
-        return this->array->get(index);
     }
 
     char* get_char(size_t index) {

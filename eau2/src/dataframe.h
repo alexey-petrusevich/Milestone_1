@@ -4,7 +4,8 @@
 #include <cstdarg>
 #include <iostream>
 
-#include "application.h"
+//#include "application.h"
+#include "kvstore.h"
 #include "array.h"
 #include "coltypes.h"
 #include "columns.h"
@@ -221,40 +222,53 @@ class DataFrame : public Object {
         size_t size;
         memcpy(&header, bytes, sizeof(Headers));
         switch (header) {
-            case Headers::INT:
-                int int_val = Deserializer::deserialize_int(bytes);
-                return DataFrame::from_single_int(int_val);
-            case Headers::DOUBLE:
-                double double_val = Deserializer::deserialize_double(bytes);
-                return DataFrame::from_single_double(double_val);
-            case Headers::BOOL:
-                bool bool_val = Deserializer::deserialize_bool(bytes);
-                return DataFrame::from_single_bool(bool_val);
-            case Headers::STRING:
-                String* str_val = Deserializer::deserialize_string(bytes);
-                return DataFrame::from_single_string(str_val);
-            case Headers::INT_ARRAY:
-                int* int_array = Deserializer::deserialize_int_array(bytes);
+            case Headers::INT: {
+                int val = Deserializer::deserialize_int(bytes);
+                return DataFrame::from_single_int(val);
+            }
+
+            case Headers::DOUBLE: {
+                double val = Deserializer::deserialize_double(bytes);
+                return DataFrame::from_single_double(val);
+            }
+
+            case Headers::BOOL: {
+                bool val = Deserializer::deserialize_bool(bytes);
+                return DataFrame::from_single_bool(val);
+            }
+
+            case Headers::STRING: {
+                String* val = Deserializer::deserialize_string(bytes);
+                return DataFrame::from_single_string(val);
+            }
+
+            case Headers::INT_ARRAY: {
+                int* array = Deserializer::deserialize_int_array(bytes);
                 size = Deserializer::array_size(bytes);
-                return DataFrame::from_int_array(int_array, size);
-            case Headers::DOUBLE_ARRAY:
-                double* double_array =
-                    Deserializer::deserialize_double_array(bytes);
+                return DataFrame::from_int_array(array, size);
+            }
+
+            case Headers::DOUBLE_ARRAY: {
+                double* array = Deserializer::deserialize_double_array(bytes);
                 size = Deserializer::array_size(bytes);
-                return DataFrame::from_double_array(double_array, size);
-            case Headers::BOOL_ARRAY:
-                bool* bool_array = Deserializer::deserialize_bool_array(bytes);
+                return DataFrame::from_double_array(array, size);
+            }
+
+            case Headers::BOOL_ARRAY: {
+                bool* array = Deserializer::deserialize_bool_array(bytes);
                 size = Deserializer::array_size(bytes);
-                return DataFrame::from_bool_array(bool_array, size);
-                break;
-            case Headers::STRING_ARRAY:
-                String** str_array =
-                    Deserializer::deserialize_string_array(bytes);
+                return DataFrame::from_bool_array(array, size);
+            }
+
+            case Headers::STRING_ARRAY: {
+                String** array = Deserializer::deserialize_string_array(bytes);
                 size = Deserializer::array_size(bytes);
-                return DataFrame::from_string_array(str_array, size);
-                break;
-            default:  // unknown header
+                return DataFrame::from_string_array(array, size);
+            }
+
+            default: {
                 return nullptr;
+            }
         }
     }
 
@@ -263,22 +277,21 @@ class DataFrame : public Object {
         return nullptr;
     }
 
-
     void initColumns() {
         this->columns = new ColumnArray(this->schema->numCols);
         for (size_t colIndex = 0; colIndex < this->schema->numCols;
              colIndex++) {
-            switch (this->schema->col_type(colIndex)) {
-                case INTEGER:
+            switch (static_cast<ColType>(this->schema->col_type(colIndex))) {
+                case ColType::INTEGER:
                     this->columns->append(new IntColumn());
                     break;
-                case DOUBLE:
+                case ColType::DOUBLE:
                     this->columns->append(new DoubleColumn());
                     break;
-                case BOOLEAN:
+                case ColType::BOOLEAN:
                     this->columns->append(new BoolColumn());
                     break;
-                case STRING:
+                case ColType::STRING:
                     this->columns->append(new StringColumn());
                     break;
                 default:
@@ -300,9 +313,10 @@ class DataFrame : public Object {
         this->columns->append(col);
         // update schema
         if (name != nullptr) {
-            this->schema->add_column(col->get_type(), name);
+            this->schema->add_column(static_cast<char>(col->get_type()), name);
         } else {
-            this->schema->add_column(col->get_type(), nullptr);
+            this->schema->add_column(static_cast<char>(col->get_type()),
+                                     nullptr);
         }
     }
 
@@ -318,7 +332,8 @@ class DataFrame : public Object {
     int get_int(size_t col, size_t row) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == INTEGER);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::INTEGER);
         IntColumn* intColumn = this->columns->get(col)->as_int();
         return intColumn->get_int(row);
     }
@@ -333,7 +348,8 @@ class DataFrame : public Object {
     bool get_bool(size_t col, size_t row) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == BOOLEAN);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::BOOLEAN);
         BoolColumn* boolColumn = this->columns->get(col)->as_bool();
         return boolColumn->get_bool(row);
     }
@@ -348,7 +364,8 @@ class DataFrame : public Object {
     double get_double(size_t col, size_t row) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == DOUBLE);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::DOUBLE);
         DoubleColumn* doubleColumn = this->columns->get(col)->as_double();
         return doubleColumn->get_double(row);
     }
@@ -396,7 +413,8 @@ class DataFrame : public Object {
     void set(size_t col, size_t row, int val) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == INTEGER);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::INTEGER);
         IntColumn* intColumn = this->columns->get(col)->as_int();
         intColumn->set_int(row, val);
     }
@@ -412,7 +430,8 @@ class DataFrame : public Object {
     void set(size_t col, size_t row, bool val) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == BOOLEAN);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::BOOLEAN);
         BoolColumn* boolColumn = this->columns->get(col)->as_bool();
         boolColumn->set_bool(row, val);
     }
@@ -428,7 +447,8 @@ class DataFrame : public Object {
     void set(size_t col, size_t row, double val) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == DOUBLE);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::DOUBLE);
         DoubleColumn* doubleColumn = this->columns->get(col)->as_double();
         doubleColumn->set_double(row, val);
     }
@@ -444,7 +464,8 @@ class DataFrame : public Object {
     void set(size_t col, size_t row, String* val) {
         assert(col < this->schema->numCols);
         assert(row < this->schema->numRows);
-        assert(this->schema->col_type(col) == STRING);
+        assert(static_cast<ColType>(this->schema->col_type(col)) ==
+               ColType::STRING);
         StringColumn* stringColumn = this->columns->get(col)->as_string();
         stringColumn->set_string(row, val);
     }

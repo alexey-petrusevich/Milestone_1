@@ -12,9 +12,7 @@ class Application : public Object {
     KVStore kv;
 
     // constructor of the application
-    Application(size_t nodeId) : Object() {
-        this->nodeId = nodeId;
-    }
+    Application(size_t nodeId) : Object() { this->nodeId = nodeId; }
 
     // starts the application
     virtual void run_() = 0;
@@ -70,6 +68,7 @@ class Demo : public Application {
     }
 };
 
+// represents a trivial application
 class Trivial : public Application {
    public:
     Trivial(size_t idx) : Application(idx) {}

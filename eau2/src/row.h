@@ -36,24 +36,25 @@ public:
     void initColumnArray() {
         this->columnArray = new ColumnArray(this->schema->numCols);
         for (size_t colIndex = 0; colIndex < this->schema->numCols; colIndex++) {
-            switch (this->schema->col_type(colIndex)) {
+            switch (static_cast<ColType>(this->schema->col_type(colIndex))) {
             case ColType::INTEGER:
-                this->columnArray->append(new IntColumn(1));
+                this->columnArray->append(new IntColumn());
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
             case ColType::DOUBLE:
-                this->columnArray->append(new DoubleColumn(1));
+                this->columnArray->append(new DoubleColumn());
                 this->columnArray->get(colIndex)->push_back(0);
                 break;
             case ColType::BOOLEAN:
-                this->columnArray->append(new BoolColumn(1));
+                this->columnArray->append(new BoolColumn());
                 this->columnArray->get(colIndex)->push_back(false);
                 break;
-            case ColType::STRING:
-                this->columnArray->append(new StringColumn(1));
+            case ColType::STRING: {
+                this->columnArray->append(new StringColumn());
                 String* str = nullptr;
                 this->columnArray->get(colIndex)->push_back(str);
                 break;
+            }
             default:
                 assert(false);
             }

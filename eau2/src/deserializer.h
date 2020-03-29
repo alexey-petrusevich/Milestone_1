@@ -1,3 +1,5 @@
+#pragma once
+
 #include "msgkind.h"
 #include "object.h"
 #include "string.h"

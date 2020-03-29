@@ -232,6 +232,7 @@ class SOR : public Object {
         }
     }
 
+    // returns SOR object as DataFrame
     DataFrame* get_dataframe() {
         return DataFrame::fromColumns(this->columnArray);
     }

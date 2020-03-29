@@ -161,7 +161,7 @@ public:
      */
     char col_type(size_t idx) {
         assert(idx < this->numCols);
-        return this->colTypes->get(idx);
+        return static_cast<char>(this->colTypes->get(idx));
     }
 
 

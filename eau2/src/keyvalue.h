@@ -5,6 +5,36 @@
 #include <assert.h>
 
 #include "object.h"
+#include "deserializer.h"
+
+/**
+ * @brief Represents Key class to be used in KV-store.
+ * @file kvstore.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 23, 2020
+ */
+class Key : public Object {
+   public:
+    const char *key;
+    size_t nodeId;
+
+    /**
+     * Constructor of this Key object.
+     *
+     * @param key the key represented as const char (cstring) type
+     * @param nodeId the id of the node this key is associated with
+     */
+    Key(const char *key, size_t nodeId) : Object() {
+        this->key = key;
+        this->nodeId = nodeId;
+    }
+
+    /**
+     * Desturctor of this Key object.
+     */
+    ~Key() {}
+};
 
 /**
  * @brief Represents a key-value pair for a Map. Both Key and Value have to
@@ -21,12 +51,11 @@ class KeyValue : public Object {
 
     /**
      * Constructor for KeyValue pair.
-     * 
+     *
      * @param key the key component for this KeyValue pair
      * @param value the value component for this KeyValue pair
      */
     KeyValue(Object *key, Object *value) : Object() {
-        
         this->key = key;
         this->value = value;
     }
@@ -38,14 +67,14 @@ class KeyValue : public Object {
 
     /**
      * Returns the key of this KeyValue pair.
-     * 
+     *
      * @return the key of this KeyValue pair
      */
     Object *getKey() { return this->key; }
 
     /**
      * Returns the value of this KeyValue pair.
-     * 
+     *
      * @return the value of this KeyValue pair
      */
     Object *getValue() { return this->value; }
@@ -64,8 +93,9 @@ class KeyValue : public Object {
 };
 
 /**
- * @brief Represents a key-value pair for a ByteMap. The key should be of Key class
- * whereas value is represented as a serialized object of byte (unsigned char) type.
+ * @brief Represents a key-value pair for a ByteMap. The key should be of Key
+ * class whereas value is represented as a serialized object of byte (unsigned
+ * char) type.
  * @file keyvalue.h
  * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
  * @author Megha Rao <rao.m@husky.neu.edu>
@@ -78,7 +108,7 @@ class KeyValueBytes : public Object {
 
     /**
      * Constructor for KeyValueBytes pair.
-     * 
+     *
      * @param key the key component for this KeyValue pair
      * @param value the value component for this KeyValue pair
      */
@@ -92,18 +122,19 @@ class KeyValueBytes : public Object {
      */
     ~KeyValueBytes() {}
 
-
     /**
      * Returns the key component of this KeyValueBytes pair.
-     * 
+     *
      * @return the key component of this KeyValueBytes pair
      */
     Key *getKey() { return this->key; }
 
     /**
-     * Returs the value (serialized object) component of this KeyValueBytes pair.
-     * 
-     * @return the value (serialized object) component of this KeyValueBytes pair
+     * Returs the value (serialized object) component of this KeyValueBytes
+     * pair.
+     *
+     * @return the value (serialized object) component of this KeyValueBytes
+     * pair
      */
     byte *getValue() { return this->value; }
 

@@ -13,7 +13,7 @@
 /**
  * Enumerator that represents types of columns.
  */
-enum ColType {
+enum class ColType {
     INTEGER = 'I',
     DOUBLE = 'D',
     BOOLEAN = 'B',

@@ -682,18 +682,18 @@ class ColTypeArray : public Object {
      */
     void append(char input) {
         this->_ensure_size(this->elementsInserted + 1);
-        switch (input) {
-            case INTEGER:
-                this->append(INTEGER);
+        switch (static_cast<ColType>(input)) {
+            case ColType::INTEGER:
+                this->append(ColType::INTEGER);
                 break;
-            case DOUBLE:
-                this->append(DOUBLE);
+            case ColType::DOUBLE:
+                this->append(ColType::DOUBLE);
                 break;
-            case BOOLEAN:
-                this->append(BOOLEAN);
+            case ColType::BOOLEAN:
+                this->append(ColType::BOOLEAN);
                 break;
-            case STRING:
-                this->append(STRING);
+            case ColType::STRING:
+                this->append(ColType::STRING);
                 break;
             default:
                 // unknown type
@@ -743,15 +743,15 @@ class ColTypeArray : public Object {
      * @return the index of the element in this ColTypeArray
      */
     int index(char input) {
-        switch (input) {
-            case INTEGER:
-                return this->index(INTEGER);
-            case DOUBLE:
-                return this->index(DOUBLE);
-            case BOOLEAN:
-                return this->index(BOOLEAN);
-            case STRING:
-                return this->index(STRING);
+        switch (static_cast<ColType>(input)) {
+            case ColType::INTEGER:
+                return this->index(ColType::INTEGER);
+            case ColType::DOUBLE:
+                return this->index(ColType::DOUBLE);
+            case ColType::BOOLEAN:
+                return this->index(ColType::BOOLEAN);
+            case ColType::STRING:
+                return this->index(ColType::STRING);
             default:
                 // unknown type
                 return -1;
