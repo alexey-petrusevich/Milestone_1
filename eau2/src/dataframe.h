@@ -50,6 +50,12 @@ class DataFrame : public Object {
         this->initColumns();
     }
 
+    /**
+     * Method that creates a data frame from the given columnns. 
+     * 
+     * @param columnArray - the column array to be added to dataframe
+     * @return DataFrame 
+     */
     static DataFrame* fromColumns(ColumnArray* columnArray) {
         Schema* schema = columnArray->getSchema();
         DataFrame* df = new DataFrame(*schema);
@@ -103,6 +109,16 @@ class DataFrame : public Object {
         }
     }
 
+    /** 
+     * Make a int dataframe from a given array
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param size - size of the array
+     * @param vals - int vals of the array 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {
         byte* serialized = Serializer::serialize_int_array(vals, size);
         kv->put(key, serialized);
@@ -113,6 +129,16 @@ class DataFrame : public Object {
         return df;
     }
 
+    /** 
+     * Make a double dataframe from a given array
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param size - size of the array
+     * @param vals - double vals of the array 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 double* vals) {
         byte* serialized = Serializer::serialize_double_array(vals, size);
@@ -124,6 +150,16 @@ class DataFrame : public Object {
         return df;
     }
 
+    /** 
+     * Make a bool dataframe from a given array
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param size - size of the array
+     * @param vals - bool vals of the array 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 bool* vals) {
         byte* serialized = Serializer::serialize_bool_array(vals, size);
@@ -135,6 +171,16 @@ class DataFrame : public Object {
         return df;
     }
 
+    /** 
+     * Make a string dataframe from a given array
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param size - size of the array
+     * @param vals - string vals of the array 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size,
                                 String** vals) {
         byte* serialized = Serializer::serialize_string_array(vals, size);
@@ -146,6 +192,15 @@ class DataFrame : public Object {
         return df;
     }
 
+    /** 
+     * Make a int dataframe from a given scalar
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param value - int vals of the scalar 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromScalar(Key* key, KVStore* kv, int value) {
         byte* serialized = Serializer::serialize_int(value);
         kv->put(key, serialized);
@@ -157,6 +212,15 @@ class DataFrame : public Object {
         return df;
     }
 
+     /** 
+     * Make a double dataframe from a given scalar
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param value - double vals of the scalar 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromScalar(Key* key, KVStore* kv, double value) {
         byte* serialized = Serializer::serialize_double(value);
         kv->put(key, serialized);
@@ -168,6 +232,15 @@ class DataFrame : public Object {
         return df;
     }
 
+     /** 
+     * Make a bool dataframe from a given scalar
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param value - bool vals of the scalar 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromScalar(Key* key, KVStore* kv, bool value) {
         byte* serialized = Serializer::serialize_bool(value);
         kv->put(key, serialized);
@@ -179,6 +252,15 @@ class DataFrame : public Object {
         return df;
     }
 
+     /** 
+     * Make a string dataframe from a given scalar
+     * 
+     * @param key - Key value
+     * @param kv - KV Store 
+     * @param value - string vals of the scalar 
+     * 
+     * @return Dataframe
+     */ 
     static DataFrame* fromScalar(Key* key, KVStore* kv, String* value) {
         byte* serialized = Serializer::serialize_string(value);
         kv->put(key, serialized);
@@ -190,6 +272,12 @@ class DataFrame : public Object {
         return df;
     }
 
+     /** 
+     * Make a int dataframe from a single int value
+     * 
+     * @param value - int val to be added to dataframe
+     * @return Dataframe
+     */ 
     static DataFrame* from_single_int(int value) {
         IntColumn* column = new IntColumn();
         column->push_back(value);
@@ -198,6 +286,12 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a double dataframe from a single int value
+     * 
+     * @param value - double val to be added to dataframe
+     * @return Dataframe
+     */ 
     static DataFrame* from_single_double(double value) {
         DoubleColumn* column = new DoubleColumn();
         column->push_back(value);
@@ -206,6 +300,12 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a bool dataframe from a single int value
+     * 
+     * @param value - bool val to be added to dataframe
+     * @return Dataframe
+     */ 
     static DataFrame* from_single_bool(bool value) {
         BoolColumn* column = new BoolColumn();
         column->push_back(value);
@@ -214,6 +314,12 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a string dataframe from a single int value
+     * 
+     * @param value - string val to be added to dataframe
+     * @return Dataframe
+     */ 
     static DataFrame* from_single_string(String* value) {
         StringColumn* column = new StringColumn();
         column->push_back(value);
@@ -222,6 +328,13 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a int dataframe from an int array
+     * 
+     * @param array - int array to be added to dataframe
+     * @param size - size of array to be added to datafram
+     * @return Dataframe
+     */ 
     static DataFrame* from_int_array(int* array, size_t size) {
         IntColumn* column = new IntColumn(array, size);
         ColumnArray* colArray = new ColumnArray();
@@ -229,6 +342,13 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a double dataframe from an int array
+     * 
+     * @param array - double array to be added to dataframe
+     * @param size - size of array to be added to datafram
+     * @return Dataframe
+     */ 
     static DataFrame* from_double_array(double* array, size_t size) {
         DoubleColumn* column = new DoubleColumn(array, size);
         ColumnArray* colArray = new ColumnArray();
@@ -236,6 +356,13 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a bool dataframe from an int array
+     * 
+     * @param array - bool array to be added to dataframe
+     * @param size - size of array to be added to datafram
+     * @return Dataframe
+     */ 
     static DataFrame* from_bool_array(bool* array, size_t size) {
         BoolColumn* column = new BoolColumn(array, size);
         ColumnArray* colArray = new ColumnArray();
@@ -243,6 +370,13 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a string dataframe from an int array
+     * 
+     * @param array - string array to be added to dataframe
+     * @param size - size of array to be added to datafram
+     * @return Dataframe
+     */ 
     static DataFrame* from_string_array(String** array, size_t size) {
         StringColumn* column = new StringColumn(array, size);
         ColumnArray* colArray = new ColumnArray();
@@ -250,6 +384,12 @@ class DataFrame : public Object {
         return DataFrame::fromColumns(colArray);
     }
 
+     /** 
+     * Make a dataframe from a bytes
+     * 
+     * @param bytes - bytes to be added to dataframe
+     * @return Dataframe
+     */ 
     static DataFrame* fromBytes(byte* bytes) {
         Headers header;
         size_t size;
@@ -647,6 +787,13 @@ class DataFrame : public Object {
         }
     }
 
+    /**
+     * Method that sums the Values in the given row 
+     * 
+     * @param sum - sum of ints
+     * @param beginIndex - beginning index
+     * @param endIndex - end index 
+     */ 
     void sumValues(int* sum, size_t beginIndex, size_t endIndex) {
         for (size_t rowIndex = beginIndex; rowIndex < endIndex; rowIndex++) {
             *sum += ((IntColumn*)this->columns->get(0))->get_int(0);
