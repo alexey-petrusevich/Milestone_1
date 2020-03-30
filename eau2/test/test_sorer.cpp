@@ -24,8 +24,7 @@ void testIntColumn() {
     // TODO change this filename??
     FILE* file = fopen(FILE_INT_COL, "r");
     if (file == nullptr) {
-        printf("failed to open file\n");
-        
+        printf("failed to open %s\n", FILE_INT_COL);
         FAIL();
     }
     sor->read(file, 0, 100);
@@ -38,9 +37,11 @@ void testIntColumn() {
     for (size_t rowIndex = 0; rowIndex < df->schema->numRows; rowIndex++) {
         assert(int_col->get_int(rowIndex) == static_cast<int>(rowIndex % 10 + 1));
     }
-    printf("deleting\n");
-    delete df;
+    printf("deleting sor\n");
     delete sor;
+    printf("deleting df\n");
+    delete df;
+    fclose(file);
     OK("test_int_col");
 }
 

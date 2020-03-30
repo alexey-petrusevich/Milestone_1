@@ -12,5 +12,6 @@ int main() {
     delete df;
     delete schema;
     delete colArr;
+    //delete col;
     return 0;
 }

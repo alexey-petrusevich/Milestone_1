@@ -52,24 +52,20 @@ class DataFrame : public Object {
         this->initColumns();
     }
 
-    DataFrame(Schema* schema) {
-        this->schema = schema;
-        this->schema->numRows = 0;
-        this->initColumns();
-    }
 
     static DataFrame* fromColumns(ColumnArray* columnArray) {
         Schema* schema = columnArray->getSchema();
-        DataFrame* df = new DataFrame(schema);
+        DataFrame* df = new DataFrame(*schema);
         for (int i = 0; i < columnArray->size(); i++) {
             Column* oldCol = columnArray->get(i);
             Column* col = dynamic_cast<Column*>(oldCol->clone());
-            df->columns->set(i, col);
+            Column* removable = df->columns->set(i, col);
             if (col->numElements > df->schema->numRows) {
                 df->schema->numRows = col->numElements;
             }
+            delete removable;
         }
-        // delete schema;
+        delete schema;
         return df;
     }
 
@@ -425,20 +421,6 @@ class DataFrame : public Object {
         StringColumn* stringColumn = this->columns->get(col)->as_string();
         return stringColumn->get_string(row);
     }
-
-    /** Return the offset of the given column name or -1 if no such col.
-     *
-     * @param the name of the column which offset is being returned
-     * @return the offset (index) of the column
-     */
-    int get_col(String& col) { return this->schema->colNames->index(&col); }
-
-    /** Return the offset of the given row name or -1 if no such row.
-     *
-     * @param col the name of the row which index is being returned
-     * @return the index of the requested row
-     */
-    int get_row(String& row) { return this->schema->rowNames->index(&row); }
 
     /** Set the value at the given column and row to the given value.
      * If the column is not  of the right type or the indices are out of
