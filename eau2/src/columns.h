@@ -92,14 +92,10 @@ ColType infer_type(char* c) {
 }
 
 /**
- * @brief Represents one column of a data frame which holds values of a single
+ * Represents one column of a data frame which holds values of a single
  * type. This abstract class defines methods overriden in subclasses. There is
  * one subclass per element type. Columns are mutable, equality is pointer
  * equality.
- * @file columns.h
- * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
- * @author Megha Rao <rao.m@husky.neu.edu>
- * @date March 30, 2020
  */
 class Column : public Object {
    public:
@@ -300,15 +296,18 @@ class Column : public Object {
      */
     virtual void accept(Fielder* f) = 0;
 
-    // returns the string representation of the object at the ith index
     /**
-     * Returns the object at the given index as c-string.
-     *
+     * Returns the object at the given index as c-string. Returns the string representation of the object at the ith index
+     * Returns the string representation of the object at the ith index
+
      * @param i index of the object being requested as c-string
      * @return the c-string representation of the object at the given index
      */
     virtual char* get_char(size_t i) { return nullptr; }
 
+    /**
+     * clone method
+     */
     virtual Object* clone() = 0;
 
     /**
@@ -783,6 +782,12 @@ class ColumnArray : public Object {
         return temp;
     }
 
+    /**
+     * Checks quality of two objects
+     * 
+     * @param Object* - object to be checked for equality 
+     * @return bool - true or false
+     */ 
     bool equals(Object* o) {
         assert(o != nullptr);
         ColumnArray* otherArray = dynamic_cast<ColumnArray*>(o);
@@ -802,6 +807,7 @@ class ColumnArray : public Object {
         return true;
     }
 
+    // hash method
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
