@@ -305,6 +305,17 @@ class DataFrame : public Object {
         }
     }
 
+    /**
+     * Accepts a pointer to the object sored locally and a pointer to the
+     * collection of remote object. Pointer to remote serialized object can be
+     * nullptr. If that is the case, the serialized object is skipped. That is, if out of 4 remote nodes, only 3 contain the data,
+     * only those 3 columns will be added to the dataframe.
+     * 
+     * @param local pointer to the local storage
+     * @param remote pointer to the collection of remote bytes
+     * @param num_nodes number of nodes in the network
+     * @return the data from local and remote storages merged as a DataFrame
+     */
     static DataFrame* merge(byte* local, byte** remote, size_t num_nodes) {
         DataFrame* df = DataFrame::fromBytes(local);
         for (size_t index = 0; index < num_nodes; index++) {
@@ -340,9 +351,9 @@ class DataFrame : public Object {
                     col->push_back(value);
                     break;
                 }
-                case Headers::INT_ARRAY:
-                {
-                    int* array = Deserializer::deserialize_int_array(remote[index]);
+                case Headers::INT_ARRAY: {
+                    int* array =
+                        Deserializer::deserialize_int_array(remote[index]);
                     size_t size = Deserializer::num_bytes(remote[index]);
                     col = new IntColumn();
                     for (size_t i = 0; i < size; i++) {
@@ -350,16 +361,44 @@ class DataFrame : public Object {
                     }
                     break;
                 }
-
+                case Headers::DOUBLE_ARRAY: {
+                    double* array =
+                        Deserializer::deserialize_double_array(remote[index]);
+                    size_t size = Deserializer::num_bytes(remote[index]);
+                    col = new DoubleColumn();
+                    for (size_t i = 0; i < size; i++) {
+                        col->push_back(array[i]);
+                    }
+                    break;
+                }
+                case Headers::BOOL_ARRAY: {
+                    bool* array =
+                        Deserializer::deserialize_bool_array(remote[index]);
+                    size_t size = Deserializer::num_bytes(remote[index]);
+                    col = new BoolColumn();
+                    for (size_t i = 0; i < size; i++) {
+                        col->push_back(array[i]);
+                    }
+                    break;
+                }
+                case Headers::STRING_ARRAY: {
+                    String** array =
+                        Deserializer::deserialize_string_array(remote[index]);
+                    size_t size = Deserializer::num_bytes(remote[index]);
+                    col = new StringColumn();
+                    for (size_t i = 0; i < size; i++) {
+                        col->push_back(array[i]);
+                    }
+                    break;
+                }
                 default:
+                    col = nullptr;
                     break;
             }
 
             df->add_column(col);
         }
-
-        // TODO implement
-        return nullptr;
+        return df;
     }
 
     // initializes columns of this DataFrame
