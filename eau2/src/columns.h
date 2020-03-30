@@ -337,6 +337,7 @@ class DoubleColumn : public Column {
         this->array = new DoubleArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
+            this->numElements++;
         }
     }
 
@@ -392,7 +393,7 @@ class DoubleColumn : public Column {
     /**
      * Destructor of this column.
      */
-    ~DoubleColumn() { delete[] this->array; }
+    ~DoubleColumn() { delete this->array; }
 };
 
 /**
@@ -413,6 +414,7 @@ class BoolColumn : public Column {
         this->array = new BoolArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
+            this->numElements++;
         }
     }
 
@@ -474,7 +476,7 @@ class BoolColumn : public Column {
     /**
      * Destructor of this column.
      */
-    ~BoolColumn() { delete[] this->array; }
+    ~BoolColumn() { delete this->array; }
 };
 
 /*************************************************************************
@@ -496,6 +498,7 @@ class StringColumn : public Column {
         this->array = new Array();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
+            this->numElements++;
         }
     }
 
@@ -562,7 +565,7 @@ class StringColumn : public Column {
     /**
      * Destructor of this StringColumn.
      */
-    ~StringColumn() { delete[] this->array; }
+    ~StringColumn() { delete this->array; }
 };
 
 /**
