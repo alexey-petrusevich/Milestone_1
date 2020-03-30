@@ -93,9 +93,14 @@ Example of starting Demo application:
 * Still haven't implemented working funtionality of distributed KVStore while all other components are operational; add networking functionality with threads and locks
 
 # Status
-At the moment, it is required by us to take care of our technical debt. The following components (with estimated fix time) are to be fixed:
-* Sorer (8-10 hours)
-* DataFrame (5-10 hours)
-* Serialization (5-10 hours)
+Refactoring was successfully done, and the project seems to be working without noticeable problems. However, KVStore has not been fully implemented nor tests for DataFrame were completed. The latter is expected to take 3-5 hours while adding network functionality for the next part of the assignment is expected to take most of the time.  
+Another major problem we have encountered was circular dependencies, which have not been resolved yet. The problem is the major threshold which holds us from completing the rest of the assignment. There are two approaces to solve this problem:
+1) Separate implementation from declaration - put all classes in .h files and move their functionality to .cpp files - this could potentially solve the problem, but we don't know how to compile separate files to avoid circular dependencies at linking stage  
+2) Move everything into one file and use forward declaration - this approach was tried but miserably failed when the compiler required to know about the functions in the class of the forward declaration  
+Current problems are:  
+* ~~Sorer (8-10 hours)
+* DataFrame tests (3-5 hours)
+* ~~Serialization (5-10 hours)
+* Resolve circular dependencies (5+ hours?)
 * Networking interface (10+ hours)
-Sorer and Networking are expected to take the majority of our time to be fixed. The total estimated time to fix solve all the issues are 40-50 hours.
+
