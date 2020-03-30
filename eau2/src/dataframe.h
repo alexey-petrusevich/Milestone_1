@@ -50,7 +50,6 @@ class DataFrame : public Object {
         this->initColumns();
     }
 
-
     static DataFrame* fromColumns(ColumnArray* columnArray) {
         Schema* schema = columnArray->getSchema();
         DataFrame* df = new DataFrame(*schema);
@@ -77,7 +76,7 @@ class DataFrame : public Object {
                 switch (col->get_type()) {
                     case ColType::INTEGER:
                         printf("<%d> ", dynamic_cast<IntColumn*>(col)->get_int(
-                                           rowIndex));
+                                            rowIndex));
                         break;
                     case ColType::DOUBLE:
                         printf("<%.3f> ",
@@ -85,15 +84,16 @@ class DataFrame : public Object {
                                    rowIndex));
                         break;
                     case ColType::BOOLEAN:
-                        printf("<%d> ", dynamic_cast<BoolColumn*>(col)->get_bool(
-                                           rowIndex)
-                                           ? 1
-                                           : 0);
+                        printf(
+                            "<%d> ",
+                            dynamic_cast<BoolColumn*>(col)->get_bool(rowIndex)
+                                ? 1
+                                : 0);
                         break;
                     case ColType::STRING:
                         printf("<\"%s\"> ", dynamic_cast<StringColumn*>(col)
-                                           ->get_string(rowIndex)
-                                           ->cstr_);
+                                                ->get_string(rowIndex)
+                                                ->cstr_);
                         break;
                     default:
                         break;
@@ -308,12 +308,56 @@ class DataFrame : public Object {
     static DataFrame* merge(byte* local, byte** remote, size_t num_nodes) {
         DataFrame* df = DataFrame::fromBytes(local);
         for (size_t index = 0; index < num_nodes; index++) {
-            
+            if (remote[index] == nullptr) {
+                continue;
+            }
             Column* col;
+            Headers header = Deserializer::get_header(remote[index]);
+            switch (header) {
+                case Headers::INT: {
+                    int value = Deserializer::deserialize_int(remote[index]);
+                    col = new IntColumn();
+                    col->push_back(value);
+                    break;
+                }
+                case Headers::DOUBLE: {
+                    double value =
+                        Deserializer::deserialize_double(remote[index]);
+                    col = new DoubleColumn();
+                    col->push_back(value);
+                    break;
+                }
+                case Headers::BOOL: {
+                    bool value = Deserializer::deserialize_bool(remote[index]);
+                    col = new BoolColumn();
+                    col->push_back(value);
+                    break;
+                }
+                case Headers::STRING: {
+                    String* value =
+                        Deserializer::deserialize_string(remote[index]);
+                    col = new StringColumn();
+                    col->push_back(value);
+                    break;
+                }
+                case Headers::INT_ARRAY:
+                {
+                    int* array = Deserializer::deserialize_int_array(remote[index]);
+                    size_t size = Deserializer::num_bytes(remote[index]);
+                    col = new IntColumn();
+                    for (size_t i = 0; i < size; i++) {
+                        col->push_back(array[i]);
+                    }
+                    break;
+                }
+
+                default:
+                    break;
+            }
 
             df->add_column(col);
         }
-        
+
         // TODO implement
         return nullptr;
     }
@@ -345,7 +389,6 @@ class DataFrame : public Object {
     /** Returns the data frame's schema. Modifying the schema after a data frame
      * has been created in undefined. */
     Schema& get_schema() { return *(this->schema); }
-
 
     /** Adds a column this data frame, updates the schema, the new column
      * is external, and appears as the last column of the data frame, the
@@ -509,8 +552,7 @@ class DataFrame : public Object {
         // at the given index
         IVisitor* visitor = new FillRowVisitor(&row);
 
-        for (int colIndex = 0; colIndex < this->columns->size();
-             colIndex++) {
+        for (int colIndex = 0; colIndex < this->columns->size(); colIndex++) {
             // have visitor visit every column and set its values with the
             // values of the given row
             this->columns->get(colIndex)->acceptVisitor(visitor);
@@ -530,8 +572,7 @@ class DataFrame : public Object {
         // in this DataFrame
         IVisitor* visitor = new AddRowVisitor(&row);
 
-        for (int colIndex = 0; colIndex < this->columns->size();
-             colIndex++) {
+        for (int colIndex = 0; colIndex < this->columns->size(); colIndex++) {
             // visit every row and append new value
             this->columns->get(colIndex)->acceptVisitor(visitor);
         }
