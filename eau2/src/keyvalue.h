@@ -1,11 +1,19 @@
-// A1: Part 2
-// lang: CwC
-
 #pragma once
-#include <assert.h>
+#include <cassert>
 
-#include "object.h"
 #include "deserializer.h"
+#include "object.h"
+
+/**
+ * @brief Represents a file that stores various KeyValue classes.
+ * KeyValue is represented by a pair of Object-Object for key and value
+ * respectively, whereas KeyValueBytes is represented by Key and byte as its key
+ * and value.
+ * @file keyvalue.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
+ */
 
 /**
  * @brief Represents Key class to be used in KV-store.

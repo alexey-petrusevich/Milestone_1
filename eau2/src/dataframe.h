@@ -1,10 +1,8 @@
-// lang::CwC
 #pragma once
 
 #include <cstdarg>
 #include <iostream>
 
-//#include "application.h"
 #include "array.h"
 #include "coltypes.h"
 #include "columns.h"

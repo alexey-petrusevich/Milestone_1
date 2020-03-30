@@ -1,5 +1,3 @@
-// lang: CwC
-
 #pragma once
 #include <cassert>
 #include <cfloat>
@@ -11,6 +9,15 @@
 
 #define LOAD_FACTOR 0.75
 #define DEFAULT_MAP_SIZE 100
+
+/**
+ * @brief This file represents a collection of maps holding different types of
+ * KeyValue that could be found in keyvalue.h
+ * @file map.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
+ */
 
 /**
  * @brief Represents a map with keys and values. Both key and value have to

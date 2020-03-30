@@ -1,4 +1,3 @@
-// lang::CwC
 #pragma once
 
 #include <cstdarg>
@@ -63,7 +62,13 @@ class IVisitor : public Object {
     }
 };
 
-// returns the inferred typing of the char*
+/**
+ * Returns the column type of the given sequence of characters. Used in accord
+ * with the parser from sorer.h.
+ *
+ * @param c the sequence of characters representing sorer-type value
+ * @return the type of the column as ColType
+ */
 ColType infer_type(char* c) {
     // missing values
     if (c == nullptr) {
@@ -86,13 +91,16 @@ ColType infer_type(char* c) {
     return ColType::STRING;
 }
 
-/**************************************************************************
- * Column ::
- *
- * Represents one column of a data frame which holds values of a single type.
- * This abstract class defines methods overriden in subclasses. There is
+/**
+ * @brief Represents one column of a data frame which holds values of a single
+ * type. This abstract class defines methods overriden in subclasses. There is
  * one subclass per element type. Columns are mutable, equality is pointer
- * equality. */
+ * equality.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
+ */
 class Column : public Object {
    public:
     size_t numElements;
@@ -166,10 +174,17 @@ class Column : public Object {
      */
     virtual void push_back(String* val) { assert(false); }
 
-    // pushes a character
+    /**
+     * Pushes a value represented by the sequence of characters to this Column.
+     * @param val the c-string representation of the value being pushed to the
+     * bottom of this column
+     */
     virtual void push_back(char* val) { assert(false); }
 
-    // pushes null to the end of this column
+    /**
+     * Pushes the null character to the bottom of this column. The null value
+     * depends on the type of column.
+     */
     virtual void push_nullptr() { assert(false); }
 
     /** Returns the number of elements in the column.
@@ -177,32 +192,83 @@ class Column : public Object {
      */
     virtual size_t size() { return this->numElements; }
 
+    /**
+     * Sets the value of this column with the given integer. If the column is
+     * not IntColumn, throws assertion error.
+     * @param index the column index
+     * @param value the value of the integer being set
+     */
     virtual void set_int(size_t index, int value) { assert(false); }
 
+    /**
+     * Sets the value of this column with the given double. If the column is
+     * not DoubleColumn, throws assertion error.
+     * @param index the column index
+     * @param value the value of the double being set
+     */
     virtual void set_double(size_t index, double value) { assert(false); }
 
+    /**
+     * Sets the value of this column with the given boolean. If the column is
+     * not BoolColumn, throws assertion error.
+     * @param index the column index
+     * @param value the value of the boolean being set
+     */
     virtual void set_bool(size_t index, bool value) { assert(false); }
 
+    /**
+     * Sets the value of this column with the given String. If the column is
+     * not StringColumn, throws assertion error.
+     * @param index the column index
+     * @param value the value of the String being set
+     */
     virtual void set_string(size_t index, String* value) { assert(false); }
 
-    virtual int get_int() { assert(false); }
+    /**
+     * Returns the integer value at the given index. If the column is not of
+     * IntColumn type, throws assertion error.
+     * @param index the index of the requested integer
+     * @return the integer value at the given index
+     */
+    virtual int get_int(size_t index) { assert(false); }
 
-    virtual double get_double() { assert(false); }
+    /**
+     * Returns the double value at the given index. If the column is not of
+     * DoubleColumn type, throws assertion error.
+     * @param index the index of the requested double
+     * @return the double value at the given index
+     */
+    virtual double get_double(size_t index) { assert(false); }
 
-    virtual double get_bool() { assert(false); }
+    /**
+     * Returns the boolean value at the given index. If the column is not of
+     * BoolColumn type, throws assertion error.
+     * @param index the index of the requested boolean
+     * @return the boolean value at the given index
+     */
+    virtual bool get_bool(size_t index) { assert(false); }
 
-    virtual String* get_string() { assert(false); }
+    /**
+     * Returns the String value at the given index. If the column is not of
+     * StringColumn type, throws assertion error.
+     * @param index the index of the requested String
+     * @return the String value at the given index
+     */
+    virtual String* get_string(size_t index) { assert(false); }
 
-    // checks if the value represented by the char* can be added to this column
+    /**
+     * Returns true if the given sequence of characters can be added to this
+     * column.
+     * @param c the sequence of characters as value of sorer type
+     * @return true of the given c-string can be added to this column and false
+     * otherwise
+     */
     virtual bool can_add(char* c) {
         if (c == nullptr || *c == '\0') {
             return true;
         }
         return infer_type(c) <= get_type();
     }
-
-    // returns a pointer to the object at the ith index
-    virtual void* get(size_t i) { return nullptr; }
 
     /**
      * Return the type of this column as a char: 'S', 'B', 'I' and 'F'.
@@ -211,7 +277,11 @@ class Column : public Object {
      */
     char get_type_char() { return static_cast<char>(this->colType); }
 
-    // returns type of the column as Enum
+    /**
+     * Return the type of this column as a one of ColType enum values.
+     *
+     * @return the type of this column as ColType
+     */
     ColType get_type() { return this->colType; }
 
     /**
@@ -231,6 +301,12 @@ class Column : public Object {
     virtual void accept(Fielder* f) = 0;
 
     // returns the string representation of the object at the ith index
+    /**
+     * Returns the object at the given index as c-string.
+     *
+     * @param i index of the object being requested as c-string
+     * @return the c-string representation of the object at the given index
+     */
     virtual char* get_char(size_t i) { return nullptr; }
 
     virtual Object* clone() = 0;
@@ -241,9 +317,12 @@ class Column : public Object {
     virtual ~Column() {}
 };
 
-/*************************************************************************
- * IntColumn::
- * Holds primitive int values, unwrapped.
+/**
+ * @brief Represents a Column that holds primitive int values, unwrapped.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
  */
 class IntColumn : public Column {
    public:
@@ -255,6 +334,12 @@ class IntColumn : public Column {
      */
     IntColumn() : Column(ColType::INTEGER) { this->array = new IntArray(); }
 
+    /**
+     * Constructor of this IntColumn that accepts a pointer to an array of
+     * integers, and the size of the array of integers.
+     * @param array the pointer to the array of integers
+     * @param size number of items in the array
+     */
     IntColumn(int* array, size_t size) : Column(ColType::INTEGER) {
         this->array = new IntArray();
         for (size_t i = 0; i < size; i++) {
@@ -319,7 +404,11 @@ class IntColumn : public Column {
 };
 
 /**
- * Represents a column of double type.
+ * @brief Represents a Column that holds primitive double values, unwrapped.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
  */
 class DoubleColumn : public Column {
    public:
@@ -333,6 +422,12 @@ class DoubleColumn : public Column {
         this->array = new DoubleArray();
     }
 
+    /**
+     * Constructor of this DoubleColumn that accepts a pointer to an array of
+     * doubles, and the size of the array of doubles.
+     * @param array the pointer to the array of doubles
+     * @param size number of items in the array
+     */
     DoubleColumn(double* array, size_t size) : Column(ColType::DOUBLE) {
         this->array = new DoubleArray();
         for (size_t i = 0; i < size; i++) {
@@ -397,7 +492,11 @@ class DoubleColumn : public Column {
 };
 
 /**
- * Represents a column of bool type.
+ * @brief Represents a Column that holds primitive boolean values, unwrapped.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
  */
 class BoolColumn : public Column {
    public:
@@ -409,7 +508,12 @@ class BoolColumn : public Column {
      */
     BoolColumn() : Column(ColType::BOOLEAN) { this->array = new BoolArray(); }
 
-
+    /**
+     * Constructor of this BoolColumn that accepts a pointer to an array of
+     * booleans, and the size of the array of booleans.
+     * @param array the pointer to the array of booleans
+     * @param size number of items in the array
+     */
     BoolColumn(bool* array, size_t size) : Column(ColType::BOOLEAN) {
         this->array = new BoolArray();
         for (size_t i = 0; i < size; i++) {
@@ -479,10 +583,13 @@ class BoolColumn : public Column {
     ~BoolColumn() { delete this->array; }
 };
 
-/*************************************************************************
- * StringColumn::
- * Holds string pointers. The strings are external.  Nullptr is a valid
- * val.
+/**
+ * @brief Represents a Column that holds string pointers. The strings are
+ * external.  Nullptr is a valid val.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
  */
 class StringColumn : public Column {
    public:
@@ -494,6 +601,12 @@ class StringColumn : public Column {
      */
     StringColumn() : Column(ColType::STRING) { this->array = new Array(); }
 
+    /**
+     * Constructor of this StringColumn that accepts a pointer to an array of
+     * Strings, and the size of the array of Strings.
+     * @param array the pointer to the array of Strings
+     * @param size number of items in the array
+     */
     StringColumn(String** array, size_t size) : Column(ColType::STRING) {
         this->array = new Array();
         for (size_t i = 0; i < size; i++) {
@@ -505,7 +618,8 @@ class StringColumn : public Column {
     Object* clone() {
         StringColumn* newCol = new StringColumn();
         for (size_t index = 0; index < this->numElements; index++) {
-            newCol->push_back(dynamic_cast<String*>(this->array->array[index]->clone()));
+            newCol->push_back(
+                dynamic_cast<String*>(this->array->array[index]->clone()));
         }
         return newCol;
     }
@@ -569,7 +683,11 @@ class StringColumn : public Column {
 };
 
 /**
- * Represents an array of Columns.
+ * @brief Represents an array of Column.
+ * @file columns.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
  */
 class ColumnArray : public Object {
    public:

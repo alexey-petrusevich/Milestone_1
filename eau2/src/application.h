@@ -5,20 +5,44 @@
 #include "kvstore.h"
 #include "object.h"
 
-// represents an application
+/**
+ * @brief Represents an application class that starts the KV-store application.
+ * Along with creating a local storage, creates remote storage using network.
+ * For Milestone 3, network nodes are replaced with threads represented by
+ * Thread class.
+ * @file application.h
+ * @author Aliaksei Petrusevich <petrusevich.a@husky.neu.edu>
+ * @author Megha Rao <rao.m@husky.neu.edu>
+ * @date March 30, 2020
+ */
 class Application : public Object {
    public:
     size_t nodeId;
     KVStore kv;
 
-    // constructor of the application
+    /**
+     * Constructor of this application.
+     *
+     * @param nodeId the id of the base node
+     */
     Application(size_t nodeId) : Object() { this->nodeId = nodeId; }
 
-    // starts the application
+    /**
+     * Starts the application.
+     */
     virtual void run_() = 0;
 
-    // returns the node ID of this application
+    /**
+     * Returns the id of this node.
+     *
+     * @return the id of this node as size_t
+     */
     size_t this_node() { return this->nodeId; }
+
+    /**
+     * Destructor of this class.
+     */
+    ~Application() {}
 };
 
 // represents a demo application

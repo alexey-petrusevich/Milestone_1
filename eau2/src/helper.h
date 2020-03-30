@@ -1,5 +1,4 @@
 #pragma once
-// lang::Cpp
 
 #include <cstdlib>
 #include <cstring>
