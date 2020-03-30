@@ -98,9 +98,9 @@ Another major problem we have encountered was circular dependencies, which have 
 1) Separate implementation from declaration - put all classes in .h files and move their functionality to .cpp files - this could potentially solve the problem, but we don't know how to compile separate files to avoid circular dependencies at linking stage  
 2) Move everything into one file and use forward declaration - this approach was tried but miserably failed when the compiler required to know about the functions in the class of the forward declaration  
 Current problems are:  
-* ~~Sorer (8-10 hours)
+* ~~Sorer (8-10 hours)~~
 * DataFrame tests (3-5 hours)
-* ~~Serialization (5-10 hours)
+* ~~Serialization (5-10 hours)~~
 * Resolve circular dependencies (5+ hours?)
 * Networking interface (10+ hours)
 
