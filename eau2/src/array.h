@@ -115,34 +115,6 @@ class Array : public Object {
         return current;
     }
 
-    bool equals(Object* o) {
-        Array* otherArray = dynamic_cast<Array*>(o);
-        if (otherArray == nullptr) {
-            return false;
-        }
-        // check if sizes are the same
-        if (this->size() != otherArray->size()) {
-            return false;
-        }
-        // check every element
-        for (int index = 0; index < this->size(); index++) {
-            // if any of elements is null but not both (XOR), elements are not
-            // the same
-            if ((this->array[index] != nullptr) !=
-                (otherArray->array[index] != nullptr)) {
-                return false;
-            }
-            // if both are not null pointers and are equal
-            if (this->array[index] != nullptr &&
-                otherArray->array[index] != nullptr &&
-                !(this->array[index]->equals(otherArray->array[index]))) {
-                return false;
-            }
-            // otherwise both are whether null pointers or equal
-        }
-        return true;
-    }
-
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
