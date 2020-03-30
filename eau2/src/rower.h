@@ -69,7 +69,7 @@ public:
     SumRower(size_t colIndex) : Rower(colIndex) {
     }
 
-
+    //accept method for sum rower
     virtual bool accept(Row &r) {
         assert(this->colIndex < r.width());
         size_t val = static_cast<size_t>(
@@ -86,7 +86,9 @@ public:
     }
 };
 
-
+/**
+ * Represents a rower that adds multiplies the values in the given column.
+ */
 class MultiplyRower : public Rower {
 public:
     size_t product = 1;
@@ -99,7 +101,7 @@ public:
     MultiplyRower(size_t colIndex) : Rower(colIndex) {
     }
 
-
+    //accept method for multiply rower
     virtual bool accept(Row &r) {
         assert(this->colIndex < r.width());
         size_t val = static_cast<size_t>(
@@ -117,6 +119,9 @@ public:
 };
 
 
+/**
+ * Represents a rower that multiples the values in the given column in parallel
+ */
 class ParallelMultiplyRower : public Rower {
 public:
     size_t product = 1;
@@ -131,7 +136,7 @@ public:
         this->beginRowIndex = beginRowIndex;
     }
 
-
+    //accept method
     virtual bool accept(Row &r) {
         size_t val = static_cast<size_t>(
             dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex));
@@ -139,12 +144,12 @@ public:
         return false;
     }
 
-
+    //clone method
     Object* clone() {
         return new ParallelMultiplyRower(this->colIndex, this->beginRowIndex);
     }
 
-
+    //join delete 
     virtual void join_delete(Rower *other) {
         ParallelMultiplyRower *multiplyRower = dynamic_cast<ParallelMultiplyRower*>(other);
         if (multiplyRower != nullptr) {
@@ -164,7 +169,7 @@ public:
 
 
 /**
- * Represents a rower that adds all the values in the given column.
+ * Represents a rower that adds all the values in the given column in parallel
  */
 class ParallelSumRower : public Rower {
 public:
@@ -180,19 +185,19 @@ public:
         this->beginRowIndex = beginRowIndex;
     }
 
-
+    //accept method
     virtual bool accept(Row &r) {
         int val = dynamic_cast<IntColumn*>(r.columnArray->get(this->colIndex))->get_int(r.rowIndex);
         sum += val;
         return false;
     }
 
-
+    //clone method
     Object* clone() {
         return new ParallelSumRower(this->colIndex, this->beginRowIndex);
     }
 
-
+    //join and then delete
     virtual void join_delete(Rower *other) {
         ParallelSumRower *sumRower = dynamic_cast<ParallelSumRower*>(other);
         if (sumRower != nullptr) {
@@ -241,7 +246,7 @@ public:
         this->endRowIndex = endRowIndex;        
     }
 
-
+    // calls the accept method after going through each row 
     void run() {
         for (size_t rowIndex = this->beginRowIndex; rowIndex < this->endRowIndex; rowIndex++) {
             Row row = Row (this->columnArray, rowIndex);
