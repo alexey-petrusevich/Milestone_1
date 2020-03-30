@@ -180,7 +180,11 @@ class Array : public Object {
     /**
      * The destructor of this Array.
      */
-    ~Array() { delete[] this->array; }
+    ~Array() { 
+        for (int index = 0; index < this->elementsInserted; index++) {
+            delete this->array[index];
+        }
+        delete[] this->array; }
 };
 
 /**

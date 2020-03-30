@@ -4,8 +4,8 @@
 
 int main() {
     ColumnArray* colArr = new ColumnArray();
-    IntColumn* col = new IntColumn();
-    col->push_back(5);
+    StringColumn* col = new StringColumn();
+    col->push_back(new String("a"));
     colArr->append(col);
     Schema* schema = colArr->getSchema();
     DataFrame* df = new DataFrame(*schema);

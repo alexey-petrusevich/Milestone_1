@@ -505,7 +505,7 @@ class StringColumn : public Column {
     Object* clone() {
         StringColumn* newCol = new StringColumn();
         for (size_t index = 0; index < this->numElements; index++) {
-            newCol->push_back(dynamic_cast<String*>(this->array->array[index]));
+            newCol->push_back(dynamic_cast<String*>(this->array->array[index]->clone()));
         }
         return newCol;
     }
