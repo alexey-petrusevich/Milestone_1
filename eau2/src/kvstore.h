@@ -9,7 +9,7 @@ class DataFrame;
 
 // represents a fake netowork node
 class FakeNode : public Thread {
-public:
+   public:
     ByteMap* store;
     size_t nodeId;
     Lock* lock;
@@ -35,8 +35,8 @@ class KVStore : public Object {
     ByteMap* map;
     const size_t num_nodes = 4;
     FakeNode** fake_nodes;
-    //Array* network_nodes;
-    Lock** locks; // for simulating network behavior
+    // Array* network_nodes;
+    Lock** locks;  // for simulating network behavior
 
     /**
      * Constructor of this KVStore.
@@ -69,6 +69,6 @@ class KVStore : public Object {
      */
     DataFrame* wait_and_get(Key key);
 
-    //destructor
+    // destructor
     ~KVStore();
 };

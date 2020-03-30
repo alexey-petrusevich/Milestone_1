@@ -76,15 +76,26 @@ Application
 - stop()
 
 # Use cases
+Application class is the abstract class representing a running KVStore application, which has void run_() method, which starts the application. application.h contains the following classes: Demo and Trivial.
+Example of starting Demo application:
+Demo* demo = new Demo(0); // creates instance of the application; 0 is the nodeId of the node running the application
+demo->run(); // starts the application
+demo->kv.put(key, value); // key - is a new instance of Key class (const char*, size_t); value - serialized object being inserted into the KVStore
+demo->kv.get(key); // returns the serialized object at the given key as DataFrame; returns nullptr if there is no object associated with the given key
+demo->kv.wait_and_get(key); // returns the serialized object as DataFrame at the given key; also checks any remote network nodes if it contains the object with the given key
 
 
 # Open questions
-* 
+~~ Connection between DataFrame and key-value store (represented by Map)~~
+~~ Remove Value and instead make a map that works directly with Key and byte types~~
+~~ Update doc to make more sense. Cleaner, well documented code.~~
+* Resolve circular dependencies for testing: separate declaration from implementation with separate compiling or move everything into one file (might not solve the problem)
+* Still haven't implemented working funtionality of distributed KVStore while all other components are operational; add networking functionality with threads and locks
 
 # Status
-* sorer.h was taken from icicle, another team from Assignment 3. We had to merge their implementation of columns with ours. Their code was most similar to ours in terms of implementation, so it was the easiest for us to take. 
-* We cleaned up a good portion of our memory leak issues. This was done by going through our code and finding problem areas.
-* We reimplemented Map to support Key-Value. We did this mostly because we thought it would be easier with our existing implementation. Also, adding a separate Value class seemed to be cumbersome. 
-* Changed dataframe to work with Columns 
-* Replaced float type with double type - for coltype and columns. 
-* Commented our code so it would be easier for viewer to understand. 
+At the moment, it is required by us to take care of our technical debt. The following components (with estimated fix time) are to be fixed:
+* Sorer (8-10 hours)
+* DataFrame (5-10 hours)
+* Serialization (5-10 hours)
+* Networking interface (10+ hours)
+Sorer and Networking are expected to take the majority of our time to be fixed. The total estimated time to fix solve all the issues are 40-50 hours.
