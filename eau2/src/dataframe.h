@@ -308,6 +308,7 @@ class DataFrame : public Object {
     static DataFrame* merge(byte* local, byte** remote, size_t num_nodes) {
         DataFrame* df = DataFrame::fromBytes(local);
         for (size_t index = 0; index < num_nodes; index++) {
+            
             Column* col;
 
             df->add_column(col);
