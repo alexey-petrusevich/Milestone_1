@@ -175,6 +175,12 @@ class Map : public Object {
         return items;
     }
 
+    /**
+     * Method that checks two objects for equality
+     * 
+     * @param Object - object to be checked for equality 
+     * @return bool - true or false
+     */
     bool equals(Object* o) {
         assert(o != nullptr);
         Map* otherMap = dynamic_cast<Map*>(o);
@@ -202,6 +208,7 @@ class Map : public Object {
         return true;
     }
 
+    //hash method
     size_t hash() {
         size_t hashValue = 0;
         for (size_t index = 0; index < this->tableSize; index++) {
@@ -473,6 +480,12 @@ class ByteMap : public Object {
         return items;
     }
 
+    /**
+     * Method that checks two objects for equality 
+     * 
+     * @param Object - object to be checked for equality 
+     * @return bool - true or false
+     */
     bool equals(Object* o) {
         assert(o != nullptr);
         ByteMap* otherMap = dynamic_cast<ByteMap*>(o);
@@ -503,6 +516,7 @@ class ByteMap : public Object {
         return true;
     }
 
+    //hash method 
     size_t hash() {
         size_t hashValue = 0;
         for (size_t index = 0; index < this->tableSize; index++) {
