@@ -142,6 +142,12 @@ class Array : public Object {
         return true;
     }
 
+    /**
+     * hash method
+     *
+     * @return size_t the hash value 
+     */
+
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
@@ -279,6 +285,12 @@ class IntArray : public Object {
         return current;
     }
 
+    /**
+     * Method to check equality of two objects
+     * 
+     * @param Object* - The object to be checked for equality against this array Object
+     * @return bool - True or false
+     */
     bool equals(Object* o) {
         IntArray* otherArray = dynamic_cast<IntArray*>(o);
         if (otherArray == nullptr) {
@@ -295,6 +307,9 @@ class IntArray : public Object {
         return true;
     }
 
+    /**
+     * Hash method 
+     */
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
@@ -427,7 +442,15 @@ class DoubleArray : public Object {
         return current;
     }
 
+    /** 
+     * Method to check equality of two objects
+     * 
+     * @param Object* - object to be compared for equality
+     * @return bool - true or false
+     */
     bool equals(Object* o) {
+
+        //dynamic casting
         DoubleArray* otherArray = dynamic_cast<DoubleArray*>(o);
         if (otherArray == nullptr) {
             return false;
@@ -445,6 +468,9 @@ class DoubleArray : public Object {
         return true;
     }
 
+    /**
+     * Hash method
+     */
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
@@ -487,6 +513,7 @@ class DoubleArray : public Object {
  * Represents an array of booleans. Does not allow null pointers.
  */
 class BoolArray : public Object {
+
    public:
     bool* array;
     int elementsInserted;
@@ -577,6 +604,12 @@ class BoolArray : public Object {
         return current;
     }
 
+    /**
+     * Method to check equality of two objects
+     * 
+     * @param Object* - object to be compared for equality
+     * @return bool - true or false
+     */
     bool equals(Object* o) {
         BoolArray* otherArray = dynamic_cast<BoolArray*>(o);
         if (otherArray == nullptr) {
@@ -595,6 +628,9 @@ class BoolArray : public Object {
         return true;
     }
 
+    /**
+     * Hash method
+     */
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
@@ -775,6 +811,12 @@ class ColTypeArray : public Object {
         return colType;
     }
 
+    /**
+     * Method to check equality of two objects
+     * 
+     * @param Object* - object to be compared for equality
+     * @return bool - true or false
+     */
     bool equals(Object* o) {
         assert(o != nullptr);
         ColTypeArray* otherArray = dynamic_cast<ColTypeArray*>(o);
@@ -793,7 +835,10 @@ class ColTypeArray : public Object {
         }
         return true;
     }
-
+    
+    /**
+     * Hash method
+     */
     size_t hash() {
         size_t thisHash = 0;
         for (int i = 0; i < this->elementsInserted; i++) {
