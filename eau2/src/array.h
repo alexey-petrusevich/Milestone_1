@@ -114,8 +114,7 @@ class Array : public Object {
         this->array[index] = input;
         return current;
     }
-
-    bool equals(Object* o) {
+       bool equals(Object* o) {
         Array* otherArray = dynamic_cast<Array*>(o);
         if (otherArray == nullptr) {
             return false;
