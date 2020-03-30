@@ -87,6 +87,12 @@ class KeyValue : public Object {
      */
     Object *getValue() { return this->value; }
 
+    /**
+     * Checks equality of two objects 
+     * 
+     * @param Object - object to be checked for equality
+     * @return bool - true or false
+     */ 
     bool equals(Object *o) {
         assert(o != nullptr);
         KeyValue *otherKV = dynamic_cast<KeyValue *>(o);
@@ -97,6 +103,7 @@ class KeyValue : public Object {
                this->value->equals(otherKV->getValue());
     }
 
+    //hash method
     size_t hash() { return this->key->hash() + this->value->hash(); }
 };
 
@@ -146,6 +153,12 @@ class KeyValueBytes : public Object {
      */
     byte *getValue() { return this->value; }
 
+    /**
+     * Method that checks for equality of two objects
+     * 
+     * @param Object - object to be checked for equality 
+     * @return bool - true or false
+     */
     bool equals(Object *o) {
         assert(o != nullptr);
         KeyValueBytes *otherKV = dynamic_cast<KeyValueBytes *>(o);
@@ -159,6 +172,7 @@ class KeyValueBytes : public Object {
                       Deserializer::num_bytes(this->value)) == 0;
     }
 
+    //hash method
     size_t hash() {
         return this->key->hash() + reinterpret_cast<size_t>(this->value);
     }
