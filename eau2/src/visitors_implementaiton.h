@@ -36,24 +36,44 @@ class FillRowVisitor : public IVisitor {
         this->colIndex = 0;
     }
 
+    /**
+     * Visits the IntColumn 
+     * 
+     * @param intColumn - the column of int to be visited
+     */
     virtual void visitIntColumn(IntColumn* intColumn) {
         assert(intColumn != nullptr);
         intColumn->set_int(colIndex, row->get_int(colIndex));
         colIndex++;
     }
 
+    /**
+     * Visits the DoubleColumn 
+     * 
+     * @param doubleColumn - the column of double to be visited
+     */
     virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
         assert(doubleColumn != nullptr);
         doubleColumn->set_double(colIndex, row->get_double(colIndex));
         colIndex++;
     }
 
+    /**
+     * Visits the BoolColumn 
+     * 
+     * @param boolColumn - the column of bool to be visited
+     */
     virtual void visitBoolColumn(BoolColumn* booleanColumn) {
         assert(booleanColumn != nullptr);
         booleanColumn->set_bool(colIndex, row->get_bool(colIndex));
         colIndex++;
     }
 
+    /**
+     * Visits the StringColumn 
+     * 
+     * @param stringColumn - the column of string to be visited
+     */
     virtual void visitStringColumn(StringColumn* stringColumn) {
         assert(stringColumn != nullptr);
         stringColumn->set_string(colIndex, row->get_string(colIndex));
@@ -85,24 +105,44 @@ class AddRowVisitor : public IVisitor {
         this->colIndex = 0;
     }
 
+     /**
+     * Visits the IntColumn 
+     * 
+     * @param intColumn - the column of int to be visited
+     */
     virtual void visitIntColumn(IntColumn* intColumn) {
         assert(intColumn != nullptr);
         intColumn->push_back(row->get_int(colIndex));
         colIndex++;
     }
 
+     /**
+     * Visits the DoubleColumn 
+     * 
+     * @param doubleColumn - the column of double to be visited
+     */
     virtual void visitDoubleColumn(DoubleColumn* doubleColumn) {
         assert(doubleColumn != nullptr);
         doubleColumn->push_back(row->get_double(colIndex));
         colIndex++;
     }
 
+    /**
+     * Visits the BoolColumn 
+     * 
+     * @param boolColumn - the column of bool to be visited
+     */
     virtual void visitBoolColumn(BoolColumn* booleanColumn) {
         assert(booleanColumn != nullptr);
         booleanColumn->push_back(row->get_bool(colIndex));
         colIndex++;
     }
 
+    /**
+     * Visits the StringColumn 
+     * 
+     * @param stringColumn - the column of string to be visited
+     */
     virtual void visitStringColumn(StringColumn* stringColumn) {
         assert(stringColumn != nullptr);
         stringColumn->push_back(row->get_string(colIndex));
