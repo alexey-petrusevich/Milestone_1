@@ -45,7 +45,9 @@ class Application : public Object {
     ~Application() {}
 };
 
-// represents a demo application
+/**
+ * Represents a demo application. Provided as example code in the assignment
+ */
 class Demo : public Application {
    public:
     Key main = Key("main", 0);
@@ -92,10 +94,14 @@ class Demo : public Application {
     }
 };
 
-// represents a trivial application
+/**
+ * Represents a trivial application. Code given in assignment.
+ */
 class Trivial : public Application {
    public:
+   // constructor 
     Trivial(size_t idx) : Application(idx) {}
+
 
     void run_() {
         size_t SZ = 1000 * 1000;
