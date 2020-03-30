@@ -79,14 +79,12 @@ Application
 
 
 # Open questions
-* Connection between DataFrame and key-value store (represented by Map)
-* Remove Value and instead make a map that works directly with Key and byte types
-* Update doc to make more sense. Cleaner, well documented code.
+* 
 
 # Status
-At the moment, it is required by us to take care of our technical debt. The following components (with estimated fix time) are to be fixed:
-* Sorer (8-10 hours)
-* DataFrame (5-10 hours)
-* Serialization (5-10 hours)
-* Networking interface (10+ hours)
-Sorer and Networking are expected to take the majority of our time to be fixed. The total estimated time to fix solve all the issues are 40-50 hours.
+* sorer.h was taken from icicle, another team from Assignment 3. We had to merge their implementation of columns with ours. Their code was most similar to ours in terms of implementation, so it was the easiest for us to take. 
+* We cleaned up a good portion of our memory leak issues. This was done by going through our code and finding problem areas.
+* We reimplemented Map to support Key-Value. We did this mostly because we thought it would be easier with our existing implementation. Also, adding a separate Value class seemed to be cumbersome. 
+* Changed dataframe to work with Columns 
+* Replaced float type with double type - for coltype and columns. 
+* Commented our code so it would be easier for viewer to understand. 
