@@ -305,7 +305,14 @@ class DataFrame : public Object {
         }
     }
 
-    static DataFrame* merge(byte* local, byte** remote) {
+    static DataFrame* merge(byte* local, byte** remote, size_t num_nodes) {
+        DataFrame* df = DataFrame::fromBytes(local);
+        for (size_t index = 0; index < num_nodes; index++) {
+            Column* col;
+
+            df->add_column(col);
+        }
+        
         // TODO implement
         return nullptr;
     }
@@ -342,17 +349,12 @@ class DataFrame : public Object {
     /** Adds a column this data frame, updates the schema, the new column
      * is external, and appears as the last column of the data frame, the
      * name is optional and external. A nullptr column is undefined. */
-    void add_column(Column* col, String* name) {
+    void add_column(Column* col) {
         assert(col != nullptr);
         // append new column to the array of columns
         this->columns->append(col);
         // update schema
-        if (name != nullptr) {
-            this->schema->add_column(static_cast<char>(col->get_type()), name);
-        } else {
-            this->schema->add_column(static_cast<char>(col->get_type()),
-                                     nullptr);
-        }
+        this->schema->add_column(static_cast<char>(col->get_type()));
     }
 
     /** Return the value at the given column and row. Accessing rows or

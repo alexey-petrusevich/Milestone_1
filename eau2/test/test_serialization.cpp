@@ -295,6 +295,62 @@ void testNumBytes(size_t size) {
     OK("number of bytes");
 }
 
+void testGetHeader(size_t size) {
+    int int_value = 5;
+    double double_value = 3.14;
+    bool bool_value = false;
+    String* string_value = new String("hello");
+    int* int_array = new int[size];
+    double* double_array = new double[size];
+    bool* bool_array = new bool[size];
+    String** string_array = new String*[size];
+    char buff[16];
+    for (size_t i = 0; i < size; i++) {
+        int_array[i] = static_cast<int>(i);
+        double_array[i] = i;
+        bool_array[i] = i % 2;
+        sprintf(buff, "%zu", i);
+        string_array[i] = new String(buff);
+    }
+    byte* serialized_int = Serializer::serialize_int(int_value);
+    byte* serialized_double = Serializer::serialize_double(double_value);
+    byte* serialized_bool = Serializer::serialize_bool(bool_value);
+    byte* serialized_string = Serializer::serialize_string(string_value);
+    byte* bytes_int_array = Serializer::serialize_int_array(int_array, size);
+    byte* bytes_double_array =
+        Serializer::serialize_double_array(double_array, size);
+    byte* bytes_bool_array = Serializer::serialize_bool_array(bool_array, size);
+    byte* bytes_string_array =
+        Serializer::serialize_string_array(string_array, size);
+
+    assert(Deserializer::get_header(serialized_int) == Headers::INT);
+    assert(Deserializer::get_header(serialized_double) == Headers::DOUBLE);
+    assert(Deserializer::get_header(serialized_bool) == Headers::BOOL);
+    assert(Deserializer::get_header(serialized_string) == Headers::STRING);
+    assert(Deserializer::get_header(bytes_int_array) == Headers::INT_ARRAY);
+    assert(Deserializer::get_header(bytes_double_array) == Headers::DOUBLE_ARRAY);
+    assert(Deserializer::get_header(bytes_bool_array) == Headers::BOOL_ARRAY);
+    assert(Deserializer::get_header(bytes_string_array) == Headers::STRING_ARRAY);
+
+    delete string_value;
+    delete[] int_array;
+    delete[] double_array;
+    delete[] bool_array;
+    for (size_t i = 0; i < size; i++) {
+        delete string_array[i];
+    }
+    delete[] string_array;
+    delete[] serialized_int;
+    delete[] serialized_double;
+    delete[] serialized_bool;
+    delete[] serialized_string;
+    delete[] bytes_int_array;
+    delete[] bytes_double_array;
+    delete[] bytes_bool_array;
+    delete[] bytes_string_array;
+    OK("get header");
+}
+
 int main() {
     const size_t array_size = 100;
     testSerializeInt();
@@ -307,5 +363,6 @@ int main() {
     testSerializeStringArray(array_size);
     testArraySize(array_size);
     testNumBytes(array_size);
+    testGetHeader(array_size);
     return 0;
 }

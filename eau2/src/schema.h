@@ -66,13 +66,11 @@ public:
     }
 
 
-    /** Add a column of the given type and name (can be nullptr), name
-     * is external.
+    /** Add a column of the given type.
      *
-     * @param typ the type of the column
-     * @param name the name of the given column
+     * @param typ the type of the column as c-string
      */
-    void add_column(char typ, String *name) {
+    void add_column(char typ) {
         // appending the unknown type to types produces assertion error
         // may exit of 'typ' value is not one of the values defined in ColType enumerator
         this->colTypes->append(typ);

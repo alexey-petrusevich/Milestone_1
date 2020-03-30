@@ -221,4 +221,16 @@ class Deserializer : public Object {
         memcpy(&num_bytes, bytes, sizeof(size_t));
         return num_bytes;
     }
+
+    /**
+     * Returns the header type of serialized object.
+     * 
+     * @param bytes serialized objects
+     * @return the header of the serialized object of Header enum type
+     */
+    static Headers get_header(byte* bytes) {
+        Headers header;
+        memcpy(&header, bytes + sizeof(size_t), sizeof(Headers));
+        return header;
+    }
 };

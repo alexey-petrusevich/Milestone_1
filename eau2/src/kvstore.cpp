@@ -51,7 +51,7 @@ DataFrame* KVStore::wait_and_get(Key key) {  // same as get for now
     }
 
     // 2. merge all objects in one DataFrame and return
-    return DataFrame::merge(local_bytes, remote_bytes);
+    return DataFrame::merge(local_bytes, remote_bytes, num_nodes);
 }
 
 KVStore::~KVStore() { delete this->map; }
