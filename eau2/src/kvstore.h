@@ -69,5 +69,6 @@ class KVStore : public Object {
      */
     DataFrame* wait_and_get(Key key);
 
+    //destructor
     ~KVStore();
 };
