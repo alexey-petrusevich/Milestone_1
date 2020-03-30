@@ -45,6 +45,7 @@ public:
         for (size_t colIndex = 0; colIndex < this->numCols; colIndex++) {
             char buffer[50];
             sprintf(buffer, "%zu", colIndex);
+            // this->colNames->append(from.col_name(colIndex));
             this->colNames->append(new String(buffer));
         }
 

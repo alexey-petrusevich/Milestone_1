@@ -9,7 +9,6 @@
 #include "object.h"
 #include "schema.h"
 #include "string.h"
-#include "visitors.h"
 
 /**
  * @brief This file represent implementation of Column class and its
@@ -234,6 +233,8 @@ class Column : public Object {
     // returns the string representation of the object at the ith index
     virtual char* get_char(size_t i) { return nullptr; }
 
+    virtual Object* clone() = 0;
+
     /**
      * Destructor of this column.
      */
@@ -258,7 +259,12 @@ class IntColumn : public Column {
         this->array = new IntArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
+            this->numElements++;
         }
+    }
+
+    Object* clone() {
+        return new IntColumn(this->array->array, this->numElements);
     }
 
     void set_int(size_t index, int val) {
@@ -327,28 +333,15 @@ class DoubleColumn : public Column {
         this->array = new DoubleArray();
     }
 
-    /**
-     * Constructor that accepts the number of elements and the list of elements
-     * to be stored in this column.
-     *
-     * @param n the number of parameters
-     * @param ... the list of elements to be stored in this column
-     */
-    DoubleColumn(int n, ...) : Column(ColType::DOUBLE) {
-        this->array = new DoubleArray(n);
-        va_list list;
-        va_start(list, n);
-        for (int i = 0; i < n; i++) {
-            double val = va_arg(list, double);
-            this->array->append(val);
-        }
-    }
-
     DoubleColumn(double* array, size_t size) : Column(ColType::DOUBLE) {
         this->array = new DoubleArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
+    }
+
+    Object* clone() {
+        return new DoubleColumn(this->array->array, this->numElements);
     }
 
     void set_double(size_t idx, double val) {
@@ -374,7 +367,6 @@ class DoubleColumn : public Column {
         }
         this->push_back(atof(c));
     }
-
 
     char* get_char(size_t index) {
         if (index >= this->numElements) {
@@ -416,28 +408,16 @@ class BoolColumn : public Column {
      */
     BoolColumn() : Column(ColType::BOOLEAN) { this->array = new BoolArray(); }
 
-    /**
-     * Constructor that accepts the number of elements and the list of elements
-     * to be stored in this column.
-     *
-     * @param n the number of parameters
-     * @param ... the list of elements to be stored in this column
-     */
-    BoolColumn(int n, ...) : Column(ColType::BOOLEAN) {
-        this->array = new BoolArray(n);
-        va_list list;
-        va_start(list, n);
-        for (int i = 0; i < n; i++) {
-            bool val = va_arg(list, int);
-            this->array->append(val);
-        }
-    }
 
     BoolColumn(bool* array, size_t size) : Column(ColType::BOOLEAN) {
         this->array = new BoolArray();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
+    }
+
+    Object* clone() {
+        return new BoolColumn(this->array->array, this->numElements);
     }
 
     void set_bool(size_t idx, bool val) {
@@ -512,27 +492,19 @@ class StringColumn : public Column {
      */
     StringColumn() : Column(ColType::STRING) { this->array = new Array(); }
 
-    /**
-     * Constructor that accepts the number of values, a list of values,
-     * and stored the given values in this column.
-     *
-     * @param n number of elements to be inserted
-     * @param ... the list of values to be inserted
-     */
-    StringColumn(int n, ...) : Column(ColType::STRING) {
-        this->array = new Array(n);
-        va_list list;
-        va_start(list, n);
-        for (int i = 0; i < n; i++) {
-            this->array->append(va_arg(list, String*));
-        }
-    }
-
     StringColumn(String** array, size_t size) : Column(ColType::STRING) {
         this->array = new Array();
         for (size_t i = 0; i < size; i++) {
             this->array->append(array[i]);
         }
+    }
+
+    Object* clone() {
+        StringColumn* newCol = new StringColumn();
+        for (size_t index = 0; index < this->numElements; index++) {
+            newCol->push_back(dynamic_cast<String*>(this->array->array[index]));
+        }
+        return newCol;
     }
 
     void set_string(size_t idx, String* val) {
@@ -756,5 +728,10 @@ class ColumnArray : public Object {
     /**
      * The destructor of this Column array.
      */
-    ~ColumnArray() { delete[] this->array; }
+    ~ColumnArray() {
+        for (int i = 0; i < this->elementsInserted; i++) {
+            delete this->array[i];
+        }
+        delete[] this->array;
+    }
 };

@@ -9,7 +9,6 @@
 #include "coltypes.h"
 #include "columns.h"
 #include "deserializer.h"
-#include "fielder.h"
 #include "kvstore.h"
 #include "object.h"
 #include "rower.h"
@@ -17,7 +16,6 @@
 #include "serializer.h"
 #include "string.h"
 #include "thread.h"
-#include "visitors.h"
 #include "visitors_implementaiton.h"
 
 /****************************************************************************
@@ -63,8 +61,9 @@ class DataFrame : public Object {
     static DataFrame* fromColumns(ColumnArray* columnArray) {
         Schema* schema = columnArray->getSchema();
         DataFrame* df = new DataFrame(schema);
-        for (size_t i = 0; i < columnArray->size(); i++) {
-            Column* col = columnArray->get(i);
+        for (int i = 0; i < columnArray->size(); i++) {
+            Column* oldCol = columnArray->get(i);
+            Column* col = dynamic_cast<Column*>(oldCol->clone());
             df->columns->set(i, col);
             if (col->numElements > df->schema->numRows) {
                 df->schema->numRows = col->numElements;
@@ -317,6 +316,7 @@ class DataFrame : public Object {
         return nullptr;
     }
 
+    // initializes columns of this DataFrame
     void initColumns() {
         this->columns = new ColumnArray(this->schema->numCols);
         for (size_t colIndex = 0; colIndex < this->schema->numCols;
@@ -343,6 +343,7 @@ class DataFrame : public Object {
     /** Returns the data frame's schema. Modifying the schema after a data frame
      * has been created in undefined. */
     Schema& get_schema() { return *(this->schema); }
+
 
     /** Adds a column this data frame, updates the schema, the new column
      * is external, and appears as the last column of the data frame, the
@@ -525,7 +526,7 @@ class DataFrame : public Object {
         // at the given index
         IVisitor* visitor = new FillRowVisitor(&row);
 
-        for (size_t colIndex = 0; colIndex < this->columns->size();
+        for (int colIndex = 0; colIndex < this->columns->size();
              colIndex++) {
             // have visitor visit every column and set its values with the
             // values of the given row
@@ -546,7 +547,7 @@ class DataFrame : public Object {
         // in this DataFrame
         IVisitor* visitor = new AddRowVisitor(&row);
 
-        for (size_t colIndex = 0; colIndex < this->columns->size();
+        for (int colIndex = 0; colIndex < this->columns->size();
              colIndex++) {
             // visit every row and append new value
             this->columns->get(colIndex)->acceptVisitor(visitor);

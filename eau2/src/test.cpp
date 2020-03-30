@@ -3,7 +3,7 @@
 
 #include "sorer.h"
 #include "helpers.h"
-#include "column.h"
+#include "columns.h"
 
 /**
  * These functions are used for testing.
@@ -130,11 +130,11 @@ void test_infer_columns_() {
 
     reader->infer_columns_(f, 0, 10000);
 
-    test(reader->len_ == 3, "Number of columns");
-    test(reader->get_col_type(0) == type_bool, "type of column 0");
-    test(reader->get_col_type(1) == type_int, "type of column 1");
-    test(reader->get_col_type(2) == type_string, "type of column 2");
-    test(reader->get_col_type(3) == type_unknown, "type of column 3");
+    test(reader->columnArray->size() == 3, "Number of columns");
+    test(reader->get_col_type(0) == ColType::BOOLEAN, "type of column 0");
+    test(reader->get_col_type(1) == ColType::INTEGER, "type of column 1");
+    test(reader->get_col_type(2) == ColType::STRING, "type of column 2");
+    test(reader->get_col_type(3) == ColType::UNKNOWN, "type of column 3");
 
     delete reader;
 
@@ -149,11 +149,11 @@ void test_read() {
 
     reader->read(f, 0, 10000);
 
-    test(reader->len_ == 3, "Number of columns");
-    test(reader->get_col_type(0) == type_bool, "type of column 0");
-    test(reader->get_col_type(1) == type_int, "type of column 1");
-    test(reader->get_col_type(2) == type_string, "type of column 2");
-    test(reader->get_col_type(3) == type_unknown, "type of column 3");
+    test(reader->columnArray->size() == 3, "Number of columns");
+    test(reader->get_col_type(0) == ColType::BOOLEAN, "type of column 0");
+    test(reader->get_col_type(1) == ColType::INTEGER, "type of column 1");
+    test(reader->get_col_type(2) == ColType::STRING, "type of column 2");
+    test(reader->get_col_type(3) == ColType::UNKNOWN, "type of column 3");
 
     test(strcmp(reader->get_value(0, 0), "0") == 0, "Value at column 0 row 0");
     test(strcmp(reader->get_value(0, 1), "1") == 0, "Value at column 0 row 1");
@@ -211,11 +211,11 @@ void test_partial_file_read() {
 
     reader->read(f, 5, 10000);
 
-    test(reader->len_ == 3, "Number of columns");
-    test(reader->get_col_type(0) == type_bool, "type of column 0");
-    test(reader->get_col_type(1) == type_int, "type of column 1");
-    test(reader->get_col_type(2) == type_string, "type of column 2");
-    test(reader->get_col_type(3) == type_unknown, "type of column 3");
+    test(reader->columnArray->size() == 3, "Number of columns");
+    test(reader->get_col_type(0) == ColType::BOOLEAN, "type of column 0");
+    test(reader->get_col_type(1) == ColType::INTEGER, "type of column 1");
+    test(reader->get_col_type(2) == ColType::STRING, "type of column 2");
+    test(reader->get_col_type(3) == ColType::UNKNOWN, "type of column 3");
 
     test(strcmp(reader->get_value(0, 0), "1") == 0, "Value at column 0 row 0");
     test(strcmp(reader->get_value(1, 0), "12") == 0, "Value at column 1 row 0");
@@ -228,11 +228,11 @@ void test_partial_file_read() {
 
     reader2->read(f, 0, 40);
 
-    test(reader2->len_ == 3, "Number of columns");
-    test(reader2->get_col_type(0) == type_bool, "type of column 0");
-    test(reader2->get_col_type(1) == type_int, "type of column 1");
-    test(reader2->get_col_type(2) == type_string, "type of column 2");
-    test(reader2->get_col_type(3) == type_unknown, "type of column 3");
+    test(reader->columnArray->size() == 3, "Number of columns");
+    test(reader2->get_col_type(0) == ColType::BOOLEAN, "type of column 0");
+    test(reader2->get_col_type(1) == ColType::INTEGER, "type of column 1");
+    test(reader2->get_col_type(2) == ColType::STRING, "type of column 2");
+    test(reader2->get_col_type(3) == ColType::UNKNOWN, "type of column 3");
 
     test(strcmp(reader2->get_value(0, 0), "0") == 0, "Value at column 0 row 0");
     test(strcmp(reader2->get_value(1, 0), "23") == 0, "Value at column 1 row 0");
@@ -247,10 +247,10 @@ void test_partial_file_read() {
 }
 
 void test_can_add() {
-    ColumnBool column_bool = ColumnBool();
-    ColumnInt column_int = ColumnInt();
-    ColumnFloat column_float = ColumnFloat();
-    ColumnString column_string = ColumnString();
+    BoolColumn column_bool = BoolColumn();
+    IntColumn column_int = IntColumn();
+    DoubleColumn column_float = DoubleColumn();
+    StringColumn column_string = StringColumn();
     char buf[2048];
 
     test(column_bool.can_add(strcpy(buf, "")), "Can add '' to boolean column");
@@ -294,15 +294,15 @@ void test_can_add() {
 }
 
 void column_get_type() {
-    ColumnBool column_bool = ColumnBool();
-    ColumnInt column_int = ColumnInt();
-    ColumnFloat column_float = ColumnFloat();
-    ColumnString column_string = ColumnString();
+    BoolColumn column_bool = BoolColumn();
+    IntColumn column_int = IntColumn();
+    DoubleColumn column_float = DoubleColumn();
+    StringColumn column_string = StringColumn();
 
-    test(column_bool.get_type() == type_bool, "Boolean column has correct type");
-    test(column_int.get_type() == type_int, "Integer column has correct type");
-    test(column_float.get_type() == type_float, "Float column has correct type");
-    test(column_string.get_type() == type_string, "String column has correct type");
+    test(column_bool.get_type() == ColType::BOOLEAN, "Boolean column has correct type");
+    test(column_int.get_type() == ColType::INTEGER, "Integer column has correct type");
+    test(column_float.get_type() == ColType::DOUBLE, "Float column has correct type");
+    test(column_string.get_type() == ColType::STRING, "String column has correct type");
 
     OK("Columns with correct type test.");
 }

@@ -244,7 +244,6 @@ public:
 
 
     void run() {
-        size_t colIndex = rower->colIndex;
         for (size_t rowIndex = this->beginRowIndex; rowIndex < this->endRowIndex; rowIndex++) {
             Row row = Row (this->columnArray, rowIndex);
             rower->accept(row);

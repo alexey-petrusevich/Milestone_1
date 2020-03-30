@@ -18,8 +18,6 @@ static const int buff_len = 4096;
 class SOR : public Object {
    public:
     ColumnArray* columnArray;
-    // Column** cols_;  // owned
-    DataFrame* df;
 
     // constructor of the sorer
     SOR() { columnArray = new ColumnArray(); }
@@ -30,7 +28,7 @@ class SOR : public Object {
     // What is the type of the column at the given index? i
     // if the index is too big a -1 is returned
     ColType get_col_type(size_t index) {
-        if (index >= this->columnArray->size()) {
+        if (index >= static_cast<size_t>(this->columnArray->size())) {
             return ColType::UNKNOWN;
         }
         return this->columnArray->get(index)->get_type();
@@ -39,7 +37,7 @@ class SOR : public Object {
     // What is the value for the given column index and row index?
     // If the coluumn or row index are too large a nullptr is returned
     char* get_value(size_t col_index, size_t row_index) {
-        if (col_index >= this->columnArray->size()) {
+        if (col_index >= static_cast<size_t>(this->columnArray->size())) {
             return nullptr;
         }
         return this->columnArray->get(col_index)->get_char(row_index);
@@ -74,8 +72,6 @@ class SOR : public Object {
         seek_(f, from);
         char buf[buff_len];
 
-        size_t total_bytes = 0;
-        size_t row_count = 0;
         if (fgets(buf, buff_len, f) == nullptr) {
             exit(1);
         }
@@ -176,15 +172,16 @@ class SOR : public Object {
         seek_(f, from);
         char buf[buff_len];
 
-        size_t total_bytes = 0;
+        //size_t total_bytes = 0;
 
         // read a line from the file
         while (fgets(buf, buff_len, f) != nullptr) {
-            total_bytes += strlen(buf);
+            //total_bytes += strlen(buf);
+            /*
             if (total_bytes >= len) {
                 break;
             }
-
+            */
             // number of fields
             size_t num_fields;
             // current row could have more columns than infered - parse the
@@ -199,7 +196,7 @@ class SOR : public Object {
             // we skip the row as soon as we find a field that does not match
             // our schema
             bool skip = false;
-            for (size_t i = 0; i < this->columnArray->size(); i++) {
+            for (int i = 0; i < this->columnArray->size(); i++) {
                 if (!this->columnArray->get(i)->can_add(row[i])) {
                     skip = true;
                     break;
@@ -211,11 +208,12 @@ class SOR : public Object {
             }
 
             // add all fields in this row to columns
-            for (size_t i = 0; i < this->columnArray->size(); i++) {
+            for (size_t i = 0; i < static_cast<size_t>(this->columnArray->size()); i++) {
+                Column* col = this->columnArray->get(i);
                 if (i >= num_fields || row[i] == nullptr) {
-                    this->columnArray->get(i)->push_nullptr();
+                    col->push_nullptr();
                 } else {
-                    this->columnArray->get(i)->push_back(row[i]);
+                    col->push_back(row[i]);
                 }
             }
             delete[] row;

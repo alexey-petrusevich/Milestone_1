@@ -307,5 +307,5 @@ int main() {
     testSerializeStringArray(array_size);
     testArraySize(array_size);
     testNumBytes(array_size);
-    return EXIT_SUCCESS;
+    return 0;
 }
