@@ -118,7 +118,12 @@ public:
         return this->numRows;
     }
 
-
+    /**
+     * Method that checks equality between two objects 
+     * 
+     * @param Object - object to be checked for equality 
+     * @return bool - true or false
+     */
     bool equals(Object *o) {
         Schema* otherSchema = dynamic_cast<Schema*>(o);
         if (otherSchema == nullptr) {
@@ -129,7 +134,7 @@ public:
             && this->colTypes->equals(otherSchema->colTypes);
     }
 
-
+    //hash method 
     size_t hash() {
         return this->numCols + this->numRows + this->colTypes->hash();
     }
