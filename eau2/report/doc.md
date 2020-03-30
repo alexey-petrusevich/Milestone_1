@@ -76,19 +76,19 @@ Application
 - stop()
 
 # Use cases
-Application class is the abstract class representing a running KVStore application, which has void run_() method, which starts the application. application.h contains the following classes: Demo and Trivial.
-Example of starting Demo application:
-Demo* demo = new Demo(0); // creates instance of the application; 0 is the nodeId of the node running the application
-demo->run(); // starts the application
-demo->kv.put(key, value); // key - is a new instance of Key class (const char*, size_t); value - serialized object being inserted into the KVStore
-demo->kv.get(key); // returns the serialized object at the given key as DataFrame; returns nullptr if there is no object associated with the given key
-demo->kv.wait_and_get(key); // returns the serialized object as DataFrame at the given key; also checks any remote network nodes if it contains the object with the given key
+Application class is the abstract class representing a running KVStore application, which has void run_() method, which starts the application. application.h contains the following classes: Demo and Trivial.  
+Example of starting Demo application:  
+`Demo* demo = new Demo(0);` - creates instance of the application; 0 is the nodeId of the node running the application<\br >
+`demo->run();` - starts the application  
+`demo->kv.put(key, value);` - key - is a new instance of Key class (const char*, size_t); value - serialized object being inserted into the KVStore  
+`demo->kv.get(key);` // returns the serialized object at the given key as DataFrame; returns nullptr if there is no object associated with the given key  
+`demo->kv.wait_and_get(key);` // returns the serialized object as DataFrame at the given key; also checks any remote network nodes if it contains the object with the given key  
 
 
 # Open questions
-~~ Connection between DataFrame and key-value store (represented by Map)~~
-~~ Remove Value and instead make a map that works directly with Key and byte types~~
-~~ Update doc to make more sense. Cleaner, well documented code.~~
+* ~~Connection between DataFrame and key-value store (represented by Map)~~
+* ~~Remove Value and instead make a map that works directly with Key and byte types~~
+* ~~Update doc to make more sense. Cleaner, well documented code.~~
 * Resolve circular dependencies for testing: separate declaration from implementation with separate compiling or move everything into one file (might not solve the problem)
 * Still haven't implemented working funtionality of distributed KVStore while all other components are operational; add networking functionality with threads and locks
 
