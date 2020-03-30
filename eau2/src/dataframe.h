@@ -5,12 +5,12 @@
 #include <iostream>
 
 //#include "application.h"
-#include "kvstore.h"
 #include "array.h"
 #include "coltypes.h"
 #include "columns.h"
 #include "deserializer.h"
 #include "fielder.h"
+#include "kvstore.h"
 #include "object.h"
 #include "rower.h"
 #include "schema.h"
@@ -64,10 +64,50 @@ class DataFrame : public Object {
         Schema* schema = columnArray->getSchema();
         DataFrame* df = new DataFrame(schema);
         for (size_t i = 0; i < columnArray->size(); i++) {
-            df->add_column(columnArray->get(i), nullptr);
+            Column* col = columnArray->get(i);
+            df->columns->set(i, col);
+            if (col->numElements > df->schema->numRows) {
+                df->schema->numRows = col->numElements;
+            }
         }
-        delete schema;
+        // delete schema;
         return df;
+    }
+
+    // prints this DataFrame to STDOUT as a table
+    void print() {
+        for (size_t rowIndex = 0; rowIndex < this->schema->numRows;
+             rowIndex++) {
+            for (size_t colIndex = 0; colIndex < this->schema->numCols;
+                 colIndex++) {
+                Column* col = this->columns->get(colIndex);
+                switch (col->get_type()) {
+                    case ColType::INTEGER:
+                        printf("<%d> ", dynamic_cast<IntColumn*>(col)->get_int(
+                                           rowIndex));
+                        break;
+                    case ColType::DOUBLE:
+                        printf("<%.3f> ",
+                               dynamic_cast<DoubleColumn*>(col)->get_double(
+                                   rowIndex));
+                        break;
+                    case ColType::BOOLEAN:
+                        printf("<%d> ", dynamic_cast<BoolColumn*>(col)->get_bool(
+                                           rowIndex)
+                                           ? 1
+                                           : 0);
+                        break;
+                    case ColType::STRING:
+                        printf("<\"%s\"> ", dynamic_cast<StringColumn*>(col)
+                                           ->get_string(rowIndex)
+                                           ->cstr_);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            printf("\n");
+        }
     }
 
     static DataFrame* fromArray(Key* key, KVStore* kv, size_t size, int* vals) {

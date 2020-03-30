@@ -16,7 +16,7 @@ void t_false(bool p) {
 
 void testSingleValue() {
     SOR* sor = new SOR();
-    FILE* file = fopen("test.sor", "r");
+    FILE* file = fopen("/home/alexey/NEU/CS_4500/Project/eau2/test/test.sor", "r");
     if (file == nullptr) {
         FAIL();
     }
@@ -27,6 +27,8 @@ void testSingleValue() {
     printf("sorer col array size: %d\n", sor->columnArray->size());
     printf("sorer col array 0 size: %d\n", sor->columnArray->get(0)->size());
     printf("sorer col array 0 type: %c\n", sor->columnArray->get(0)->get_type_char());
+    
+    df->print();
 }
 
 int main() {

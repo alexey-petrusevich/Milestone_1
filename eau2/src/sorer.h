@@ -76,42 +76,32 @@ class SOR : public Object {
 
         size_t total_bytes = 0;
         size_t row_count = 0;
-        while (fgets(buf, buff_len, f) != nullptr && row_count < 500) {
-            row_count++;
-            total_bytes += strlen(buf);
-            if (total_bytes >= len) {
-                break;
-            }
-
-            // get the number of fields (columns)
-            size_t num_fields;
-            char** row = parse_row_(buf, &num_fields);
-
-            for (size_t i = 0; i < num_fields; i++) {
-                if (i >= this->columnArray->size()) {
-                    this->columnArray->append(new BoolColumn());
-                }
-                ColType inferred_type = infer_type(row[i]);
-                if (inferred_type > this->columnArray->get(i)->get_type()) {
-                    // delete cols_[i];
-                    switch (inferred_type) {
-                        case ColType::BOOLEAN:
-                            this->columnArray->append(new BoolColumn());
-                            break;
-                        case ColType::INTEGER:
-                            this->columnArray->append(new IntColumn());
-                            break;
-                        case ColType::DOUBLE:
-                            this->columnArray->append(new DoubleColumn());
-                            break;
-                        default:
-                            this->columnArray->append(new StringColumn());
-                            break;
-                    }
-                }
-            }
-            delete[] row;
+        if (fgets(buf, buff_len, f) == nullptr) {
+            exit(1);
         }
+
+        // get the number of fields (columns)
+        size_t num_fields;
+        char** row = parse_row_(buf, &num_fields);
+
+        for (size_t i = 0; i < num_fields; i++) {
+            ColType inferred_type = infer_type(row[i]);
+            switch (inferred_type) {
+                case ColType::BOOLEAN:
+                    this->columnArray->append(new BoolColumn());
+                    break;
+                case ColType::INTEGER:
+                    this->columnArray->append(new IntColumn());
+                    break;
+                case ColType::DOUBLE:
+                    this->columnArray->append(new DoubleColumn());
+                    break;
+                default:
+                    this->columnArray->append(new StringColumn());
+                    break;
+            }
+        }
+        delete[] row;
     }
 
     // Find the start of the field value and null terminate it.
