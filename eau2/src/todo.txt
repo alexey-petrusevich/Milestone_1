@@ -1,8 +1,0 @@
-- complete implementation of KVStore with FakeNodes (Alex)
-- get rid of memory leaks in dataframe (Alex)
-- test code in the DataFrame and relevant classe (Alex)
-- update documentaion (Megha)
-
-
-2) tried to clean up memory leaks issues
-3) reimplemented map instead of creating Value class
