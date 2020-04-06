@@ -89,12 +89,13 @@ Example of starting Demo application:
 * ~~Connection between DataFrame and key-value store (represented by Map)~~
 * ~~Remove Value and instead make a map that works directly with Key and byte types~~
 * ~~Update doc to make more sense. Cleaner, well documented code.~~
-* Resolve circular dependencies for testing: separate declaration from implementation with separate compiling or move everything into one file (might not solve the problem)
+* ~~Resolve circular dependencies for testing: separate declaration from implementation with separate compiling or move everything into one file (might not solve the problem)~~
 * Still haven't implemented working funtionality of distributed KVStore while all other components are operational; add networking functionality with threads and locks
+* How to solve the issue with interdependencies?
 
 # Status
 Separating declaration and implementaiton was successfull - there are no syntax or dependency errors caught by VSCode IDE. The project now has an organized structure with all headers located at include/eau2/ directory with subdirectories for each part of the assignment. Similarly, source code accompanying all the headers is cloated at src/ directory with the same structure as in include/eau2/. Likewise, test/ directory has been created to follow the same strucutre.
-Due to this complexity, we have decided to use CMake to resolve any interdependencies. Unfortunately, we still haven't resolved the problem completely. At this point it is very unlikely we will fully complete the project. Yet, we will continue working on the project and complete as much as we can.
+Due to this complexity, we have decided to use CMake to resolve any interdependencies. All CMake related files were moved to build/ directory. The program can be lanched from eau2/ directory using 'make' command. Unfortunately, we still haven't resolved the problem completely. At this point it is very unlikely we will fully complete the project. Yet, we will continue working and complete as much as we can.
 
 Here is the issue with CMake:
 <img src="cmake.png">
