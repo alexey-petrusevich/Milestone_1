@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/handle_rower_thread.h"
+#include "../../../include/eau2/dataframe/handle_rower_thread.h"
 
 HandleRowerThread::HandleRowerThread(ColumnArray *columnArray, Rower *rower,
                                      size_t beginRowIndex, size_t endRowIndex)

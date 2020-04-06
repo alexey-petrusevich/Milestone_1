@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/columns/double_column.h"
+#include "../../../include/eau2/dataframe/columns/double_column.h"
 
 #include <iostream>
 
@@ -61,7 +61,5 @@ void DoubleColumn::accept(Fielder* f) {
     assert(f != nullptr);
     f->accept(this->array->get(f->rowIndex));
 }
-
-DoubleColumn* DoubleColumn::as_double() { return this; }
 
 DoubleColumn::~DoubleColumn() { delete this->array; }

@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/columns/bool_column.h"
+#include "../../../include/eau2/dataframe/columns/bool_column.h"
 
 #include <iostream>
 
@@ -66,7 +66,5 @@ void BoolColumn::accept(Fielder* f) {
     assert(f != nullptr);
     f->accept(this->array->get(f->rowIndex));
 }
-
-BoolColumn* BoolColumn::as_bool() { return this; }
 
 BoolColumn::~BoolColumn() { delete this->array; }

@@ -2,6 +2,8 @@
 #include "../../collections/arrays/double_array.h"
 #include "column.h"
 
+class IVisitor;
+
 /**
  * @brief Represents a Column that holds primitive double values, unwrapped.
  * @file columns.h

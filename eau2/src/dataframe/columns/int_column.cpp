@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/columns/int_column.h"
+#include "../../../include/eau2/dataframe/columns/int_column.h"
 
 #include <iostream>
 
@@ -61,6 +61,5 @@ void IntColumn::accept(Fielder* f) {
     f->accept(this->array->get(f->rowIndex));
 }
 
-IntColumn* IntColumn::as_int() { return this; }
 
 IntColumn::~IntColumn() { delete this->array; }

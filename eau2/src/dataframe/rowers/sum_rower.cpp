@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/rowers/sum_rower.h"
+#include "../../../include/eau2/dataframe/rowers/sum_rower.h"
 
 SumRower::SumRower(size_t colIndex) : Rower(colIndex) {}
 

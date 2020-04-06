@@ -1,17 +1,10 @@
-#include "../../include/eau2/dataframe/columns/column.h"
+#include "../../../include/eau2/dataframe/columns/column.h"
 
 Column::Column(ColType colType) : Object() {
     this->colType = colType;
     this->numElements = 0;
 }
 
-IntColumn* Column::as_int() { return nullptr; }
-
-DoubleColumn* Column::as_double() { return nullptr; }
-
-BoolColumn* Column::as_bool() { return nullptr; }
-
-StringColumn* Column::as_string() { return nullptr; }
 
 void Column::push_back(int val) { assert(false); }
 

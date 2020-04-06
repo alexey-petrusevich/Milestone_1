@@ -1,4 +1,4 @@
-#include "../../include/eau2/collections/arrays/column_array.h"
+#include "../../../include/eau2/collections/arrays/column_array.h"
 
 ColumnArray::ColumnArray() : Object() {
     this->array = new Column*[DEFAULT_ARRAY_SIZE];

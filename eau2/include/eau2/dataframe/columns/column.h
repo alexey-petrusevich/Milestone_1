@@ -4,13 +4,10 @@
 
 #include "../coltypes.h"
 #include "../fielders/fielder.h"
-#include "../utils/object.h"
-#include "../utils/string.h"
+#include "../../utils/object.h"
+#include "../../utils/string.h"
 #include "../visitors/visitor.h"
-#include "bool_column.h"
-#include "double_column.h"
-#include "int_column.h"
-#include "string_column.h"
+
 
 /**
  * @brief This file represent implementation of Column class and its
@@ -37,35 +34,6 @@ class Column : public Object {
      */
     Column(ColType colType);
 
-    /** Type converters: Return the same column under its actual type, or
-     *  nullptr if of the wrong type.  */
-    /**
-     * Returns this column as IntColumn.
-     *
-     * @return this column as IntColumn
-     */
-    virtual IntColumn* as_int();
-
-    /**
-     * Returns this column as DoubleColumn.
-     *
-     * @return this column as DoubleColumn
-     */
-    virtual DoubleColumn* as_double();
-
-    /**
-     * Returns this column as BoolColumn.
-     *
-     * @return this column as BoolColumn
-     */
-    virtual BoolColumn* as_bool();
-
-    /**
-     * Returns this column as StringColumn.
-     *
-     * @return this column as StringColumn
-     */
-    virtual StringColumn* as_string();
 
     /** Type appropriate push_back methods. Calling the wrong method is
      * undefined behavior. **/

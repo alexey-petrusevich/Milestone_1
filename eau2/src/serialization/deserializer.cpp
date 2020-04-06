@@ -1,4 +1,4 @@
-#include "../../include/eau2/serialization/deserializer.h"
+#include "../../../include/eau2/serialization/deserializer.h"
 
 #include <cassert>
 #include <cstdlib>

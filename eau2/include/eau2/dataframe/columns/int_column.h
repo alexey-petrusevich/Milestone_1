@@ -2,6 +2,8 @@
 #include "../../collections/arrays/int_array.h"
 #include "column.h"
 
+class IVisitor;
+
 /**
  * @brief Represents a Column that holds primitive int values, unwrapped.
  * @file columns.h
@@ -44,8 +46,6 @@ class IntColumn : public Column {
     void acceptVisitor(IVisitor* visitor);
 
     void accept(Fielder* f);
-
-    IntColumn* as_int();
 
     /**
      * Destructor of IntColumn.

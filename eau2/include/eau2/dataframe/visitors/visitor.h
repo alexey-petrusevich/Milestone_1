@@ -4,6 +4,11 @@
 #include "../columns/int_column.h"
 #include "../columns/string_column.h"
 
+class IntColumn;
+class DoubleColumn;
+class BoolColumn;
+class StringColumn;
+
 /**
  * @brief This file represents various implementations of IVisitor class.
  * Although it was originally placed here, due to circular dependency the

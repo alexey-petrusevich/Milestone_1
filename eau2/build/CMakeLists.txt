@@ -14,20 +14,20 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 # create subdirectories for tests
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/application)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections/arrays)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections/maps)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/columns)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/fielders)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/rowers)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/visitors)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/kvstore)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/network)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/serialization)
-add_custom_target(make_bin_application ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/sorer)
+add_custom_target(mkdir_test ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test)
+add_custom_target(mkdir_test_app ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/application)
+add_custom_target(mkdir_test_collections ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections)
+add_custom_target(mkdir_test_collections_array ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections/arrays)
+add_custom_target(mkdir_test_collections_maps ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/collections/maps)
+add_custom_target(mkdir_test_dataframe ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe)
+add_custom_target(mkdir_test_dataframe_columns ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/columns)
+add_custom_target(mkdir_test_dataframe_fielders ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/fielders)
+add_custom_target(mkdir_test_dataframe_rowers ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/rowers)
+add_custom_target(mkdir_test_dataframe_visitors ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/dataframe/visitors)
+add_custom_target(mkdir_test_kvstore ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/kvstore)
+add_custom_target(mkdir_test_network ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/network)
+add_custom_target(mkdir_test_dataframe_serialization ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/serialization)
+add_custom_target(mkdir_test_dataframe_sorer ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/test/sorer)
 
 
 # set the path to include directories
@@ -36,9 +36,9 @@ include_directories(../include)
 # compile libraries
 
 # application
-add_library(application_lib STATIC ../src/application/application.cpp)
-add_library(demo_lib STATIC ../src/application/demo.cpp)
-add_library(trivial_lib STATIC ../src/application/trivial.cpp)
+add_library(application_lib STATIC ../src/applications/application.cpp)
+add_library(demo_lib STATIC ../src/applications/demo.cpp)
+add_library(trivial_lib STATIC ../src/applications/trivial.cpp)
 
 # collections 
 # (arrays)
@@ -100,7 +100,7 @@ add_library(helpers_lib STATIC ../src/sorer/helpers.cpp)
 
 # utils
 add_library(counter_lib STATIC ../src/utils/counter.cpp)
-add_library(helper_lib STATIC ../src/utils/helper.cpp)
+#add_library(helper_lib STATIC ../include/eau2/utils/helper.h)
 add_library(lock_lib STATIC ../src/utils/lock.cpp)
 add_library(object_lib STATIC ../src/utils/object.cpp)
 add_library(strbuf_lib STATIC ../src/utils/strbuf.cpp)
@@ -135,7 +135,7 @@ target_link_libraries(map_lib object_lib keyvalue_lib)
 
 # (columns)
 target_link_libraries(bool_column_lib bool_array_lib column_lib)
-target_link_libraries(column_lib fielder_lib object_lib string_lib visitor_lib bool_column_lib double_column_lib int_column_lib string_column_lib coltypes_lib)
+target_link_libraries(column_lib fielder_lib object_lib string_lib visitor_lib coltypes_lib)
 target_link_libraries(double_column_lib double_array_lib column_lib)
 target_link_libraries(int_column_lib int_array_lib column_lib)
 target_link_libraries(string_column_lib array_lib column_lib)
@@ -191,5 +191,5 @@ target_link_libraries(test_serialization deserializer_lib serializer_lib)
 
 # sorer
 add_executable(test_sorer ../test/sorer/test_sorer.cpp)
-target_link_libraries(test_sorer sorer_lib helper_lib)
+target_link_libraries(test_sorer sorer_lib helpers_lib)
 

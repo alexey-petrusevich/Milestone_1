@@ -2,6 +2,8 @@
 #include "../../collections/arrays/bool_array.h"
 #include "column.h"
 
+class IVisitor;
+
 /**
  * @brief Represents a Column that holds primitive boolean values, unwrapped.
  * @file columns.h
@@ -44,8 +46,6 @@ class BoolColumn : public Column {
     void acceptVisitor(IVisitor* visitor);
 
     void accept(Fielder* f);
-
-    BoolColumn* as_bool();
 
     /**
      * Destructor of this column.

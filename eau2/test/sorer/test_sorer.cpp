@@ -2,8 +2,8 @@
 #include <cstring>
 #include <iostream>
 
-#include "../../include/eau2/sorer/sorer.h"
-#include "../../include/eau2/utils/helper.h"
+#include "../../../include/eau2/sorer/sorer.h"
+#include "../../../include/eau2/utils/helper.h"
 
 #define FILE_INT_COL "test/sorer/input/test_int_col.sor"
 #define FILE_DOUBLE_COL "test/sorer/input/test_double_col.sor"

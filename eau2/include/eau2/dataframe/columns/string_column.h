@@ -2,6 +2,8 @@
 #include "../../collections/arrays/array.h"
 #include "column.h"
 
+class IVisitor;
+
 /**
  * @brief Represents a Column that holds string pointers. The strings are
  * external.  Nullptr is a valid val.
@@ -45,8 +47,6 @@ class StringColumn : public Column {
     void acceptVisitor(IVisitor* visitor);
 
     void accept(Fielder* f);
-
-    StringColumn* as_string();
 
     /**
      * Destructor of this StringColumn.

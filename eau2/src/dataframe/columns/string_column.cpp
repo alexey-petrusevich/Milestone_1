@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/columns/string_column.h"
+#include "../../../include/eau2/dataframe/columns/string_column.h"
 
 StringColumn::StringColumn() : Column(ColType::STRING) {
     this->array = new Array();
@@ -72,7 +72,4 @@ void StringColumn::accept(Fielder* f) {
     f->accept(this->array->get(f->rowIndex));
 }
 
-StringColumn* StringColumn::as_string() { return this; }
-
 StringColumn::~StringColumn() { delete this->array; }
-

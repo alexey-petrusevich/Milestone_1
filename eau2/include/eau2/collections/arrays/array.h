@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-#include "../utils/object.h"
-#include "../utils/string.h"
+#include "../../utils/object.h"
+#include "../../utils/string.h"
 
 #define DEFAULT_ARRAY_SIZE 100
 

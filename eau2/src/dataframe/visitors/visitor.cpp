@@ -1,4 +1,4 @@
-#include "../../include/eau2/dataframe/visitors/visitor.h"
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
 
 void IVisitor::visitIntColumn(IntColumn* intColumn) { assert(false); }
 
