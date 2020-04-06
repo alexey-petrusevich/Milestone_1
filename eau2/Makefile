@@ -1,13 +1,14 @@
-.PHONY: test
+run: compile test_all
+
 compile:
-	g++ -g -Wall -pedantic -std=c++11 test/test_serialization.cpp -o test/test_serialization
-	g++ -g -Wall -pedantic -std=c++11 test/test_sorer.cpp -o test/test_sorer
-	
-test:
-	test/test_serialization
-	test/test_sorer
-	
+	cmake build/CmakeLists.txt
+	cd build/ && make
+test_all:
+	./bin/test_serialization
+	./bin/test_sorer
 clean:
-	rm test/test_serialization
-	rm test/test_sorer
-	
+	rm -rf bin/
+	rm -rf build/CMakeFiles/
+	rm build/cmake_install.cmake
+	rm build/CMakeCache.txt
+	rm build/Makefile

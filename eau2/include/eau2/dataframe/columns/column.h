@@ -9,7 +9,6 @@
 #include "../visitors/visitor.h"
 #include "bool_column.h"
 #include "double_column.h"
-#include "helpers.h"
 #include "int_column.h"
 #include "string_column.h"
 

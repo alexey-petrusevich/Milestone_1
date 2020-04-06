@@ -1,5 +1,7 @@
 #include "../../include/eau2/dataframe/columns/double_column.h"
 
+#include <iostream>
+
 DoubleColumn::DoubleColumn() : Column(ColType::DOUBLE) {
     this->array = new DoubleArray();
 }

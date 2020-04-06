@@ -3,6 +3,7 @@
 
 #include "../utils/object.h"
 #include "../utils/string.h"
+#include "headers.h"
 
 /**
  * @brief Represents a class that contains various method for serializaing

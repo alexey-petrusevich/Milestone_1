@@ -1,6 +1,6 @@
 #pragma once
-#include "column.h"
 #include "../../collections/arrays/array.h"
+#include "column.h"
 
 /**
  * @brief Represents a Column that holds string pointers. The strings are

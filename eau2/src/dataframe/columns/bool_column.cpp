@@ -1,5 +1,7 @@
 #include "../../include/eau2/dataframe/columns/bool_column.h"
 
+#include <iostream>
+
 BoolColumn::BoolColumn() : Column(ColType::BOOLEAN) {
     this->array = new BoolArray();
 }

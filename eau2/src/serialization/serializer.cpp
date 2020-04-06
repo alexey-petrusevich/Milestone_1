@@ -2,8 +2,6 @@
 
 #include <cstring>
 
-#include "../../include/eau2/serialization/headers.h"
-
 byte* Serializer::serialize_int(int value) {
     size_t num_bytes = sizeof(size_t) + sizeof(Headers) + sizeof(int);
     size_t displacement = 0;

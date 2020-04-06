@@ -27,24 +27,4 @@ enum class ColType {
  * @param c the sequence of characters representing sorer-type value
  * @return the type of the column as ColType
  */
-ColType infer_type(char* c) {
-    // missing values
-    if (c == nullptr) {
-        return ColType::BOOLEAN;
-    }
-    // check boolean
-    if (strlen(c) == 1) {
-        if ((*c == '0') || (*c == '1')) {
-            return ColType::BOOLEAN;
-        }
-    }
-    // check int
-    if (is_int(c)) {
-        return ColType::INTEGER;
-    }
-    // check float
-    if (is_float(c)) {
-        return ColType::DOUBLE;
-    }
-    return ColType::STRING;
-}
+ColType infer_type(char* c);

@@ -1,5 +1,7 @@
 #include "../../include/eau2/dataframe/columns/int_column.h"
 
+#include <iostream>
+
 IntColumn::IntColumn() : Column(ColType::INTEGER) {
     this->array = new IntArray();
 }
