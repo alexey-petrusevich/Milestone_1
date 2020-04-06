@@ -93,14 +93,15 @@ Example of starting Demo application:
 * Still haven't implemented working funtionality of distributed KVStore while all other components are operational; add networking functionality with threads and locks
 
 # Status
-Refactoring was successfully done, and the project seems to be working without noticeable problems. However, KVStore has not been fully implemented nor tests for DataFrame were completed. The latter is expected to take 3-5 hours while adding network functionality for the next part of the assignment is expected to take most of the time.  
-Another major problem we have encountered was circular dependencies, which have not been resolved yet. The problem is the major threshold which holds us from completing the rest of the assignment. There are two approaces to solve this problem:
-1) Separate implementation from declaration - put all classes in .h files and move their functionality to .cpp files - this could potentially solve the problem, but we don't know how to compile separate files to avoid circular dependencies at linking stage  
-2) Move everything into one file and use forward declaration - this approach was tried but miserably failed when the compiler required to know about the functions in the class of the forward declaration  
-Current problems are:  
+Separating declaration and implementaiton was successfull - there are no syntax or dependency errors caught by VSCode IDE. The project now has an organized structure with all headers located at include/eau2/ directory with subdirectories for each part of the assignment. Similarly, source code accompanying all the headers is cloated at src/ directory with the same structure as in include/eau2/. Likewise, test/ directory has been created to follow the same strucutre.
+Due to this complexity, we have decided to use CMake to resolve any interdependencies. Unfortunately, we still haven't resolved the problem completely. At this point it is very unlikely we will fully complete the project. Yet, we will continue working on the project and complete as much as we can.
+
+Here is the issue with CMake:
+<img src="cmake.png">
+
 * ~~Sorer (8-10 hours)~~
 * DataFrame tests (3-5 hours)
 * ~~Serialization (5-10 hours)~~
-* Resolve circular dependencies (5+ hours?)
+* Resolve circular dependencies (?? hours?)
 * Networking interface (10+ hours)
 
