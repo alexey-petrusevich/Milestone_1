@@ -1,5 +1,9 @@
 #include "../../../include/eau2/dataframe/columns/string_column.h"
 
+#include <cassert>
+
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
+
 StringColumn::StringColumn() : Column(ColType::STRING) {
     this->array = new Array();
 }
@@ -71,5 +75,7 @@ void StringColumn::accept(Fielder* f) {
     assert(f != nullptr);
     f->accept(this->array->get(f->rowIndex));
 }
+
+StringColumn* StringColumn::as_string() { return this; }
 
 StringColumn::~StringColumn() { delete this->array; }

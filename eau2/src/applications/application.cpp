@@ -1,6 +1,7 @@
 #include "../../include/eau2/application/application.h"
 
 #include <iostream>
+#include <cassert>
 
 Application::Application(size_t nodeId) : Object() { this->nodeId = nodeId; }
 

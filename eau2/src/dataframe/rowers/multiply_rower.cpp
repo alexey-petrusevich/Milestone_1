@@ -1,5 +1,9 @@
 #include "../../../include/eau2/dataframe/rowers/multiply_rower.h"
 
+#include <cassert>
+
+#include "../../../include/eau2/dataframe/columns/int_column.h"
+
 MultiplyRower::MultiplyRower(size_t colIndex) : Rower(colIndex) {}
 
 bool MultiplyRower::accept(Row &r) {

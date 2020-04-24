@@ -1,10 +1,13 @@
 #include "../../../include/eau2/dataframe/columns/column.h"
 
+#include <cassert>
+
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
+
 Column::Column(ColType colType) : Object() {
     this->colType = colType;
     this->numElements = 0;
 }
-
 
 void Column::push_back(int val) { assert(false); }
 
@@ -48,5 +51,21 @@ char Column::get_type_char() { return static_cast<char>(this->colType); }
 ColType Column::get_type() { return this->colType; }
 
 char* Column::get_char(size_t i) { return nullptr; }
+
+IntColumn* Column::as_int() {
+    assert(false);
+}
+
+DoubleColumn* Column::as_double() {
+    assert(false);
+}
+
+BoolColumn* Column::as_bool() {
+    assert(false);
+}
+
+StringColumn* Column::as_string() {
+    assert(false);
+}
 
 Column::~Column() {}

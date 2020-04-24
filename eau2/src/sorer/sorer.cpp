@@ -5,6 +5,11 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "../../include/eau2/dataframe/columns/bool_column.h"
+#include "../../include/eau2/dataframe/columns/double_column.h"
+#include "../../include/eau2/dataframe/columns/int_column.h"
+#include "../../include/eau2/dataframe/columns/string_column.h"
+
 SOR::SOR() { columnArray = new ColumnArray(); }
 
 SOR::~SOR() { delete columnArray; }

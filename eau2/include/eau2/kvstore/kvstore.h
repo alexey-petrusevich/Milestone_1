@@ -4,6 +4,8 @@
 #include "../utils/lock.h"
 #include "../utils/thread.h"
 
+class DataFrame;
+
 // represents a fake netowork node
 class FakeNode : public Thread {
    public:

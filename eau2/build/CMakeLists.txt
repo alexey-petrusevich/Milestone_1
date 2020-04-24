@@ -100,7 +100,7 @@ add_library(helpers_lib STATIC ../src/sorer/helpers.cpp)
 
 # utils
 add_library(counter_lib STATIC ../src/utils/counter.cpp)
-#add_library(helper_lib STATIC ../include/eau2/utils/helper.h)
+add_library(helper_lib STATIC ../src/utils/helper.cpp)
 add_library(lock_lib STATIC ../src/utils/lock.cpp)
 add_library(object_lib STATIC ../src/utils/object.cpp)
 add_library(strbuf_lib STATIC ../src/utils/strbuf.cpp)
@@ -180,7 +180,7 @@ target_link_libraries(lock_lib object_lib)
 target_link_libraries(object_lib helper_lib)
 target_link_libraries(strbuf_lib object_lib string_lib)
 target_link_libraries(string_lib object_lib)
-target_link_libraries(thread_lib object_lib string_lib)
+target_link_libraries(thread_lib object_lib string_lib pthread)
 
 
 # tests
@@ -191,5 +191,5 @@ target_link_libraries(test_serialization deserializer_lib serializer_lib)
 
 # sorer
 add_executable(test_sorer ../test/sorer/test_sorer.cpp)
-target_link_libraries(test_sorer sorer_lib helpers_lib)
+target_link_libraries(test_sorer sorer_lib helpers_lib int_column_lib double_column_lib bool_column_lib string_column_lib)
 

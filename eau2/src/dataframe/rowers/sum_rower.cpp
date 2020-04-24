@@ -1,5 +1,9 @@
 #include "../../../include/eau2/dataframe/rowers/sum_rower.h"
 
+#include <cassert>
+
+#include "../../../include/eau2/dataframe/columns/int_column.h"
+
 SumRower::SumRower(size_t colIndex) : Rower(colIndex) {}
 
 bool SumRower::accept(Row &r) {

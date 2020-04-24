@@ -2,12 +2,17 @@
 
 #include <cstdarg>
 
+#include "../../utils/object.h"
+//#include "../../utils/string.h"
 #include "../coltypes.h"
 #include "../fielders/fielder.h"
-#include "../../utils/object.h"
-#include "../../utils/string.h"
-#include "../visitors/visitor.h"
+//#include "../visitors/visitor.h"
 
+class IVisitor;
+class IntColumn;
+class DoubleColumn;
+class BoolColumn;
+class StringColumn;
 
 /**
  * @brief This file represent implementation of Column class and its
@@ -33,7 +38,6 @@ class Column : public Object {
      * Default constructor of the column.
      */
     Column(ColType colType);
-
 
     /** Type appropriate push_back methods. Calling the wrong method is
      * undefined behavior. **/
@@ -177,6 +181,14 @@ class Column : public Object {
      * @param f fielder being used for traversal
      */
     virtual void acceptVisitor(IVisitor* visitor) = 0;
+
+    virtual BoolColumn* as_bool();
+
+    virtual IntColumn* as_int();
+
+    virtual DoubleColumn* as_double();
+
+    virtual StringColumn* as_string();
 
     /**
      * Accepts a Fielder and calls 'accept' method of the corresponding

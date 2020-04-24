@@ -1,4 +1,8 @@
 #pragma once
+#include "../columns/bool_column.h"
+#include "../columns/double_column.h"
+#include "../columns/int_column.h"
+#include "../columns/string_column.h"
 #include "rower.h"
 
 /**
@@ -17,13 +21,7 @@ class ParallelMultiplyRower : public Rower {
     ParallelMultiplyRower(size_t colIndex, size_t beginRowIndex);
 
     // accept method
-    virtual bool accept(Row &r) {
-        size_t val = static_cast<size_t>(
-            dynamic_cast<IntColumn *>(r.columnArray->get(this->colIndex))
-                ->get_int(r.rowIndex));
-        product *= val;
-        return false;
-    }
+    virtual bool accept(Row &r);
 
     // clone method
     Object *clone();

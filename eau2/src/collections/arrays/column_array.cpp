@@ -1,4 +1,5 @@
 #include "../../../include/eau2/collections/arrays/column_array.h"
+#include <cassert>
 
 ColumnArray::ColumnArray() : Object() {
     this->array = new Column*[DEFAULT_ARRAY_SIZE];

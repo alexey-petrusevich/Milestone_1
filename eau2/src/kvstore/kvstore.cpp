@@ -1,4 +1,4 @@
-#include "../../../include/eau2/kvstore/kvstore.h"
+#include "../../include/eau2/kvstore/kvstore.h"
 
 FakeNode::FakeNode(size_t nodeId, Lock* lock) {
     this->nodeId = nodeId;

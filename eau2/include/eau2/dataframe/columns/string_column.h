@@ -48,6 +48,8 @@ class StringColumn : public Column {
 
     void accept(Fielder* f);
 
+    StringColumn* as_string();
+
     /**
      * Destructor of this StringColumn.
      */

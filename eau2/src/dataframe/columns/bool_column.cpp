@@ -1,6 +1,9 @@
 #include "../../../include/eau2/dataframe/columns/bool_column.h"
 
+#include <cassert>
 #include <iostream>
+
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
 
 BoolColumn::BoolColumn() : Column(ColType::BOOLEAN) {
     this->array = new BoolArray();
@@ -65,6 +68,10 @@ void BoolColumn::acceptVisitor(IVisitor* visitor) {
 void BoolColumn::accept(Fielder* f) {
     assert(f != nullptr);
     f->accept(this->array->get(f->rowIndex));
+}
+
+BoolColumn* BoolColumn::as_bool() {
+    return this;
 }
 
 BoolColumn::~BoolColumn() { delete this->array; }

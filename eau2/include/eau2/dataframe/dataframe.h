@@ -1,14 +1,16 @@
 #pragma once
 
 #include "../collections/arrays/column_array.h"
-#include "../columns/column.h"
+#include "columns/column.h"
 #include "../kvstore/key.h"
 #include "../kvstore/kvstore.h"
 #include "../utils/object.h"
 #include "../utils/string.h"
 #include "row.h"
-#include "rower.h"
+#include "rowers/rower.h"
 #include "schema.h"
+
+class KVStore;
 
 /****************************************************************************
  * DataFrame::

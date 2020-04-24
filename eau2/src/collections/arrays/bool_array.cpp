@@ -1,4 +1,5 @@
 #include "../../../include/eau2/collections/arrays/bool_array.h"
+#include <cassert>
 
 BoolArray::BoolArray() : Object() {
     this->array = new bool[DEFAULT_ARRAY_SIZE];

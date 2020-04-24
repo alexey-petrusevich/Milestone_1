@@ -1,5 +1,7 @@
 #include "../../../include/eau2/dataframe/visitors/visitor.h"
 
+#include <cassert>
+
 void IVisitor::visitIntColumn(IntColumn* intColumn) { assert(false); }
 
 void IVisitor::visitDoubleColumn(DoubleColumn* doubleColumn) { assert(false); }

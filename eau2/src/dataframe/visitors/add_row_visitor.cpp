@@ -1,4 +1,5 @@
 #include "../../../include/eau2/dataframe/visitors/add_row_visitor.h"
+#include <cassert>
 
 AddRowVisitor::AddRowVisitor(Row* row) : IVisitor() {
     assert(row != nullptr);

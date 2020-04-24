@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "../../serialization/deserializer.h"
+#include "../../../include/eau2/serialization/deserializer.h"
 
 KeyValueBytes::KeyValueBytes(Key *key, byte *value) : Object() {
     this->key = key;

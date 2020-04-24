@@ -1,4 +1,5 @@
 #include "../../../include/eau2/collections/arrays/array.h"
+#include <cassert>
 
 Array::Array() : Object() {
     this->array = new Object*[DEFAULT_ARRAY_SIZE];

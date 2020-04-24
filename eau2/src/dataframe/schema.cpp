@@ -1,6 +1,7 @@
 #include "../../include/eau2/dataframe/schema.h"
 
 #include <cstring>
+#include <cassert>
 
 Schema::Schema(Schema &from) : Object() {
     this->numRows = from.numRows;

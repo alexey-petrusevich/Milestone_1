@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <sstream>
+#include <thread>
 
 void Thread::start() {
     thread_ = std::thread([this] { this->run(); });

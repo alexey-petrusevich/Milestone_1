@@ -1,6 +1,9 @@
 #include "../../../include/eau2/dataframe/columns/double_column.h"
 
+#include <cassert>
 #include <iostream>
+
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
 
 DoubleColumn::DoubleColumn() : Column(ColType::DOUBLE) {
     this->array = new DoubleArray();
@@ -60,6 +63,10 @@ void DoubleColumn::acceptVisitor(IVisitor* visitor) {
 void DoubleColumn::accept(Fielder* f) {
     assert(f != nullptr);
     f->accept(this->array->get(f->rowIndex));
+}
+
+DoubleColumn* DoubleColumn::as_double() {
+    return this;
 }
 
 DoubleColumn::~DoubleColumn() { delete this->array; }

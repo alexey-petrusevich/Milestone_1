@@ -2,8 +2,8 @@
 #include <cstring>
 #include <iostream>
 
-#include "../../../include/eau2/serialization/deserializer.h"
-#include "../../../include/eau2/serialization/serializer.h"
+#include "../../include/eau2/serialization/deserializer.h"
+#include "../../include/eau2/serialization/serializer.h"
 
 void FAIL() { exit(1); }
 void OK(const char* m) {

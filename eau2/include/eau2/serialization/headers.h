@@ -1,3 +1,4 @@
+#pragma once
 /**
  * @brief This file represents various types headers of serialized objects.
  * @file headers.h

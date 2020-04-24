@@ -34,7 +34,7 @@ class KeyValueBytes : public Object {
      *
      * @return the key component of this KeyValueBytes pair
      */
-    Key *getKey() { return this->key; }
+    Key *getKey();
 
     /**
      * Returs the value (serialized object) component of this KeyValueBytes

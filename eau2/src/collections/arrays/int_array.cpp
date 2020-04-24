@@ -1,4 +1,5 @@
 #include "../../../include/eau2/collections/arrays/int_array.h"
+#include <cassert>
 
 IntArray::IntArray() : Object() {
     this->array = new int[DEFAULT_ARRAY_SIZE];

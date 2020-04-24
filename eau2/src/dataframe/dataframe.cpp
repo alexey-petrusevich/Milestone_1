@@ -1,15 +1,15 @@
-#include "../../../include/eau2/dataframe/dataframe.h"
+#include "../../include/eau2/dataframe/dataframe.h"
 
 #include <cassert>
 #include <cstdarg>
-#include <iostream>
 #include <cstring>
+#include <iostream>
 
-#include "../serialization/deserializer.h"
-#include "../serialization/serializer.h"
-#include "handle_rower_thread.h"
-#include "visitors/add_row_visitor.h"
-#include "visitors/fill_row_visitor.h"
+#include "../../include/eau2/serialization/deserializer.h"
+#include "../../include/eau2/serialization/serializer.h"
+#include "../../include/eau2/dataframe/handle_rower_thread.h"
+#include "../../include/eau2/dataframe/visitors/add_row_visitor.h"
+#include "../../include/eau2/dataframe/visitors/fill_row_visitor.h"
 
 DataFrame::DataFrame(DataFrame& df) {
     this->schema = new Schema(*(df.schema));

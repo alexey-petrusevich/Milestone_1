@@ -1,4 +1,5 @@
 #include "../../../include/eau2/collections/arrays/coltype_array.h"
+#include <cassert>
 
 ColTypeArray::ColTypeArray() : Object() {
     this->array = new ColType[DEFAULT_ARRAY_SIZE];

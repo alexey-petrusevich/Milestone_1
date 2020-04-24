@@ -1,4 +1,5 @@
 #include "../../include/eau2/application/trivial.h"
+#include <cassert>
 
 Trivial::Trivial(size_t idx) : Application(idx) {}
 

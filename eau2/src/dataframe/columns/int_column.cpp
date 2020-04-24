@@ -1,6 +1,9 @@
 #include "../../../include/eau2/dataframe/columns/int_column.h"
 
+#include <cassert>
 #include <iostream>
+
+#include "../../../include/eau2/dataframe/visitors/visitor.h"
 
 IntColumn::IntColumn() : Column(ColType::INTEGER) {
     this->array = new IntArray();
@@ -61,5 +64,8 @@ void IntColumn::accept(Fielder* f) {
     f->accept(this->array->get(f->rowIndex));
 }
 
+IntColumn* IntColumn::as_int() {
+    return this;
+}
 
 IntColumn::~IntColumn() { delete this->array; }

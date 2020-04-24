@@ -1,5 +1,19 @@
-#include "../../../include/eau2/dataframe/row.h"
+//#include "../../../include/eau2/dataframe/row.h"
 
+#include "../../include/eau2/dataframe/row.h"
+
+#include <cassert>
+
+#include "../../include/eau2/dataframe/columns/bool_column.h"
+#include "../../include/eau2/dataframe/columns/double_column.h"
+#include "../../include/eau2/dataframe/columns/int_column.h"
+#include "../../include/eau2/dataframe/columns/string_column.h"
+/*
+#include "../../../include/eau2/dataframe/columns/bool_column.h"
+#include "../../../include/eau2/dataframe/columns/double_column.h"
+#include "../../../include/eau2/dataframe/columns/int_column.h"
+#include "../../../include/eau2/dataframe/columns/string_column.h"
+*/
 Row::Row(Schema &scm) {
     this->schema = new Schema(scm);
     this->initColumnArray();

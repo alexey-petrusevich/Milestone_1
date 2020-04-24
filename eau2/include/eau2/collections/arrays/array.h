@@ -1,9 +1,11 @@
 #pragma once
 
-#include <cassert>
+//#include <cassert>
 
 #include "../../utils/object.h"
-#include "../../utils/string.h"
+//#include "../../utils/string.h"
+
+class String;
 
 #define DEFAULT_ARRAY_SIZE 100
 

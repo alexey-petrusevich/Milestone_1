@@ -47,6 +47,8 @@ class BoolColumn : public Column {
 
     void accept(Fielder* f);
 
+    BoolColumn* as_bool();
+
     /**
      * Destructor of this column.
      */

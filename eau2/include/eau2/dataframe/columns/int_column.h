@@ -47,6 +47,8 @@ class IntColumn : public Column {
 
     void accept(Fielder* f);
 
+    IntColumn* as_int();
+
     /**
      * Destructor of IntColumn.
      */
